@@ -83,8 +83,8 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 STATIC_LOCATION = 'static'
-STATIC_ROOT = str(ROOT_DIR.path('frontend', 'static'))
-STATICFILES_DIRS = [str(ROOT_DIR.path('static'))]
+STATIC_ROOT = str(ROOT_DIR.path('static'))
+STATICFILES_DIRS = [str(ROOT_DIR.path('frontend', 'static'))]
 
 MEDIA_URL = '/media/'
 MEDIA_LOCATION = 'media'
