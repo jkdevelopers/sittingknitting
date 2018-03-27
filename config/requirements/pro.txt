@@ -3,7 +3,7 @@
 -r base.txt
 
 gunicorn==19.7.1        # WSGI interface server
-psycopg2==2.7.4         # PostgreSQL client
+psycopg2-binary==2.7.4  # PostgreSQL client
 django-storages==1.6.6  # Extra storages adapter
 boto3==1.6.17           # AWS S3 client
 raven==6.6.0            # Sentry client
