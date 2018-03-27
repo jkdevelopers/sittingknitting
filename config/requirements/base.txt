@@ -1,14 +1,7 @@
 # BASE DEPENDENCIES
 
-django==2.0.1
-django-environ==0.4.4
-django-storages==1.6.5
-boto3==1.4.7
-pillow==5.0.0
-argon2-cffi==18.1.0
-awesome-slugify==1.6.5
-
-# django-templated-email==2.2.0
-# django-crispy-forms==1.7.0
-# channels==1.1.8
-# psycopg2==2.7.3.2
+django==2.0.3           # Web framework
+pillow==5.0.0           # Image processing
+django-environ==0.4.4   # Environment management
+argon2-cffi==18.1.0     # Password hasher
+awesome-slugify==1.6.5  # Slug generation
