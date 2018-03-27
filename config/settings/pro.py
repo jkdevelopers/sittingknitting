@@ -38,8 +38,11 @@ AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
 
 from storages.backends.s3boto3 import S3Boto3Storage
 
-STATICFILES_STORAGE = S3Boto3Storage(location=STATIC_LOCATION)
-DEFAULT_FILE_STORAGE = S3Boto3Storage(location=MEDIA_LOCATION, file_overwrite=False)
+STATIC_STORAGE = S3Boto3Storage(location=STATIC_LOCATION)
+MEDIA_STORAGE = S3Boto3Storage(location=MEDIA_LOCATION, file_overwrite=False)
+
+STATICFILES_STORAGE = 'STATIC_STORAGE'
+DEFAULT_FILE_STORAGE = 'MEDIA_STORAGE'
 
 # RAVEN & SENTRY
 
