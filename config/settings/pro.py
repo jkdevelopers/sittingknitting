@@ -40,3 +40,15 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 STATICFILES_STORAGE = S3Boto3Storage(location=STATIC_LOCATION)
 DEFAULT_FILE_STORAGE = S3Boto3Storage(location=MEDIA_LOCATION, file_overwrite=False)
+
+# RAVEN & SENTRY
+
+INSTALLED_APPS += ['raven.contrib.django.raven_compat']
+RAVEN_MIDDLEWARE = ['raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware']
+MIDDLEWARE = RAVEN_MIDDLEWARE + MIDDLEWARE
+
+SENTRY_CLIENT = 'raven.contrib.django.raven_compat.DjangoClient'
+RAVEN_CONFIG = {
+    'dsn': ENV.str('SENTRY_DSN'),
+    'release': VERSION,
+}
