@@ -1,0 +1,51 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% include 'metrika.html' %}
+
+        <meta charset="utf-8">
+        <title>{% block title %}SittingKnitting{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="" />
+
+        <link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css' />
+        <link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
+        <link href="{% static 'css/megamenu.css' %}" rel="stylesheet" type="text/css" media="all" />
+    </head>
+    <body>
+        <div class="top_bg">
+            <div class="container">
+                <div class="header_top">
+                    <div class="top_right">
+                        <ul>
+                            <li><a href="#">Контакты</a></li>|
+                            <li><a href="#">Доставка и оплата</a></li>|
+                            <li><a href="#">Время работы</a></li>
+                        </ul>
+                    </div>
+                    <div class="top_left">
+                        <h2><span></span>Телефон: 8(800)555-35-35</h2>
+                    </div>
+                        <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'header.html' %}
+
+        {% block content %}{% endblock content %}
+
+        {% include 'footer.html' %}
+
+        <script type='text/javascript' src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/megamenu.js' %}"></script>
+        <script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
+        <script src="{% static 'js/menu_jquery.js' %}"></script>
+        <script src="{% static 'js/simpleCart.min.js' %}"> </script>
+    </body>
+</html>

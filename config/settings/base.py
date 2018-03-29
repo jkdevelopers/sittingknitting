@@ -25,7 +25,7 @@ VERSION = ENV.str('VERSION', 'none')
 
 # APPS
 
-DJANGO_APPS = [
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -33,12 +33,6 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
 ]
-
-THIRD_PARTY_APPS = []
-
-LOCAL_APPS = []
-
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE
 
@@ -126,7 +120,7 @@ TEMPLATED_EMAIL_FILE_EXTENSION = 'html'
 # MISC
 
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 from django.contrib.messages import constants as messages
 
