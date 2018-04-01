@@ -5,6 +5,8 @@ from environ import Path
 
 ROOT_DIR = Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('backend')
+TEMPLATES_DIR = ROOT_DIR.path('frontend', 'templates')
+COMPONENTS_DIR = TEMPLATES_DIR.path('components')
 ROOT_URLCONF = 'config.urls'
 
 DEBUG = ENV.bool('DJANGO_DEBUG')
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'backend.core',
 ]
 
 # MIDDLEWARE
@@ -51,11 +54,12 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            str(ROOT_DIR.path('frontend', 'templates')),
-        ],
+        'DIRS': [str(TEMPLATES_DIR)],
         'OPTIONS': {
             'debug': DEBUG,
+            'libraries': {
+                'core.tags': 'backend.core.tags',
+            },
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',

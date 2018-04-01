@@ -1,0 +1,14 @@
+{% load core.tags %}
+
+<div class="{% attribute 'CSS outer class' type='text' id='outer-class' %}">
+    <img src="{% attribute 'Image url' type='text' id='image' %}" class="img-responsive" alt="">
+    <div class="{% attribute 'CSS inner class' type='text' id='inner-class' %}">
+        <h3>{% attribute 'Title' type='text' id='class' %}</h3>
+        <p>{% attribute 'Description' type='text' id='description' %}</p>
+        <div class="crt-btn">
+            <a href="{% attribute 'URL' type='text' id='url' %}">
+                {% attribute 'Button' type='text' id='button' %}
+            </a>
+        </div>
+    </div>
+</div>

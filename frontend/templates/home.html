@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load core.tags %}
 
 {% block content %}
     <div class="arriv">
@@ -28,16 +29,17 @@
                 <div class="clearfix"></div>
             </div>
             <div class="arriv-bottm">
-                <div class="col-md-8 arriv-left1">
-                    <img src="{% static 'images/3.jpg' %}" class="img-responsive" alt="">
-                    <div class="arriv-info1">
-                        <h3>SWEATER</h3>
-                        <p>REVIVE YOUR WARDROBE WITH CHIC KNITS</p>
-                        <div class="crt-btn">
-                            <a href="#">SHOP NOW</a>
-                        </div>
-                    </div>
-                </div>
+{#                <div class="col-md-8 arriv-left1">#}
+{#                    <img src="{% static 'images/3.jpg' %}" class="img-responsive" alt="">#}
+{#                    <div class="arriv-info1">#}
+{#                        <h3>SWEATER</h3>#}
+{#                        <p>REVIVE YOUR WARDROBE WITH CHIC KNITS</p>#}
+{#                        <div class="crt-btn">#}
+{#                            <a href="#">SHOP NOW</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+                {% component 'tile.html' id='tile-a' %}
                 <div class="col-md-4 arriv-right1">
                     <img src="{% static 'images/4.jpg' %}" class="img-responsive" alt="">
                     <div class="arriv-info2">
