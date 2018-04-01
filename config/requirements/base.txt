@@ -6,3 +6,4 @@ django-environ==0.4.4   # Environment management
 argon2-cffi==18.1.0     # Password hasher
 awesome-slugify==1.6.5  # Slug generation
 voluptuous==0.11.1      # Some handy validation
+jsonfield=2.0.2         # JSON field
