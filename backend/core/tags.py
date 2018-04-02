@@ -31,7 +31,6 @@ def component(context, template, id=None):
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
     context['__attributes'] = component.attributes
     rendered = template.render(context.flatten())
-    print(context.get('__edit'))
     if context.get('__edit') is None: return rendered
     wrapper = '<div data-component="%s" sytle="display: inherit">%%s</div>' % component.pk
     return mark_safe(wrapper % rendered)

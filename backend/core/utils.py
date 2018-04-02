@@ -31,6 +31,8 @@ class Attribute:
             required=False
         )
 
+    def save(self): pass
+
     def serialize(self):
         return {
             'name': self.name,
