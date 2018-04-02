@@ -16,12 +16,13 @@ def modification(context, name):
 
 
 @register.simple_tag(takes_context=True)
-def component(context, template, id=None):
+def component(context, template, id=None, **kwargs):
     if id is None: raise RuntimeError('Component ID is currently required')
     modification = context.get('__modification', 'main')
     component, _ = Component.objects.get_or_create(template=template, modification=modification, uid=id)
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
     context['__attributes'] = component.attributes
+    context.update(kwargs)
     rendered = template.render(context.flatten())
     if context.get('edit_mode') is None: return rendered
     wrapper = '<div data-component="%s" sytle="display: inherit">%%s</div>' % component.pk
@@ -42,6 +43,6 @@ def attribute(context, name=None, type=None, id=None, **attrs):
         if id not in attributes: raise RuntimeError('No attribute data found')
         value = context['__attributes'][id]['value']
     if name is None: name = type.title()
-    attribute = ATTRIBUTES[type](name, id, value, **attrs)
+    attribute = ATTRIBUTES[type](context, name, id, value, **attrs)
     if collected is not None: collected[id] = attribute.serialize()
     return attribute.render()

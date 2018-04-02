@@ -19,10 +19,7 @@ class ComponentForm(ModelForm):
         self.helper.form_tag = False
 
     def save(self, commit=True):
-        for attr in self.attributes:
-            field = self.fields[attr.id]
-            value = self.cleaned_data[attr.id]
-            attr.value = field.clean(value)
+        for attr in self.attributes: attr.parse(self)
         attributes = {attr.id: attr.serialize() for attr in self.attributes}
         self.instance.attributes = attributes
         return super(ComponentForm, self).save(commit=commit)

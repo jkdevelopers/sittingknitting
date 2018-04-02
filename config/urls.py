@@ -6,3 +6,7 @@ urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
     url(r'^', include('backend.core.urls')),
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

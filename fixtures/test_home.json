@@ -1,0 +1,90 @@
+[
+  {
+    "model": "core.component",
+    "pk": 3,
+    "fields": {
+      "uid": "phone",
+      "template": "text.html",
+      "modification": "main",
+      "name": "text.html",
+      "attributes": "{\"text\":{\"name\":\"Text\",\"type\":\"text\",\"value\":\"8(800)555-35-35\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 9,
+    "fields": {
+      "uid": "tile-a",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-a",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":6,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"1.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 10,
+    "fields": {
+      "uid": "tile-b",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-b",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":6,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"2.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 11,
+    "fields": {
+      "uid": "tile-c",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-c",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":8,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"3.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 12,
+    "fields": {
+      "uid": "tile-d",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-d",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"4.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 13,
+    "fields": {
+      "uid": "tile-e",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-e",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"5.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 14,
+    "fields": {
+      "uid": "tile-f",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-f",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"6.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 15,
+    "fields": {
+      "uid": "tile-g",
+      "template": "tile.html",
+      "modification": "main",
+      "name": "tile-g",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"attrs\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"attrs\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"7.jpg\",\"attrs\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"attrs\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"attrs\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"attrs\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"GO\",\"attrs\":{}}}"
+    }
+  }
+]

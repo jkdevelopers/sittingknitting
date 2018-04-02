@@ -34,10 +34,11 @@
             });
             if (!window.edit_mode) return;
             $('[data-component]')
-                .css({'border': '1px dashed red', 'cursor': 'pointer'})
+                .css({'cursor': 'pointer', 'border': '1px dashed red'})
                 .attr('title', 'Click to edit')
                 .tooltip({track: true})
-                .click(function () {
+                .click(function (e) {
+                    e.preventDefault();
                     var id = $(this).attr('data-component');
                     var url = '/edit/' + id + '/?referer=' + location.pathname;
                     window.open(url, '_blank', 'height=400,width=400');

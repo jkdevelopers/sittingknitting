@@ -128,6 +128,8 @@ TEMPLATED_EMAIL_FILE_EXTENSION = 'html'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+FIXTURE_DIRS = [str(ROOT_DIR.path('fixtures'))]
+
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
