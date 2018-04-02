@@ -56,7 +56,7 @@ ATTRIBUTES = {attr.type: attr for attr in [
 
 
 def build_component(component):
-    component.name = 'Component "%s"' % component.template
+    component.name = component.template
     path = COMPONENTS_PREFIX + '/' + component.template
     template = get_template(path)
     context = {'__collected': {}}

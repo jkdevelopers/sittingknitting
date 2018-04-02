@@ -1,5 +1,20 @@
-<form action="." method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit "{{ component.name }}"</title>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div style="margin-top: 20px;">
+        {% include 'messages.html' %}
+    </div>
+    <div class="container">
+        <h3>Edit component "{{ component.name }}"</h3>
+        <form action="." method="post">{% crispy form form.helper %}</form>
+    </div>
+</body>
+</html>

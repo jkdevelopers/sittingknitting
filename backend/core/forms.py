@@ -1,4 +1,6 @@
 from django.forms import ModelForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from .utils import build_attributes
 from .models import Component
 
@@ -12,9 +14,9 @@ class ComponentForm(ModelForm):
         super(ComponentForm, self).__init__(**kwargs)
         self.attributes = build_attributes(kwargs['instance'])
         for attr in self.attributes: self.fields[attr.id] = attr.field()
-
-    def clean(self):
-        return super(ComponentForm, self).clean()
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('save', 'Save'))
+        self.helper.form_tag = False
 
     def save(self, commit=True):
         for attr in self.attributes:
