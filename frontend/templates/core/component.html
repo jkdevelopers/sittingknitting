@@ -14,7 +14,9 @@
     </div>
     <div class="container">
         <h3>Edit component "{{ component.name }}"</h3>
-        <form action="." method="post">{% crispy form form.helper %}</form>
+        <form action="." method="post">
+            {% crispy form form.helper %}
+        </form>
     </div>
 </body>
 </html>

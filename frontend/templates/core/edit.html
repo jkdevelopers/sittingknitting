@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+{% if edit_mode %}
+    <script type="text/javascript"> window.edit_mode = true; </script>
+{% endif %}
+
+{% if request.user.is_staff %}
+    <style type="text/css">
+        #edit-toolbar {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 50px;
+            width: 200px;
+            transform: translate(-100px, 0);
+
+            color: white;
+            background: red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+        }
+    </style>
+    <div id="edit-toolbar">
+        EDIT MODE:&nbsp;&nbsp;<b></b>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#edit-toolbar b').text(window.edit_mode ? 'ON' : 'OFF');
+            $('#edit-toolbar').click(function () {
+                location = location.pathname + '?edit=' + (!window.edit_mode).toString();
+            });
+            if (!window.edit_mode) return;
+            $('[data-component]')
+                .css({'border': '1px dashed red', 'cursor': 'pointer'})
+                .attr('title', 'Click to edit')
+                .tooltip({track: true})
+                .click(function () {
+                    var id = $(this).attr('data-component');
+                    var url = '/edit/' + id + '/?referer=' + location.pathname;
+                    window.open(url, '_blank', 'height=400,width=400');
+                });
+        });
+    </script>
+{% endif %}

@@ -1,18 +1,10 @@
 from django.template.loader import get_template
-from django.template import Template, Library
+from django.template import Library
 from django.utils.safestring import mark_safe
 from .models import Component
 from .utils import ATTRIBUTES, COMPONENTS_PREFIX
 
 register = Library()
-
-
-@register.simple_tag(takes_context=True)
-def edit(context, mode):
-    if mode not in ('on', 'enable', True): return ''
-    if not context['request'].user.is_staff: return ''
-    context['__edit'] = True
-    return ''
 
 
 @register.simple_tag(takes_context=True)
@@ -31,7 +23,7 @@ def component(context, template, id=None):
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
     context['__attributes'] = component.attributes
     rendered = template.render(context.flatten())
-    if context.get('__edit') is None: return rendered
+    if context.get('edit_mode') is None: return rendered
     wrapper = '<div data-component="%s" sytle="display: inherit">%%s</div>' % component.pk
     return mark_safe(wrapper % rendered)
 
