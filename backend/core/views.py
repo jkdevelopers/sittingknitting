@@ -1,12 +1,13 @@
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import UpdateView, TemplateView, View
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .models import Component
 from .forms import ComponentForm
 
 __all__ = [
     'home',
     'component_edit',
+    'component_action',
 ]
 
 
@@ -43,5 +44,31 @@ class ComponentEditView(UpdateView):
         return super(ComponentEditView, self).dispatch(*args, **kwargs)
 
 
+class ComponentActionView(View):
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_staff: raise Http404
+        return super(ComponentActionView, self).dispatch(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        action = self.request.GET.get('action')
+        if action is None: raise Http404
+        if action == 'create':
+            template = self.request.GET.get('template')
+            if template is None: raise Http404
+            component = Component(template=template, uid='child')
+            component.save()
+            component.uid = 'child ' + str(component.pk)
+            component.save()
+            return HttpResponse(str(component.pk))
+        elif action == 'remove':
+            pk = self.request.GET.get('pk')
+            if pk is None: raise Http404
+            component = Component.objects.get(pk=int(pk))
+            component.delete()
+            return HttpResponse('OK')
+        raise Http404
+
+
 home = EditableView.as_view(template_name='home.html')
 component_edit = ComponentEditView.as_view()
+component_action = ComponentActionView.as_view()

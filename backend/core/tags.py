@@ -8,18 +8,9 @@ register = Library()
 
 
 @register.simple_tag(takes_context=True)
-def modification(context, name):
-    if type(name) != str: raise RuntimeError('Modification name must be a string')
-    if not name: raise RuntimeError('Empty modification name')
-    context['__modification'] = name
-    return ''
-
-
-@register.simple_tag(takes_context=True)
 def component(context, template, id=None, **kwargs):
     if id is None: raise RuntimeError('Component ID is currently required')
-    modification = context.get('__modification', 'main')
-    component, _ = Component.objects.get_or_create(template=template, modification=modification, uid=id)
+    component, _ = Component.objects.get_or_create(template=template, uid=id)
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
     context['__attributes'] = component.attributes
     context.update(kwargs)

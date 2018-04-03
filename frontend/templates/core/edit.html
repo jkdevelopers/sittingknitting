@@ -47,7 +47,7 @@
     <div id="edit-toolbar">EDIT MODE:&nbsp;&nbsp;<b></b></div>
     <div id="edit-overlay" style="display: none;"></div>
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
             $('#edit-toolbar b').text(window.edit_mode ? 'ON' : 'OFF');
             $('#edit-toolbar').click(function () {
                 location = location.pathname + '?edit=' + (!window.edit_mode).toString();
@@ -60,7 +60,7 @@
                 .click(function (e) {
                     e.preventDefault();
                     var id = $(this).attr('data-component');
-                    var url = '/edit/' + id + '/?referer=' + location.pathname;
+                    var url = '/edit/' + id;
                     window.open(url, '_blank', 'height=400,width=400');
                 });
         });

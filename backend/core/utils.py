@@ -1,6 +1,7 @@
-from voluptuous import Schema, Any, DefaultTo as Default, Optional, ALLOW_EXTRA
+from voluptuous import Schema, Optional, ALLOW_EXTRA
 from django.core.files.storage import default_storage
 from django.template.loader import get_template
+from django.utils.safestring import mark_safe
 from os.path import relpath
 from django.conf import settings
 from django.forms import fields
@@ -124,12 +125,51 @@ class Number(Attribute):
         return field
 
 
+class List(Attribute):
+    attr_type = 'list'
+    field_type = fields.CharField
+    value_scheme = Schema(list)
+    value_default = []
+    data_scheme = Schema({'component': str})
+
+    def __init__(self, **data):
+        from .models import Component
+        super(List, self).__init__(**data)
+        self.components = [Component.objects.get(pk=pk) for pk in self.value]
+
+    def render(self):
+        from .tags import component
+        return mark_safe('\n'.join(component(
+            self.context,
+            comp.template,
+            comp.uid
+        ) for comp in self.components))
+
+    def field(self):
+        return self.field_type(
+            label=self.name,
+            initial=';'.join('%s:%s' % (comp.pk, comp.name) for comp in self.components),
+            widget=fields.TextInput(attrs={
+                'data-list': 'true',
+                'data-template': self.data['component'],
+            }),
+            required=False,
+        )
+
+    def parse(self, form):
+        field = form.fields[self.id]
+        raw_value = form.cleaned_data[self.id]
+        value = field.clean(raw_value)
+        self.value = [int(i.split(':')[0]) for i in value.split(';')]
+
+
 ATTRIBUTES = {attr.attr_type: attr for attr in [
     Attribute,
     Text,
     Image,
     Boolean,
     Number,
+    List,
 ]}
 
 

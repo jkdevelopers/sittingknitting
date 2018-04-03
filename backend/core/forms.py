@@ -15,7 +15,7 @@ class ComponentForm(ModelForm):
         self.attributes = build_attributes(kwargs['instance'])
         for attr in self.attributes: self.fields[attr.id] = attr.field()
         self.helper = FormHelper(self)
-        self.helper.add_input(Submit('save', 'Save'))
+        self.helper.add_input(Submit('save', 'Save', css_class='btn-block'))
         self.helper.form_tag = False
 
     def save(self, commit=True):

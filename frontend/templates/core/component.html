@@ -7,16 +7,84 @@
     <meta charset="UTF-8">
     <title>Edit "{{ component.name }}"</title>
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
 </head>
 <body>
     <div style="margin-top: 20px;">
         {% include 'messages.html' %}
     </div>
-    <div class="container">
-        <h3>Edit component "{{ component.name }}"</h3>
+    <div class="container" style="max-width: 400px;">
+        <h2>Edit component "{{ component.name }}"</h2>
         <form action="." enctype="multipart/form-data" method="post">
             {% crispy form form.helper %}
         </form>
     </div>
+    <div id="list-container" style="display: none;">
+
+    </div>
+    <script type="text/javascript">
+        function add_list_element(id, name, container, field) {
+            var element = $('<li class="list-group-item" data-id="' + id + '" data-name="' + name + '"></li>');
+            container.append(element);
+            element.append('<b>' + name + ' ' + id + '</b>');
+            var edit = $('<a class="badge badge-defaut">Edit</a>');
+            edit.click(function () {
+                window.open('/edit/' + id, '_blank', 'height=400,width=400');
+            });
+            element.append(edit);
+            var remove = $('<a class="badge badge-default">Remove</a>');
+            remove.click(function () {
+                $.get('/action/', {action: 'remove', pk: id}, function (ok) {
+                    if (ok !== 'OK') alert('Something went wrong');
+                });
+                element.remove();
+                update_list(container, field);
+            });
+            element.append(remove);
+        }
+
+        function update_list(container, field) {
+            var data = [];
+            container.children()
+                .each(function () {
+                    var element = $(this);
+                    var name = element.attr('data-name');
+                    var id = element.attr('data-id');
+                    data.push(id + ':' + name);
+                });
+            field.val(data.join(';'));
+        }
+
+        $(document).ready(function () {
+            $('[data-list=true]').each(function () {
+                var field = $(this);
+                var template = field.attr('data-template');
+                field.hide();
+                var container = $('<ul class="list-group" style="margin-bottom: 5px;"></ul>');
+                field.after(container);
+                if (field.val() !== '') {
+                    $.each(field.val().split(';'), function (index, value) {
+                        var tmp = value.split(':');
+                        var id = tmp[0];
+                        var name = tmp[1];
+                        add_list_element(id, name, container, field);
+                    });
+                }
+                var create = $('<div class="btn btn-block btn-xs btn-success">Create new...</div>');
+                create.click(function () {
+                    $.get('/action/', {action: 'create', template: template}, function (id) {
+                        add_list_element(id, 'child', container, field);
+                        update_list(container, field);
+                    });
+                });
+                container.after(create);
+                container.sortable({
+                    stop: function (e, ui) { update_list(container, field); }
+                });
+                container.disableSelection();
+            });
+        });
+    </script>
 </body>
 </html>

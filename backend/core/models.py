@@ -10,7 +10,6 @@ __all__ = [
 class Component(Model):
     uid = CharField('UID', max_length=100, blank=False)
     template = CharField('Template', max_length=100, blank=False)
-    modification = CharField('Modification', max_length=100, blank=False)
     name = CharField('Name', max_length=100, blank=True, default='')
     attributes = JSONField('Attributes', blank=True, default=dict)
 
