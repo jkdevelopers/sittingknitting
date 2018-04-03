@@ -1,0 +1,90 @@
+[
+  {
+    "model": "core.component",
+    "pk": 21,
+    "fields": {
+      "uid": "phone",
+      "template": "text.html",
+      "modification": "main",
+      "name": "phone",
+      "attributes": "{\"text\":{\"name\":\"Text\",\"type\":\"text\",\"value\":\"8(800)555-35-35\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 22,
+    "fields": {
+      "uid": "tile-a",
+      "template": "tile_a.html",
+      "modification": "main",
+      "name": "tile-a",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":6,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"1.jpg\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"BUTTON\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 23,
+    "fields": {
+      "uid": "tile-b",
+      "template": "tile_a.html",
+      "modification": "main",
+      "name": "tile-b",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":6,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"2.jpg\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"BUTTON\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 24,
+    "fields": {
+      "uid": "tile-c",
+      "template": "tile_a.html",
+      "modification": "main",
+      "name": "tile-c",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":8,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"3.jpg\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"BUTTON\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 25,
+    "fields": {
+      "uid": "tile-d",
+      "template": "tile_b.html",
+      "modification": "main",
+      "name": "tile-d",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"4.jpg\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 26,
+    "fields": {
+      "uid": "tile-e",
+      "template": "tile_b.html",
+      "modification": "main",
+      "name": "tile-e",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"5.jpg\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 27,
+    "fields": {
+      "uid": "tile-f",
+      "template": "tile_a.html",
+      "modification": "main",
+      "name": "tile-f",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"6.jpg\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}},\"description\":{\"name\":\"Description\",\"type\":\"text\",\"value\":\"DESCRIPTION\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"button\":{\"name\":\"Button\",\"type\":\"text\",\"value\":\"BUTTON\",\"default\":\"\",\"data\":{}}}"
+    }
+  },
+  {
+    "model": "core.component",
+    "pk": 28,
+    "fields": {
+      "uid": "tile-g",
+      "template": "tile_b.html",
+      "modification": "main",
+      "name": "tile-g",
+      "attributes": "{\"visible\":{\"name\":\"Visible\",\"type\":\"boolean\",\"value\":true,\"default\":true,\"data\":{}},\"width\":{\"name\":\"Width\",\"type\":\"number\",\"value\":4,\"default\":0,\"data\":{\"min\":1,\"max\":12}},\"image\":{\"name\":\"Image\",\"type\":\"image\",\"value\":\"7.jpg\",\"default\":\"\",\"data\":{}},\"url\":{\"name\":\"URL\",\"type\":\"text\",\"value\":\"#\",\"default\":\"\",\"data\":{}},\"class\":{\"name\":\"Title\",\"type\":\"text\",\"value\":\"TITLE\",\"default\":\"\",\"data\":{}}}"
+    }
+  }
+]
