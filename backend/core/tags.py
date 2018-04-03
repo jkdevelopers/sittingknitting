@@ -25,12 +25,12 @@ def component(context, template, id=None, **kwargs):
     context.update(kwargs)
     rendered = template.render(context.flatten())
     if context.get('edit_mode') is None: return rendered
-    wrapper = '<div data-component="%s" sytle="display: inherit">%%s</div>' % component.pk
+    wrapper = '<div data-component="%s">%%s</div>' % component.pk
     return mark_safe(wrapper % rendered)
 
 
 @register.simple_tag(takes_context=True)
-def attribute(context, name=None, type=None, id=None, **attrs):
+def attribute(context, name=None, type=None, id=None, **data):
     if type is None: raise RuntimeError('Component type is required')
     if id is None: raise RuntimeError('Component ID is currently required')
     if type not in ATTRIBUTES: raise RuntimeError('No such attribute type')
@@ -43,6 +43,12 @@ def attribute(context, name=None, type=None, id=None, **attrs):
         if id not in attributes: raise RuntimeError('No attribute data found')
         value = context['__attributes'][id]['value']
     if name is None: name = type.title()
-    attribute = ATTRIBUTES[type](context, name, id, value, **attrs)
+    attribute = ATTRIBUTES[type](
+        id=id,
+        name=name,
+        value=value,
+        context=context,
+        **data
+    )
     if collected is not None: collected[id] = attribute.serialize()
     return attribute.render()

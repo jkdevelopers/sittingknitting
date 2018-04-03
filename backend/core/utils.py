@@ -12,17 +12,21 @@ COMPONENTS_PREFIX = relpath(
 
 
 class Attribute:
-    type = 'attribute'
+    attr_type = 'attribute'
     field_type = fields.Field
     value_scheme = Schema(object)
-    attrs_scheme = Schema({}, extra=ALLOW_EXTRA)
+    value_default = None
+    data_scheme = Schema({}, extra=ALLOW_EXTRA)
 
-    def __init__(self, context, name, id, value=None, **attrs):
-        self.context = context
-        self.name = name
-        self.id = id
+    def __init__(self, **data):
+        data = {key: value for key, value in data.items() if value is not None}
+        self.context = data.pop('context', {})
+        self.name = data.pop('name')
+        self.id = data.pop('id')
+        self.default = data.pop('default', self.value_default)
+        value = data.pop('value', self.default)
         self.value = self.value_scheme(value)
-        self.attrs = self.attrs_scheme(attrs)
+        self.data = self.data_scheme(data)
 
     def render(self): return str(self.value)
 
@@ -41,24 +45,27 @@ class Attribute:
     def serialize(self):
         return {
             'name': self.name,
-            'type': self.type,
+            'type': self.attr_type,
             'value': self.value,
-            'attrs': self.attrs,
+            'default': self.default,
+            'data': self.data,
         }
 
 
 class Text(Attribute):
-    type = 'text'
+    attr_type = 'text'
     field_type = fields.CharField
-    value_scheme = Schema(Any(str, Default('')))
-    attrs_scheme = Schema({})
+    value_scheme = Schema(str)
+    value_default = ''
+    data_scheme = Schema({})
 
 
 class Image(Attribute):
-    type = 'image'
+    attr_type = 'image'
     field_type = fields.ImageField
-    value_scheme = Schema(Any(str, Default('')))
-    attrs_scheme = Schema({})
+    value_scheme = Schema(str)
+    value_default = ''
+    data_scheme = Schema({})
 
     def render(self):
         if not self.value: return ''
@@ -89,33 +96,35 @@ class Image(Attribute):
 
 
 class Boolean(Attribute):
-    type = 'boolean'
+    attr_type = 'boolean'
     field_type = fields.BooleanField
-    value_scheme = Schema(Any(bool, Default(True)))
-    attrs_scheme = Schema({Optional('states'): [str, str]})
+    value_scheme = Schema(bool)
+    value_default = True
+    data_scheme = Schema({Optional('states'): [str, str]})
 
     def render(self):
-        states = self.attrs.get('states')
+        states = self.data.get('states')
         if states is None:
             self.context[self.id] = self.value
             return ''
-        return self.attrs['states'][not self.value]
+        return self.data['states'][not self.value]
 
 
 class Number(Attribute):
-    type = 'number'
+    attr_type = 'number'
     field_type = fields.IntegerField
-    value_scheme = Schema(Any(int, Default(0)))
-    attrs_scheme = Schema({Optional('min'): int, Optional('max'): int})
+    value_scheme = Schema(int)
+    value_default = 0
+    data_scheme = Schema({Optional('min'): int, Optional('max'): int})
 
     def field(self):
         field = super(Number, self).field()
-        if 'min' in self.attrs: field.min_value = self.attrs['min']
-        if 'max' in self.attrs: field.max_value = self.attrs['max']
+        if 'min' in self.data: field.min_value = self.data['min']
+        if 'max' in self.data: field.max_value = self.data['max']
         return field
 
 
-ATTRIBUTES = {attr.type: attr for attr in [
+ATTRIBUTES = {attr.attr_type: attr for attr in [
     Attribute,
     Text,
     Image,
@@ -139,7 +148,12 @@ def build_attributes(component):
     for id, data in component.attributes.items():
         name = data['name']
         value = data['value']
-        attrs = data['attrs']
+        attr_data = data['data']
         Class = ATTRIBUTES[data['type']]
-        attributes.append(Class({}, name, id, value, **attrs))
+        attributes.append(Class(
+            id=id,
+            name=name,
+            value=value,
+            **attr_data
+        ))
     return attributes

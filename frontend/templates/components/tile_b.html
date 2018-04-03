@@ -3,12 +3,12 @@
 {% attribute 'Visible' type='boolean' id='visible' %}
 
 {% if visible %}
-    <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 %} {{ outer_class }}">
+    <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=1 %} {{ outer_class }}">
         <img src="{% attribute 'Image' type='image' id='image' %}" class="img-responsive" alt="">
         <div class="{{ inner_class }}">
-            <a href="{% attribute 'URL' type='text' id='url' %}">
+            <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
                 <h3>
-                    {% attribute 'Title' type='text' id='class' %}
+                    {% attribute 'Title' type='text' id='class' default='TITLE' %}
                     <i class="ars"></i>
                 </h3>
             </a>

@@ -13,6 +13,7 @@
             height: 50px;
             width: 200px;
             transform: translate(-100px, 0);
+            z-index: 9999;
 
             color: white;
             background: red;
@@ -22,10 +23,29 @@
             border-radius: 0 0 10px 10px;
             cursor: pointer;
         }
+
+        #edit-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            background: black;
+            opacity: 0.8;
+            z-index: 999;
+        }
+
+        [data-component] {
+            cursor: pointer;
+            display: unset;
+        }
+
+        [data-component] * {
+            z-index: 9999;
+        }
     </style>
-    <div id="edit-toolbar">
-        EDIT MODE:&nbsp;&nbsp;<b></b>
-    </div>
+    <div id="edit-toolbar">EDIT MODE:&nbsp;&nbsp;<b></b></div>
+    <div id="edit-overlay" style="display: none;"></div>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             $('#edit-toolbar b').text(window.edit_mode ? 'ON' : 'OFF');
@@ -33,8 +53,8 @@
                 location = location.pathname + '?edit=' + (!window.edit_mode).toString();
             });
             if (!window.edit_mode) return;
+            $('#edit-overlay').show();
             $('[data-component]')
-                .css({'cursor': 'pointer', 'border': '1px dashed red'})
                 .attr('title', 'Click to edit')
                 .tooltip({track: true})
                 .click(function (e) {

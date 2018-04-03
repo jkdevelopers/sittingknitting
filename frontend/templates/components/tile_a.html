@@ -3,14 +3,14 @@
 {% attribute 'Visible' type='boolean' id='visible' %}
 
 {% if visible %}
-    <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 %} {{ outer_class }}">
+    <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=1 %} {{ outer_class }}">
         <img src="{% attribute 'Image' type='image' id='image' %}" class="img-responsive" alt="">
         <div class="{{ inner_class }}">
-            <h3>{% attribute 'Title' type='text' id='class' %}</h3>
-            <p>{% attribute 'Description' type='text' id='description' %}</p>
+            <h3>{% attribute 'Title' type='text' id='class' default='TITLE' %}</h3>
+            <p>{% attribute 'Description' type='text' id='description' default='DESCRIPTION' %}</p>
             <div class="crt-btn">
-                <a href="{% attribute 'URL' type='text' id='url' %}">
-                    {% attribute 'Button' type='text' id='button' %}
+                <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
+                    {% attribute 'Button' type='text' id='button' default='BUTTON' %}
                 </a>
             </div>
         </div>
