@@ -21,7 +21,8 @@ class Attribute:
     data_scheme = Schema({})
 
     def __init__(self, **data):
-        data = {key: value for key, value in data.items() if value is not None}
+        data = {key: value for key, value in data.items() if value}
+        print(data)
         self.context = data.pop('context', {})
         self.name = data.pop('name')
         self.id = data.pop('id')
@@ -74,6 +75,7 @@ class Image(Attribute):
     })
 
     def render(self):
+        if not self.value: return ''
         width = self.data.get('width')
         height = self.data.get('height')
         if not width and not height:
@@ -111,7 +113,7 @@ class Boolean(Attribute):
     attr_type = 'boolean'
     field_type = fields.BooleanField
     value_scheme = Schema(bool)
-    value_default = True
+    value_default = False
     data_scheme = Schema({Optional('states'): [str, str]})
 
     def render(self):
@@ -141,7 +143,7 @@ class List(Attribute):
     field_type = fields.CharField
     value_scheme = Schema(list)
     value_default = []
-    data_scheme = Schema({'component': str})
+    data_scheme = Schema({'component': str, Optional('fake'): bool})
 
     def __init__(self, **data):
         from .models import Component
@@ -150,6 +152,7 @@ class List(Attribute):
         self.context['list_%s_empty' % self.id] = not bool(self.components)
 
     def render(self):
+        if self.data.get('fake'): return ''
         from .tags import component
         return mark_safe('\n'.join(component(
             self.context,

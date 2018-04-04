@@ -2,10 +2,8 @@
 {% load mathfilters %}
 
 <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=width %} arriv-{{ outer_class }}">
-    {% with offset=offset|default:15 %}
-        {% with width=width|mul:95|sub:offset %}
-            <img src="{% attribute 'Image' type='image' id='image' width=width height=height %}" class="img-responsive">
-        {% endwith %}
+    {% with img_width=width|mul:95|sub:offset %}
+        <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive">
     {% endwith %}
     <div class="arriv-info{{ inner_class }}">
         <h3>{% attribute 'Title' type='text' id='class' default='TITLE' %}</h3>
