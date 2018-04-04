@@ -58,6 +58,7 @@ class ComponentActionView(View):
             component = Component(template=template, uid='child')
             component.save()
             component.uid = 'child ' + str(component.pk)
+            component.name = component.uid
             component.save()
             return HttpResponse(str(component.pk))
         elif action == 'remove':

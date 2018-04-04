@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load core.tags %}
 
 <div class="header_bg">
     <div class="container">
@@ -63,7 +64,7 @@
                 <div class="clearfix"></div>
             </div>
 
-            {% include 'menu.html' %}
+            {% component 'menu.html' id='menu' %}
 
         </div>
     </div>

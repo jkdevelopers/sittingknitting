@@ -12,7 +12,7 @@
 </head>
 <body>
     <div style="margin-top: 20px;">
-        {% include 'messages.html' %}
+        {% include 'core/messages.html' %}
     </div>
     <div class="container" style="max-width: 400px;">
         <h2>Edit component "{{ component.name }}"</h2>
@@ -26,8 +26,9 @@
     <script type="text/javascript">
         function add_list_element(id, name, container, field) {
             var element = $('<li class="list-group-item" data-id="' + id + '" data-name="' + name + '"></li>');
+            element.css('cursor', 'move');
             container.append(element);
-            element.append('<b>' + name + ' ' + id + '</b>');
+            element.append('<b>' + name + '</b>');
             var edit = $('<a class="badge badge-defaut">Edit</a>');
             edit.click(function () {
                 window.open('/edit/' + id, '_blank', 'height=400,width=400');
@@ -74,7 +75,7 @@
                 var create = $('<div class="btn btn-block btn-xs btn-success">Create new...</div>');
                 create.click(function () {
                     $.get('/action/', {action: 'create', template: template}, function (id) {
-                        add_list_element(id, 'child', container, field);
+                        add_list_element(id, 'child ' + id, container, field);
                         update_list(container, field);
                     });
                 });

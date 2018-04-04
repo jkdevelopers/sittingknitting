@@ -40,7 +40,7 @@
 
         {% include 'header.html' %}
 
-        {% include 'messages.html' %}
+        {% include 'core/messages.html' %}
 
         {% block content %}{% endblock content %}
 
@@ -51,7 +51,7 @@
         <script type="text/javascript" src="{% static 'js/megamenu.js' %}"></script>
         <script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
         <script src="{% static 'js/menu_jquery.js' %}"></script>
-        <script src="{% static 'js/simpleCart.min.js' %}"> </script>
+        <script src="{% static 'js/simple_cart.min.js' %}"> </script>
 
         {% include 'core/edit.html' %}
 

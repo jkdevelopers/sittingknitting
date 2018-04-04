@@ -40,3 +40,13 @@ $(function() {
         }
     });
 });
+
+// Custom menu colors
+$(document).ready(function () {
+    $('.megamenu [data-color]').hover(function(e) {
+        $(this).css(
+            'background-color',
+            e.type === 'mouseenter' ? $(this).attr('data-color') : 'initial'
+        );
+    })
+});

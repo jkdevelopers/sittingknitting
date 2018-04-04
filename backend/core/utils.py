@@ -130,14 +130,16 @@ class List(Attribute):
     field_type = fields.CharField
     value_scheme = Schema(list)
     value_default = []
-    data_scheme = Schema({'component': str})
+    data_scheme = Schema({'component': str, Optional('fake'): bool})
 
     def __init__(self, **data):
         from .models import Component
         super(List, self).__init__(**data)
         self.components = [Component.objects.get(pk=pk) for pk in self.value]
+        self.context['list_%s_empty' % self.id] = not bool(self.components)
 
     def render(self):
+        if self.data.get('fake', False): return ''
         from .tags import component
         return mark_safe('\n'.join(component(
             self.context,
@@ -160,7 +162,7 @@ class List(Attribute):
         field = form.fields[self.id]
         raw_value = form.cleaned_data[self.id]
         value = field.clean(raw_value)
-        self.value = [int(i.split(':')[0]) for i in value.split(';')]
+        self.value = [int(i.split(':')[0]) for i in value.split(';') if i]
 
 
 ATTRIBUTES = {attr.attr_type: attr for attr in [

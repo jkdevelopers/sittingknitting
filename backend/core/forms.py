@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django.forms.fields import CharField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from .utils import build_attributes
@@ -8,10 +9,11 @@ from .models import Component
 class ComponentForm(ModelForm):
     class Meta:
         model = Component
-        fields = []
+        fields = ['name']
 
     def __init__(self, **kwargs):
         super(ComponentForm, self).__init__(**kwargs)
+        self.fields['name'].label = 'Component name'
         self.attributes = build_attributes(kwargs['instance'])
         for attr in self.attributes: self.fields[attr.id] = attr.field()
         self.helper = FormHelper(self)
