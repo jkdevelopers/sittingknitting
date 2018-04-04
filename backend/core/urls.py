@@ -7,4 +7,6 @@ urlpatterns = [
     url(r'^home/$', home, name='home'),
     url(r'^edit/(?P<pk>\d+)/$', component_edit, name='edit'),
     url(r'^action/$', component_action, name='action'),
+    url(r'^login/$', login, name='login'),
+    url(r'^logout/$', logout, name='logout'),
 ]

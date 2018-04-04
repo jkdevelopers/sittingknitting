@@ -1,4 +1,5 @@
 from django.views.generic import UpdateView, TemplateView, View
+from django.contrib.auth import views as auth_views
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from .models import Component
@@ -8,6 +9,8 @@ __all__ = [
     'home',
     'component_edit',
     'component_action',
+    'login',
+    'logout',
 ]
 
 
@@ -70,6 +73,24 @@ class ComponentActionView(View):
         raise Http404
 
 
+class LoginView(auth_views.LoginView):
+    def get(self, *args, **kwargs): raise Http404
+
+    def form_valid(self, form):
+        ret = super(LoginView, self).form_valid(form)
+        user = form.get_user()
+        messages.success(self.request, 'Logged in as "%s"' % user.username);
+        return ret
+
+
+class LogoutView(auth_views.LogoutView):
+    def dispatch(self, *args, **kwargs):
+        messages.success(self.request, 'Logged out')
+        return super(LogoutView, self).dispatch(*args, **kwargs)
+
+
 home = EditableView.as_view(template_name='home.html')
 component_edit = ComponentEditView.as_view()
 component_action = ComponentActionView.as_view()
+login = LoginView.as_view()
+logout = LogoutView.as_view()

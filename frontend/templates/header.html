@@ -11,35 +11,9 @@
 
                 <div class="header_right">
                     <div class="rgt-bottom">
-                        <div class="log">
-                            <div class="login">
-                                <div id="loginContainer"><a href="#" id="loginButton"><span>Войти</span></a>
-                                    <div id="loginBox">
-                                        <form id="loginForm">
-                                            <fieldset id="body">
-                                                <fieldset>
-                                                    <label for="email">Email</label>
-                                                    <input type="text" name="email" id="email">
-                                                </fieldset>
-                                                <fieldset>
-                                                    <label for="password">Пароль</label>
-                                                    <input type="password" name="password" id="password">
-                                                </fieldset>
-                                                <input type="submit" id="login" value="Войти">
-                                                <label for="checkbox">
-                                                    <input type="checkbox" id="checkbox">
-                                                    <i>Запомнить этот компьютер</i>
-                                                </label>
-                                            </fieldset>
-                                            <span><a href="#">Забыли пароль?</a></span>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="reg">
-                            <a href="#">Регистрация</a>
-                        </div>
+
+                        {% include 'auth.html' %}
+
                         <div class="cart box_1">
                             <a href="#">
                                 <h3>
