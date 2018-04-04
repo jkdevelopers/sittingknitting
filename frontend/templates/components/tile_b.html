@@ -3,7 +3,7 @@
 
 <div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=width %} arriv-{{ outer_class }}">
     {% with img_width=width|mul:95|sub:offset %}
-        <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive">
+        <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive img-rounded">
     {% endwith %}
     <div class="arriv-info{{ inner_class }}">
         <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
