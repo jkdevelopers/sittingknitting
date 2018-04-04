@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'crispy_forms',
+    'sorl.thumbnail',
+    'mathfilters',
     'backend.core',
 ]
 

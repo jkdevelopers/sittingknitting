@@ -494,7 +494,7 @@ span.item_price {
     color: #000;
     font-size: 0.85em;
     float: left;
-    margin: 0.5em 0.3em 0;
+    margin: 0 0.3em 0;
     text-align: left;
 }
 
@@ -1100,6 +1100,8 @@ ul.megamenu.skyblue {
 
 .arriv-top {
     margin: 1.5em 0;
+    max-height: 400px;
+    overflow: hidden;
 }
 
 i.ars {
@@ -3914,7 +3916,7 @@ p.cart a {
     }
 
     .box_1 p {
-        margin: 0em 0.3em 0;
+        margin: 0 0.3em 0;
     }
 
     .create_btn {

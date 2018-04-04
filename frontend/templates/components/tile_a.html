@@ -1,8 +1,13 @@
 {% load core.tags %}
+{% load mathfilters %}
 
-<div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=1 %} {{ outer_class }}">
-    <img src="{% attribute 'Image' type='image' id='image' %}" class="img-responsive" alt="">
-    <div class="{{ inner_class }}">
+<div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=width %} arriv-{{ outer_class }}">
+    {% with offset=offset|default:15 %}
+        {% with width=width|mul:95|sub:offset %}
+            <img src="{% attribute 'Image' type='image' id='image' width=width height=height %}" class="img-responsive">
+        {% endwith %}
+    {% endwith %}
+    <div class="arriv-info{{ inner_class }}">
         <h3>{% attribute 'Title' type='text' id='class' default='TITLE' %}</h3>
         <p>{% attribute 'Description' type='text' id='description' default='DESCRIPTION' %}</p>
         <div class="crt-btn">

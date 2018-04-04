@@ -1,4 +1,5 @@
-from voluptuous import Schema, Optional, ALLOW_EXTRA
+from sorl.thumbnail.shortcuts import get_thumbnail
+from voluptuous import Schema, Optional, Any
 from django.core.files.storage import default_storage
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
@@ -17,7 +18,7 @@ class Attribute:
     field_type = fields.Field
     value_scheme = Schema(object)
     value_default = None
-    data_scheme = Schema({}, extra=ALLOW_EXTRA)
+    data_scheme = Schema({})
 
     def __init__(self, **data):
         data = {key: value for key, value in data.items() if value is not None}
@@ -28,6 +29,7 @@ class Attribute:
         value = data.pop('value', self.default)
         self.value = self.value_scheme(value)
         self.data = self.data_scheme(data)
+        self.context[self.id + '_value'] = self.value
 
     def render(self): return str(self.value)
 
@@ -66,11 +68,20 @@ class Image(Attribute):
     field_type = fields.ImageField
     value_scheme = Schema(str)
     value_default = ''
-    data_scheme = Schema({})
+    data_scheme = Schema({
+        Optional('width'): Any(int, float, str),
+        Optional('height'): Any(int, float, str),
+    })
 
     def render(self):
-        if not self.value: return ''
-        return default_storage.url(self.value)
+        width = self.data.get('width')
+        height = self.data.get('height')
+        if not width and not height:
+            return default_storage.url(self.value)
+        elif width and height:
+            size = '%sx%s' % (width, height)
+            image = get_thumbnail(self.value, size, crop='center')
+            return image.url
 
     def field(self):
         field = super(Image, self).field()
@@ -130,7 +141,7 @@ class List(Attribute):
     field_type = fields.CharField
     value_scheme = Schema(list)
     value_default = []
-    data_scheme = Schema({'component': str, Optional('fake'): bool})
+    data_scheme = Schema({'component': str})
 
     def __init__(self, **data):
         from .models import Component
@@ -139,7 +150,6 @@ class List(Attribute):
         self.context['list_%s_empty' % self.id] = not bool(self.components)
 
     def render(self):
-        if self.data.get('fake', False): return ''
         from .tags import component
         return mark_safe('\n'.join(component(
             self.context,

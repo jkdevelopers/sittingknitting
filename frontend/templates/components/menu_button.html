@@ -5,7 +5,7 @@
        href="{% attribute 'URL' type='text' id='url' default='#' %}">
         {% attribute 'Title' type='text' id='title' default='Button' %}
     </a>
-    {% attribute 'Sections' type='list' id='sections' component='menu_section.html' fake=True %}
+    {% attribute 'Sections' type='list' id='sections' component='menu_section.html' %}
     {% if not list_sections_empty %}
         <div class="megapanel">
             <div class="row">

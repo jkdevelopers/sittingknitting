@@ -8,3 +8,5 @@ argon2-cffi==18.1.0         # Password hasher
 awesome-slugify==1.6.5      # Slug generation
 voluptuous==0.11.1          # Some handy validation
 jsonfield==2.0.2            # JSON field
+sorl-thumbnail-12.4.1       # Thumbnails
+django-mathfilters-0.4.0    # Math in templates
