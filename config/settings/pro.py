@@ -38,8 +38,8 @@ AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
 
 from storages.backends.s3boto3 import S3Boto3Storage
 
-StaticStorage = lambda: S3Boto3Storage(location=STATIC_LOCATION)
-MediaStorage = lambda: S3Boto3Storage(location=MEDIA_LOCATION, file_overwrite=False)
+class StaticStorage(S3Boto3Storage): location = STATIC_LOCATION
+class MediaStorage(S3Boto3Storage): location = MEDIA_LOCATION; file_overwrite = False
 
 STATICFILES_STORAGE = 'config.settings.pro.StaticStorage'
 DEFAULT_FILE_STORAGE = 'config.settings.pro.MediaStorage'
