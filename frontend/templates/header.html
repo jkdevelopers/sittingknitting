@@ -14,16 +14,20 @@
 
                         {% include 'auth.html' %}
 
-                        <div class="cart box_1">
-                            <a href="#">
-                                <p>
-                                    <span class="simpleCart_total"></span> (<!--
-                                    --><span id="simpleCart_quantity" class="simpleCart_quantity">0</span> товаров)
-                                </p>
-                                <img src="{% static 'images/bag.png' %}" alt="">
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
+                        {% if not request.user.is_staff %}
+                            <div class="cart box_1">
+                                <a href="#">
+                                    <p>
+                                        <span class="simpleCart_total"></span> (<!--
+                                        --><span id="simpleCart_quantity" class="simpleCart_quantity">0</span> товаров)
+                                    </p>
+                                    <img src="{% static 'images/bag.png' %}" alt="">
+                                </a>
+                                <div class="clearfix"></div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'admin:index' %}" class="btn btn-primary">АДМИНИСТРИРОВАНИЕ</a>
+                        {% endif %}
                         <div class="clearfix"></div>
                     </div>
                     <div class="search">
