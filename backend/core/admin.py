@@ -9,48 +9,29 @@ class UserAdmin(AuthUserAdmin):
     ordering = ['email']
 
     fieldsets = [
-        [None, {
-            'fields': [
-                'email',
-                'password',
-            ]
-        }],
-        ['Персональные данные', {
-            'fields': [
-                'first_name',
-                'last_name',
-                'phone',
-                'address'
-            ]
-        }],
-        ['Метки и разрешения', {
-            'fields': [
-                'is_active',
-                'is_staff',
-                'is_superuser',
-                'groups',
-                'user_permissions',
-            ]
-        }],
-        ['Важные даты', {
-            'fields': [
-                'last_login',
-                'date_joined',
-            ]
-        }],
+        ['Персональные данные', {'fields': ['email', 'first_name', 'last_name', 'phone', 'address']}],
+        ['Метки и разрешения', {'fields': ['is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions']}],
+        ['Важные даты', {'fields': ['last_login', 'date_joined']}],
     ]
 
     add_fieldsets = [
-        [None, {
-            'classes': ['wide'],
-            'fields': [
-                'email',
-                'password1',
-                'password2',
-            ],
-        }],
+        [None, {'fields': ['email', 'password1', 'password2'], 'classes': ['wide']}],
     ]
 
 
-admin.site.register(Component)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'type']
+    ordering = ['name']
+
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['vendor', 'name', 'price', 'quantity', 'active']
+    list_filter = ['category', 'active']
+    search_fields = ['name', 'brand', 'vendor']
+    ordering = ['vendor']
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Component)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Product, ProductAdmin)
