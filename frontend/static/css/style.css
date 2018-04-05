@@ -1022,6 +1022,11 @@ ul.megamenu.skyblue {
 }
 
 /* start content */
+[class^=col][class*=arriv] > div {
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 .arriv-left {
     padding-left: 0;
     position: relative;
