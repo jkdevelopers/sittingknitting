@@ -712,7 +712,7 @@ input:focus {
     position: relative;
     font-size: 0.8725em;
     -webkit-appearance: none;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 .search input[type="text"]:hover {
@@ -1745,7 +1745,7 @@ ul.grid_2 li {
     line-height: 27px;
     color: #555555;
     cursor: pointer;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     font-weight: normal;
     margin-top: 0;
 }
@@ -2595,7 +2595,7 @@ p.product_descr {
 .registration h2 {
     font-size: 1.5em;
     color: #00405d;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     margin-bottom: 4%;
 }
 
@@ -2684,10 +2684,24 @@ label {
     font-size: 0.8925em;
     color: #333333;
     -webkit-appearance: none;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     background: #FFFFFF;
     border: 1px solid rgb(231, 231, 231);
     font-weight: normal;
+}
+
+.registration_form input[required] {
+    border-color: #ff6978;
+}
+
+.errorlist {
+    list-style-position: inside;
+    padding-left: 10px;
+    color: #ff6978;
+}
+
+.errorlist li {
+    padding-top: 5px;
 }
 
 .registration_form input[type="submit"] {
@@ -2716,7 +2730,7 @@ label {
 
 .terms {
     text-decoration: underline;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     color: #00405d;
 }
 
@@ -2725,7 +2739,7 @@ label {
 }
 
 .forget a {
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     color: #999999;
     text-decoration: underline;
     font-size: 0.8925em;

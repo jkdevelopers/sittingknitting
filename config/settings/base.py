@@ -19,9 +19,10 @@ DATABASES = {'default': ENV.db('DATABASE_URL')}
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 TIME_ZONE = ENV.str('TZ', 'UTC')
-USE_I18N = False
+LANGUAGE_CODE = 'ru-ru'
+USE_I18N = True
 USE_L10N = False
-USE_TZ = False
+USE_TZ = True
 
 VERSION = ENV.str('VERSION', 'none')
 
@@ -103,10 +104,10 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    # {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    # {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    # {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    # {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # EMAIL
@@ -132,6 +133,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 FIXTURE_DIRS = [str(ROOT_DIR.path('fixtures'))]
 
+AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

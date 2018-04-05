@@ -9,27 +9,27 @@
                         <fieldset id="body">
                             <fieldset>
                                 <label for="username">Email</label>
-                                <input type="text" name="username" id="username">
+                                <input type="email" name="username" id="username">
                             </fieldset>
                             <fieldset>
                                 <label for="password">Пароль</label>
                                 <input type="password" name="password" id="password">
                             </fieldset>
                             <input type="submit" id="login" value="Войти">
-                            <label for="checkbox">
-                                <input type="checkbox" id="checkbox">
-                                <i>Запомнить этот компьютер</i>
-                            </label>
                         </fieldset>
                         <span><a href="#">Забыли пароль?</a></span>
                     </form>
                 </div>
             {% else %}
-                <a href="{% url 'logout' %}"><span>Выйти</span></a>
+                <a href="{% url 'logout' %}?next={{ request.path }}"><span>Выйти</span></a>
             {% endif %}
         </div>
     </div>
 </div>
 <div class="reg">
-    <a href="#">Регистрация</a>
+    {% if not request.user.is_authenticated %}
+        <a href="{% url 'register' %}">Регистрация</a>
+    {% else %}
+        <a>{{ request.user.username }}</a>
+    {% endif %}
 </div>

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="main">
+            <div class="registration">
+                <div class="registration_left">
+                    <h2>Войти в аккаунт</h2>
+                    <div class="registration_form">
+                        <form class="registration_form" action="{% url 'login' %}?next={{ request.path }}" method="post">
+                            {% csrf_token %}
+                            <div><label>
+                                <input placeholder="Email:" type="email" name="username" required>
+                            </label></div>
+                            <div><label>
+                                <input placeholder="Password:" type="password" name="password" required>
+                            </label></div>
+                            <div>
+                                <input type="submit" value="Войти" class="register-submit">
+                            </div>
+                            <div class="forget"><a href="#">Восстановление пароля</a></div>
+                        </form>
+                    </div>
+            </div>
+                <div class="registration_left">
+                    <h2>Нет аккаунта? <span>Регистрация</span></h2>
+                    <div class="registration_form">
+                        <form class="registration_form" action="{% url 'register' %}" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div><label>
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </label></div>
+                            {% endfor %}
+                            <div>
+                                <input type="submit" value="Создать аккаунт" id="register-submit">
+                            </div>
+                            <div class="sky-form">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="checkbox"><i></i>Принимаю
+                                    <a class="terms" href="#">правила пользования</a> сервиса
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

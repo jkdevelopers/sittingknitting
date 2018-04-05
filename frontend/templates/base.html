@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        {% include 'metrika.html' %}
+        {% include 'core/metrika.html' %}
 
         <meta charset="utf-8">
         <title>{% block title %}SittingKnitting{% endblock title %}</title>
@@ -48,6 +48,7 @@
 
         <script type='text/javascript' src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/megamenu.js' %}"></script>
         <script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
         <script src="{% static 'js/menu_jquery.js' %}"></script>

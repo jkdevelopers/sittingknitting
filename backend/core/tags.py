@@ -1,5 +1,6 @@
 from django.template.loader import get_template
 from django.template import Library
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from .models import Component
 from .utils import ATTRIBUTES, COMPONENTS_PREFIX
@@ -10,10 +11,14 @@ register = Library()
 @register.simple_tag(takes_context=True)
 def component(context, template, id=None, **kwargs):
     if id is None: raise RuntimeError('Component ID is currently required')
-    component, _ = Component.objects.get_or_create(template=template, uid=id)
+    context.update(kwargs)
+    try:
+        component = Component.objects.get(template=template, uid=id)
+    except ObjectDoesNotExist:
+        component = Component(template=template, uid=id)
+        component.save(context=context.flatten())
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
     context['__attributes'] = component.attributes
-    context.update(kwargs)
     rendered = template.render(context.flatten())
     if context.get('edit_mode') is None: return rendered
     wrapper = '<div data-component="%s">%%s</div>' % component.pk

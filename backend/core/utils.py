@@ -22,7 +22,6 @@ class Attribute:
 
     def __init__(self, **data):
         data = {key: value for key, value in data.items() if value}
-        print(data)
         self.context = data.pop('context', {})
         self.name = data.pop('name')
         self.id = data.pop('id')
@@ -188,11 +187,13 @@ ATTRIBUTES = {attr.attr_type: attr for attr in [
 ]}
 
 
-def build_component(component):
+def build_component(component, context=None):
     component.name = component.uid
     path = COMPONENTS_PREFIX + '/' + component.template
     template = get_template(path)
-    context = {'__collected': {}}
+    context = context or {}
+    context['__collected'] = {}
+    print(context)
     template.render(context)
     attributes = context['__collected']
     component.attributes = attributes
