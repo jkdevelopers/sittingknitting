@@ -817,7 +817,8 @@ ul.icon1 {
     color: #fafafa;
 }
 
-* html .icon1 li a:hover { /* IE6 only */
+* html .icon1 li a:hover {
+    /* IE6 only */
     color: #fafafa;
 }
 
@@ -1027,6 +1028,14 @@ ul.megamenu.skyblue {
     transform: translate(-50%, 0);
 }
 
+.link-fill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
 .arriv-left {
     padding-left: 0;
     position: relative;
@@ -1064,6 +1073,10 @@ ul.megamenu.skyblue {
     position: relative;
 }
 
+.arriv .img-responsive {
+    width: 100% !important;
+}
+
 .arriv h3 {
     font-size: 1.5em;
     font-weight: 500;
@@ -1078,6 +1091,10 @@ ul.megamenu.skyblue {
     font-weight: 300;
     line-height: 1.8em;
     margin: 0.5em 0;
+}
+
+.crt-btn {
+    position: relative;
 }
 
 .crt-btn a {
@@ -1114,8 +1131,6 @@ ul.megamenu.skyblue {
 
 .arriv-top {
     margin: 1.5em 0;
-    max-height: 400px;
-    overflow: hidden;
 }
 
 i.ars {
@@ -3878,28 +3893,28 @@ p.cart a {
 
     .arriv-right1 {
         float: none;
-        width: 80%;
+        width: 100%;
         padding: 0;
         margin: 1em auto;
     }
 
     .arriv-left2 {
         float: none;
-        width: 80%;
+        width: 100%;
         padding: 0px;
         margin: 0 auto;
     }
 
     .arriv-middle {
         float: none;
-        width: 80%;
+        width: 100%;
         padding: 0px;
         margin: 1em auto;
     }
 
     .arriv-right2 {
         float: none;
-        width: 80%;
+        width: 100%;
         padding: 0px;
         margin: 0 auto;
     }

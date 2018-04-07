@@ -5,9 +5,11 @@
     {% with img_width=width|mul:95|sub:offset %}
         <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive img-rounded">
     {% endwith %}
+    <a href="{% attribute 'URL' type='text' id='url' default='#' %}" class="link-fill"></a>
     <div class="arriv-info{{ inner_class }}">
         <h3>{% attribute 'Title' type='text' id='class' default='TITLE' %}</h3>
         <p>{% attribute 'Description' type='text' id='description' default='DESCRIPTION' %}</p>
+        <a href="{% attribute 'URL' type='text' id='url' default='#' %}" class="link-fill"></a>
         <div class="crt-btn">
             <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
                 {% attribute 'Button' type='text' id='button' default='BUTTON' %}

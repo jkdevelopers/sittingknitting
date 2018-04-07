@@ -6,11 +6,10 @@
         <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive img-rounded">
     {% endwith %}
     <div class="arriv-info{{ inner_class }}">
-        <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
-            <h3>
+        <a><h3>
                 {% attribute 'Title' type='text' id='class' default='TITLE' %}
                 <i class="ars"></i>
-            </h3>
-        </a>
+        </h3></a>
     </div>
+    <a href="{% attribute 'URL' type='text' id='url' default='#' %}" class="link-fill"></a>
 </div>
