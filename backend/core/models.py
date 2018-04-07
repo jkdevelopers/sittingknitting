@@ -52,7 +52,7 @@ class Category(models.Model):
     name = models.CharField('Название', max_length=512)
     parent = models.ForeignKey(
         'self', verbose_name='Родительская категория', related_name='children',
-        on_delete=models.CASCADE, blank=True, null=True, default=None
+        on_delete=models.CASCADE, blank=True, null=True
     )
 
     class Meta:
@@ -64,17 +64,17 @@ class Category(models.Model):
 
 class Product(models.Model):
     vendor = models.CharField('Артикул', max_length=100, unique=True)
-    quantity = models.PositiveIntegerField('Количество', blank=True, default=0)
-    price = models.PositiveIntegerField('Цена', blank=True, default=0)
-    old_price = models.PositiveIntegerField('Старая цена', blank=True, default=0)
+    quantity = models.PositiveIntegerField('Количество', default=0)
+    price = models.PositiveIntegerField('Цена', default=0)
+    old_price = models.PositiveIntegerField('Старая цена', default=0)
     discount = models.BooleanField('Пометка "акция"', default=False)
 
     name = models.CharField('Название', max_length=512, default='')
     brand = models.CharField('Бренд', max_length=100, blank=True, default='')
-    photo = models.ImageField('Фотография', upload_to='products/', blank=True, null=True, default=None)
+    photo = models.ImageField('Фотография', upload_to='products/', blank=True, null=True)
     category = models.ForeignKey(
         Category, verbose_name='Категория / подкатегория', related_name='products',
-        on_delete=models.CASCADE, blank=True, null=True, default=None
+        on_delete=models.CASCADE, blank=True, null=True
     )
     active = models.BooleanField('Показывать на сайте', default=True)
 
