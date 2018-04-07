@@ -12,6 +12,7 @@ class UserAdmin(AuthUserAdmin):
         ['Персональные данные', {'fields': ['email', 'first_name', 'last_name', 'phone', 'address']}],
         ['Метки и разрешения', {'fields': ['is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions']}],
         ['Важные даты', {'fields': ['last_login', 'date_joined']}],
+        ['Безопасность', {'fields': ['password']}]
     ]
 
     add_fieldsets = [
