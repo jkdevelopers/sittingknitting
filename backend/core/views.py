@@ -1,11 +1,10 @@
-from django.views.generic import UpdateView, TemplateView, View, FormView
 from django.contrib.auth import views as auth_views, login as auth_login
 from django.http import Http404, HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.conf import settings
-from .models import Component
+from django.views import generic
+from .models import *
 from .forms import *
 
 __all__ = [
@@ -15,28 +14,31 @@ __all__ = [
     'login',
     'logout',
     'register',
+    'product',
 ]
 
 
-class EditableView(TemplateView):
-    cache_timeout = 60 * 15
-
+class EditableMixin:
     def dispatch(self, *args, **kwargs):
         staff = self.request.user.is_staff
         edit = self.request.GET.get('edit')
         if staff and edit is not None:
             state = edit in ('true', 'on', 'enabled')
             self.request.session['edit_mode'] = state
-        return super(EditableView, self).dispatch(*args, **kwargs)
+        return super(EditableMixin, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         staff = self.request.user.is_staff
         edit = self.request.session.get('edit_mode')
         if staff and edit: kwargs['edit_mode'] = True
-        return super(EditableView, self).get_context_data(**kwargs)
+        return super(EditableMixin, self).get_context_data(**kwargs)
 
 
-class ComponentEditView(UpdateView):
+class HomeView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/home.html'
+
+
+class ComponentEditView(generic.UpdateView):
     model = Component
     form_class = ComponentForm
     template_name = 'core/component.html'
@@ -51,7 +53,7 @@ class ComponentEditView(UpdateView):
         return super(ComponentEditView, self).dispatch(*args, **kwargs)
 
 
-class ComponentActionView(View):
+class ComponentActionView(generic.View):
     def dispatch(self, *args, **kwargs):
         if not self.request.user.is_staff: raise Http404
         return super(ComponentActionView, self).dispatch(*args, **kwargs)
@@ -92,6 +94,7 @@ class LoginView(auth_views.LoginView):
 
     def form_invalid(self, form): return redirect(self.get_success_url())
 
+
 class LogoutView(auth_views.LogoutView):
     success_url = reverse_lazy('home')
 
@@ -100,9 +103,9 @@ class LogoutView(auth_views.LogoutView):
         return super(LogoutView, self).dispatch(*args, **kwargs)
 
 
-class RegisterView(FormView):
+class RegisterView(EditableMixin, generic.FormView):
     form_class = RegisterForm
-    template_name = 'register.html'
+    template_name = 'pages/register.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -114,9 +117,21 @@ class RegisterView(FormView):
         return super(RegisterView, self).form_valid(form)
 
 
-home = EditableView.as_view(template_name='home.html')
+class ProductView(EditableMixin, generic.DetailView):
+    model = Product
+    template_name = 'pages/product.html'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        related = Product.objects.filter(category=self.object.category).exclude(pk=self.object.pk)
+        kwargs['related'] = related
+        return super(ProductView, self).get_context_data(**kwargs)
+
+
+home = HomeView.as_view()
 component_edit = ComponentEditView.as_view()
 component_action = ComponentActionView.as_view()
 login = LoginView.as_view()
 logout = LogoutView.as_view()
 register = RegisterView.as_view()
+product = ProductView.as_view()

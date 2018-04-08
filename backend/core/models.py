@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.shortcuts import reverse
 from django.db import models
 from jsonfield import JSONField
 from .utils import build_component, Choices
@@ -64,11 +65,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     vendor = models.CharField('Артикул', max_length=100, unique=True)
-    quantity = models.PositiveIntegerField('Количество', default=0)
-    price = models.PositiveIntegerField('Цена', default=0)
-    old_price = models.PositiveIntegerField('Старая цена', default=0)
-    discount = models.BooleanField('Пометка "акция"', default=False)
-
     name = models.CharField('Название', max_length=512, default='')
     brand = models.CharField('Бренд', max_length=100, blank=True, default='')
     photo = models.ImageField('Фотография', upload_to='products/', blank=True, null=True)
@@ -77,9 +73,16 @@ class Product(models.Model):
         on_delete=models.CASCADE, blank=True, null=True
     )
     active = models.BooleanField('Показывать на сайте', default=True)
+    description = models.TextField('Описание', blank=True, default='')
+
+    quantity = models.PositiveIntegerField('Количество', default=0)
+    price = models.PositiveIntegerField('Цена', default=0)
+    old_price = models.PositiveIntegerField('Старая цена', blank=True, null=True)
+    discount = models.BooleanField('Пометка "акция"', default=False)
 
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
-    def __str__(self): return 'Товар "%s"' % self.name
+    __str__ = lambda self: 'Товар "%s"' % self.name
+    get_absolute_url = lambda self: reverse('product', kwargs={'pk': self.pk})

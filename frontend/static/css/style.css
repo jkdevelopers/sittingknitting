@@ -268,6 +268,10 @@ a.continue:hover {
     background: #615c85;
 }
 
+.price {
+    margin-top: 20px;
+}
+
 ul.total_price {
     padding: 0;
     margin: 1em 0 0 0;
@@ -2282,6 +2286,10 @@ span.brand {
 }
 
 /*--single--*/
+#etalage .img-responsive {
+    width: 100% !important;
+}
+
 .cont {
     display: block;
     float: left;
@@ -2348,7 +2356,7 @@ span.brand {
 }
 
 .span_3_of_2 {
-    width: 60.3333%;
+    width: 52.5%;
 }
 
 .desc1 {
@@ -2393,9 +2401,9 @@ span.actual1 {
 }
 
 .images_3_of_2 {
-    width: 35.2%;
+    width: 45%;
     float: left;
-    margin-right: 2.6%;
+    margin-right: 2.5%;
 }
 
 .single-bottom1 h6, .single-bottom2 h6 {
@@ -2417,7 +2425,7 @@ p.prod-desc {
 }
 
 .product {
-    padding: 3% 0 0 0;
+    padding: 20px 0 0 10px;
 }
 
 .product-desc {
@@ -2462,6 +2470,9 @@ p.product_descr {
     width: 15.3333%;
     float: left;
     padding: 0 0px 0px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .price-access {
@@ -2493,7 +2504,7 @@ p.product_descr {
 .desc1 h3 {
     color: #333333;
     font-size: 1.4em;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 .desc1 p {
@@ -2910,7 +2921,7 @@ ul.s_icons {
 .shoping_right p {
     color: #333333;
     font-size: 0.8725em;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     line-height: 2.5em;
     -webkit-text-stroke: 0.4px;
 }
@@ -2969,7 +2980,7 @@ ul.s_icons {
 
 .shoping_left a.btn1 {
     margin-top: 1%;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     display: inline-block;
     padding: 10px 20px;
     font-size: 1.2em;
@@ -3125,7 +3136,7 @@ p.cart a {
     }
 
     .span_3_of_2 {
-        width: 52.3333%;
+        width: 52.5%;
     }
 
     .button1 {
@@ -3533,7 +3544,7 @@ p.cart a {
     }
 
     .span_3_of_2 {
-        width: 44.3333%;
+        width: 52.5%;
     }
 
     .product-desc {

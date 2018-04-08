@@ -1,0 +1,113 @@
+{% extends 'core/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block title %}{{ product.name }}{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/etalage.css' %}">
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery.etalage.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="women_main">
+    <div class="row single">
+		<div class="col-md-12 det">
+			<div class="single_left">
+				<div class="grid images_3_of_2">
+					<div id="etalage" style="display: block;">
+                        <img class="img-responsive" src="{% thumbnail product.photo '500x400' crop='center' %}" />
+					</div>
+				    <div class="clearfix"></div>
+				</div>
+				<div class="desc1 span_3_of_2">
+                    <h3>{{ product.name }}</h3>
+                    <span class="brand">Бренд: <a href="#">{{ product.brand }}</a></span>
+                    <br>
+                    <span class="code">Артикул: {{ product.vendor }}</span>
+                    <div class="price">
+                        <span class="text">Цена:</span>
+                        <span class="price-new">{{ product.price }} руб.</span><!--
+                        {% if product.discount %}
+                            --><span class="price-old">{{ product.old_price }} руб.</span>
+                        {% endif %}
+                        {#<span class="price-tax">Ex Tax: $90.00</span><br>#}
+                        {#<span class="points"><small>Price in reward points: 400</small></span><br>#}
+                    </div>
+                    {% comment %}
+                    <div class="det_nav1">
+                        <h4>Select a size :</h4>
+                        <div class=" sky-form col col-4">
+                            <ul>
+                                <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>L</label></li>
+                                <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>S</label></li>
+                                <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>M</label></li>
+                                <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>XL</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endcomment %}
+                    <p>{{ product.description }}</p>
+                    <div class="btn_form">
+                        {% if product.quantity == 0 %}
+                            <a href="#">Оформить предзаказ</a>
+                        {% else %}
+                            <a href="#">Добавить в корзину</a>
+                        {% endif %}
+                    </div>
+                    {#<a href="#"><span>login to save in wishlist </span></a>#}
+			   	</div>
+          	    <div class="clearfix"></div>
+          	</div>
+          	{% comment %}
+            <div class="single-bottom1">
+                <h6>Details</h6>
+                <p class="prod-desc">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                    tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+                    nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                    Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel
+                    illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+                    blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber
+                    tempor cum soluta nobis eleifend option
+                </p>
+            </div>
+            {% endcomment %}
+            {% if related %}
+                <div class="single-bottom1">
+                    <h6>Похожие товары</h6>
+                    {% for product in related %}
+                        <div class="product">
+                            <div class="product-desc">
+                                <div class="product-img">
+                                    <img src="{% thumbnail product.photo '400x400' crop='center' %}" class="img-responsive" />
+                                </div>
+                                <div class="prod1-desc">
+                                    <h5>
+                                        <a class="product_link" href="{{ product.get_absolute_url }}">
+                                            {{ product.name }}
+                                        </a>
+                                    </h5>
+                                    <p class="product_descr">{{ product.description }}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="product_price">
+                                <span class="price-access">{{ product.price }} руб.</span>
+                                <button class="button1"><span>Добавить в корзину</span></button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+	    </div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+</div>
+{% endblock %}
