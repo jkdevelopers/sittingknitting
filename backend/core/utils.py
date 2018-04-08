@@ -42,7 +42,7 @@ class Attribute:
     data_scheme = Schema({})
 
     def __init__(self, **data):
-        data = {key: value for key, value in data.items() if value}
+        data = {key: value for key, value in data.items() if value is not None}
         self.context = data.pop('context', {})
         self.name = data.pop('name')
         self.id = data.pop('id')
