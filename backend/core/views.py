@@ -14,6 +14,7 @@ __all__ = [
     'login',
     'logout',
     'register',
+    'subscribe',
     'product',
 ]
 
@@ -117,6 +118,18 @@ class RegisterView(EditableMixin, generic.FormView):
         return super(RegisterView, self).form_valid(form)
 
 
+class SubscribeView(generic.CreateView):
+    form_class = SubscriptionForm
+    success_url = reverse_lazy('home')
+
+    def form_invalid(self, form):
+        return HttpResponse(str(form.errors['email']))
+
+    def form_valid(self, form):
+        super(SubscribeView, self).form_valid(form)
+        return HttpResponse('OK')
+
+
 class ProductView(EditableMixin, generic.DetailView):
     model = Product
     template_name = 'pages/product.html'
@@ -134,4 +147,5 @@ component_action = ComponentActionView.as_view()
 login = LoginView.as_view()
 logout = LogoutView.as_view()
 register = RegisterView.as_view()
+subscribe = SubscribeView.as_view()
 product = ProductView.as_view()

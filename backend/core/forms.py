@@ -8,6 +8,7 @@ from .models import *
 __all__ = [
     'ComponentForm',
     'RegisterForm',
+    'SubscriptionForm',
 ]
 
 
@@ -41,3 +42,9 @@ class RegisterForm(UserCreationForm):
         super(RegisterForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['placeholder'] = field.label
+
+
+class SubscriptionForm(ModelForm):
+    class Meta:
+        model = Subscription
+        fields = ['email']

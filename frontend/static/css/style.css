@@ -1276,12 +1276,21 @@ i.goog:hover {
     border-top: 1px solid #e5e4e2;
 }
 
-.stay {
+.stay form {
     display: flex;
+    flex-wrap: wrap;
     justify-content: stretch;
 }
 
-.stay form input[type="text"] {
+.stay form .thanks {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.stay form input[type="email"] {
     width: 100%;
     color: #3f3d3d;
     outline: none;
@@ -1292,7 +1301,7 @@ i.goog:hover {
     -webkit-appearance: none;
 }
 
-.btn-1 form input[type="submit"] {
+.stay form input[type="submit"] {
     background: #0f0f0f;
     padding: 0.5em;
     color: #fff;
@@ -1301,11 +1310,11 @@ i.goog:hover {
     display: block;
     outline: none;
     border: none;
-    width: 100%;
+    /*width: 100%;*/
     text-transform: uppercase;
 }
 
-.btn-1 form input[type="submit"]:hover {
+.stay form input[type="submit"]:hover {
     background: rgba(15, 15, 15, 0.72);
 }
 

@@ -10,6 +10,7 @@ __all__ = [
     'Component',
     'Category',
     'Product',
+    'Subscription',
 ]
 
 
@@ -86,3 +87,14 @@ class Product(models.Model):
 
     __str__ = lambda self: 'Товар "%s"' % self.name
     get_absolute_url = lambda self: reverse('product', kwargs={'pk': self.pk})
+
+
+class Subscription(models.Model):
+    email = models.EmailField('Email', unique=True)
+    activated = models.DateTimeField('Активирована', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    __str__ = lambda self: 'Подписка на %s' % self.email

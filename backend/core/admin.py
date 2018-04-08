@@ -32,7 +32,13 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ['vendor']
 
 
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ['email', 'activated']
+    ordering = ['-activated']
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Component)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)

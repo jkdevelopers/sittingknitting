@@ -55,3 +55,19 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('input[name$=phone]').mask('+7 (999) 999-99-99');
 });
+
+// Subscribe form
+$(document).ready(function () {
+    $('#subscribe').submit(function (e) {
+        e.preventDefault();
+        var form = $('#subscribe');
+        $.post(form.attr('action'), form.serialize(), function (data) {
+            if (data !== 'OK') {
+                form.find('.errors').html(data);
+            } else {
+                form.find('*').hide();
+                form.find('.thanks').show();
+            }
+        })
+    });
+});
