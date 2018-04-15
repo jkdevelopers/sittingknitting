@@ -35,8 +35,8 @@ def attribute(context, name=None, type=None, id=None, **data):
     if collected is not None:
         value = None
     else:
-        if attributes is None: raise RuntimeError('No component data found')
-        if id not in attributes: raise RuntimeError('No attribute data found')
+        if attributes is None: raise RuntimeError('No component data found: %s' % id)
+        if id not in attributes: raise RuntimeError('No attribute data found: %s' % id)
         value = context['__attributes'][id]['value']
     if name is None: name = type.title()
     attribute = ATTRIBUTES[type](

@@ -22,7 +22,7 @@ class Component(models.Model):
 
     class Meta:
         verbose_name = 'Компонент'
-        verbose_name_plural = 'Конпоненты'
+        verbose_name_plural = 'Компоненты'
 
     def __str__(self): return 'Компонент "%s"' % (self.name or self.template)
 

@@ -96,11 +96,11 @@ class Image(Attribute):
 
     def render(self):
         if not self.value: return ''
-        width = self.data.get('width')
-        height = self.data.get('height')
+        width = self.data.get('width', '')
+        height = self.data.get('height', '')
         if not width and not height:
             return default_storage.url(self.value)
-        elif width and height:
+        else:
             size = '%sx%s' % (width, height)
             image = get_thumbnail(self.value, size, crop='center')
             return image.url

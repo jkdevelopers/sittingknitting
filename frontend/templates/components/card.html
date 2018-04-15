@@ -1,0 +1,22 @@
+{% load core.tags %}
+
+<li>
+    <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
+        <img src="{% attribute 'Image' type='image' id='image' width=350 height=500 %}" class="img-responsive">
+    </a>
+    <div class="special-info grid_1">
+        <h5>{% attribute 'Title' type='text' id='title' default='TITLE' %}</h5>
+        <div class="item_add">
+            <span class="item_price">
+                <h6>{% attribute 'Description' type='text' id='description' default='DESCRIPTION' %}</h6>
+            </span>
+        </div>
+        <div class="item_add">
+            <span class="item_price">
+                <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
+                    {% attribute 'Button' type='text' id='button' default='BUTTON' %}
+                </a>
+            </span>
+        </div>
+    </div>
+</li>
