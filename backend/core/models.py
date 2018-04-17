@@ -11,7 +11,17 @@ __all__ = [
     'Category',
     'Product',
     'Subscription',
+    'OrderItem',
+    'Order',
 ]
+
+PhoneField = lambda **kwargs: models.CharField('Телефон', max_length=18, validators=[
+    RegexValidator(
+        regex='\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}',
+        message='Введите номер телефона в формате +7 (XXX) XXX-XX-XX',
+        code='invalid_length_phone',
+    ),
+], **kwargs)
 
 
 class Component(models.Model):
@@ -35,13 +45,7 @@ class User(AbstractUser):
     username = property(lambda self: self.email)
     email = models.EmailField('Email', unique=True)
     address = models.CharField('Адрес', max_length=512, blank=True, default='')
-    phone = models.CharField('Телефон', max_length=18, blank=True, default='', validators=[
-        RegexValidator(
-            regex='\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}',
-            message='Введите номер телефона в формате +7 (XXX) XXX-XX-XX',
-            code='invalid_length_phone',
-        ),
-    ])
+    phone = PhoneField(blank=True, default='')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -85,7 +89,7 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
-    __str__ = lambda self: 'Товар "%s"' % self.name
+    __str__ = lambda self: self.name
     get_absolute_url = lambda self: reverse('product', kwargs={'pk': self.pk})
 
 
@@ -98,3 +102,44 @@ class Subscription(models.Model):
         verbose_name_plural = 'Подписки'
 
     __str__ = lambda self: 'Подписка на %s' % self.email
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField('Количество')
+
+    def price(self): return self.product.price * self.amount
+    price.short_description = 'Цена'
+
+    class Meta:
+        verbose_name = 'Элемент заказа'
+        verbose_name_plural = 'Элементы заказа'
+
+    __str__ = lambda self: '%s x %s = %s руб.' % (self.product, self.amount, self.price())
+
+
+class Order(models.Model):
+    STATUSES = Choices(
+        ('PENDING', 'В обработке'),
+        ('ACCEPTED', 'Подтвержден'),
+        ('DELIVERED', 'Доставлен'),
+        ('CANCELLED', 'Отменен'),
+    )
+
+    created = models.DateTimeField('Создан', auto_now_add=True)
+    status = models.CharField('Статус', max_length=1, choices=STATUSES, default='0')
+    items = models.ManyToManyField(OrderItem, verbose_name='Элементы', blank=True)
+
+    phone = PhoneField()
+    delivery_date = models.DateField('Дата доставки')
+    delivery_type = models.CharField('Способ доставки', max_length=100)
+    delivery_address = models.CharField('Адрес доставки', max_length=300)
+
+    def total(self): return sum(i.price() for i in self.items.all())
+    total.short_description = 'Сумма'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    __str__ = lambda self: 'Заказ #%s' % self.pk

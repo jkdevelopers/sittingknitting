@@ -34,7 +34,27 @@ class ProductAdmin(admin.ModelAdmin):
 
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ['email', 'activated']
+    readonly_fields = ['activated']
     ordering = ['-activated']
+
+
+class OrderItemInline(admin.TabularInline):
+    verbose_name = 'Элемент заказа'
+    verbose_name_plural = 'Элементы заказа'
+    model = Order.items.through
+
+
+class OrderItemAdmin(admin.ModelAdmin):
+    readonly_fields = ['price']
+    get_model_perms = lambda self, req: {}
+
+
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
+    list_display = ['id', 'status', 'created', 'phone', 'total']
+    readonly_fields = ['id', 'total', 'created']
+    exclude = ['items']
+    ordering = ['-created']
 
 
 admin.site.register(User, UserAdmin)
@@ -42,3 +62,5 @@ admin.site.register(Component)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
+admin.site.register(Order, OrderAdmin)
