@@ -479,7 +479,7 @@ span.item_price {
 
 .box_1 {
     /*float: right;*/
-    margin: 0.55em 0.1em 0;
+    margin: 0.55em 0.1em;
     /*width: 38%;*/
 }
 
@@ -498,7 +498,7 @@ span.item_price {
     color: #000;
     font-size: 0.85em;
     float: left;
-    margin: 0 0.3em 0;
+    margin: 0 0.4em 0;
     text-align: left;
 }
 
@@ -514,6 +514,7 @@ select.item_Size {
 .item_add a {
     background: rgb(9, 209, 182);
     border: none;
+    border-radius: 6px;
     color: #fff;
     padding: 10px 20px;
     font-size: 0.85em;
@@ -529,6 +530,7 @@ select.item_Size {
     display: block;
     padding: 2px 14px;
     border: 1px solid #555;
+    border-radius: 6px;
     font-weight: 300;
 }
 
@@ -737,6 +739,7 @@ input:focus {
 
 .log {
     float: left;
+    margin-right: 10px;
     /*width: 19%;*/
 }
 
@@ -781,7 +784,7 @@ input:focus {
     font-size: 0.85em;
     font-weight: 300;
     text-decoration: none;
-    padding: 0 10px;
+    /*padding: 0 10px;*/
 }
 
 /* start icon styles */
@@ -983,7 +986,7 @@ ul.megamenu.skyblue {
 }
 
 .rgt-bottom {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -1109,6 +1112,7 @@ ul.megamenu.skyblue {
     font-weight: 300;
     color: #f9f9f9;
     border: 1px solid #f9f9f9;
+    border-radius: 6px;
     background: none;
     text-decoration: none;
     -webkit-transition: all 0.3s ease-in-out;
@@ -3763,7 +3767,7 @@ p.cart a {
 
     .box_1 {
         float: left;
-        margin: 0.3em 0.1em 0;
+        margin: 0.3em 0.1em;
     }
 
     .box_1 h3 {
@@ -3993,7 +3997,7 @@ p.cart a {
     }
 
     .box_1 p {
-        margin: 0 0.3em 0;
+        margin: 0 0.4em 0;
     }
 
     .create_btn {

@@ -16,12 +16,9 @@
 
                         {% if not request.user.is_staff %}
                             <div class="cart box_1">
-                                <a href="#">
-                                    <p>
-                                        <span class="simpleCart_total"></span> (<!--
-                                        --><span id="simpleCart_quantity" class="simpleCart_quantity">0</span> товаров)
-                                    </p>
-                                    <img src="{% static 'images/bag.png' %}" alt="">
+                                <a href="#" style="display: flex; align-items: center;">
+                                    <p>Корзина</p>
+                                    <img src="{% static 'images/basket.png' %}" style="max-width: 30px;">
                                 </a>
                                 <div class="clearfix"></div>
                             </div>
