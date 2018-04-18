@@ -52,7 +52,7 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    TYPES = Choices('Основная', 'Вложенная')
+    TYPES = Choices(('MAIN', 'Основная'), ('SUB', 'Вложенная'))
 
     type = models.CharField('Тип', max_length=1, choices=TYPES)
     name = models.CharField('Название', max_length=512)
@@ -61,11 +61,55 @@ class Category(models.Model):
         on_delete=models.CASCADE, blank=True, null=True
     )
 
+    @property
+    def level(self):
+        if self.type == self.TYPES.MAIN: return 0
+        if not self.parent: return -1
+        return self.parent.level + 1
+
+    @classmethod
+    def get_level(cls, level):
+        all = Category.objects.all()
+        return [i for i in all if i.level == level]
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
     def __str__(self): return self.name
+
+    def save(self, **kwargs):
+        if self.pk: return super(Category, self).save(**kwargs)
+        ret = super(Category, self).save(**kwargs)
+        all_components = Component.objects.all()
+        check = lambda pk: [i for i in all_components if i.attributes.get('category') == pk]
+        if check(self.pk): return ret
+
+        level = self.level
+        if self.level in (0, 1, 2):
+            name = ('button', 'section', 'subsection')[level]
+            template = 'menu_%s.html' % name
+
+            if level != 0:
+                parent = check(self.parent.pk)
+                if not parent: return ret
+                parent = parent[0]
+            else:
+                parent = Component.objects.get(uid='menu')
+
+            component = Component(template=template, uid='child')
+            component.save()
+            component.uid = component.name = '%s %s' % (name, component.pk)
+            component.attributes['category'] = self.pk
+            component.attributes['title']['value'] = self.name
+            component.attributes['url']['value'] = '#'  # get_absolute_url
+            component.save()
+
+            items = parent.attributes[name + 's']['value']
+            if component not in items:
+                parent.attributes[name + 's']['value'] = items + [component.pk]
+                parent.save()
+        return ret
 
 
 class Product(models.Model):

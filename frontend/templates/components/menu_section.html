@@ -2,7 +2,9 @@
 
 <div class="col{% attribute 'Width' type='number' id='width' min=1 max=12 default=1 %}">
     <div class="h_nav">
-        <h4>{% attribute 'Title' type='text' id='title' default='Section' %}</h4>
+        <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
+            <h4>{% attribute 'Title' type='text' id='title' default='Section' %}</h4>
+        </a>
         <ul>
             {% attribute 'Subsections' type='list' id='subsections' component='menu_subsection.html' %}
         </ul>
