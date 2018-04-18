@@ -1,0 +1,175 @@
+{% extends 'core/base.html' %}
+{% load thumbnail %}
+
+{% block title %}Товары{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div class="women_main">
+        <div class="col-md-3 s-d">
+            <div class="w_sidebar">
+                <div class="w_nav1">
+                    <ul>
+                        <li>
+                            <a href="{% url 'products' %}" {% if not current %}class="active"{% endif %}>Все</a>
+                        </li>
+                        {% for item in root %}
+                            <li>
+                                <a href="{% url 'products' pk=item.pk %}"
+                                {% if item.pk == root_active.pk %}class="active"{% endif %}>{{ item.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!--<h3>filter by</h3>
+                <section  class="sky-form">
+                    <h4>catogories</h4>
+                        <div class="row1 scroll-pane">
+                            <div class="col col-4">
+                                <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i></i>kurtas</label>
+                            </div>
+                            <div class="col col-4">
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>kutis</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>churidar kurta</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>salwar</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>printed sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox" ><i></i>shree</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Anouk</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>biba</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                                <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>fashion sari</label>
+                            </div>
+                        </div>
+                </section>-->
+                <section  class="sky-form">
+                    <h4>Категория</h4>
+                    <div class="row1 scroll-pane">
+                        <div class="col col-4">
+                            {% for item in categories %}
+                                <a class="checkbox" href="{% url 'products' pk=item.pk %}">
+                                    <input type="checkbox" name="checkbox" {% if item.pk == category_active.pk %}checked{% endif %}>
+                                    <i></i>{{ item.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                <section  class="sky-form">
+                    <h4>Подкатегория</h4>
+                    <div class="row1 scroll-pane">
+                        <div class="col col-4">
+                            {% for item in subcategories %}
+                                <a class="checkbox" href="{% url 'products' pk=item.pk %}">
+                                    <input type="checkbox" name="checkbox" {% if item.pk == subcategory_active.pk %}checked{% endif %}>
+                                    <i></i>{{ item.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                <!--<section class="sky-form">
+                    <h4>colour</h4>
+                    <ul class="w_nav2">
+                        <li><a class="color1" href="#"></a></li>
+                        <li><a class="color2" href="#"></a></li>
+                        <li><a class="color3" href="#"></a></li>
+                        <li><a class="color4" href="#"></a></li>
+                        <li><a class="color5" href="#"></a></li>
+                        <li><a class="color6" href="#"></a></li>
+                        <li><a class="color7" href="#"></a></li>
+                        <li><a class="color8" href="#"></a></li>
+                        <li><a class="color9" href="#"></a></li>
+                        <li><a class="color10" href="#"></a></li>
+                        <li><a class="color12" href="#"></a></li>
+                        <li><a class="color13" href="#"></a></li>
+                        <li><a class="color14" href="#"></a></li>
+                        <li><a class="color15" href="#"></a></li>
+                        <li><a class="color5" href="#"></a></li>
+                        <li><a class="color6" href="#"></a></li>
+                        <li><a class="color7" href="#"></a></li>
+                        <li><a class="color8" href="#"></a></li>
+                        <li><a class="color9" href="#"></a></li>
+                        <li><a class="color10" href="#"></a></li>
+                    </ul>
+                </section>-->
+                <!--<section class="sky-form">
+                    <h4>discount</h4>
+                    <div class="row1 scroll-pane">
+                        <div class="col col-4">
+                            <label class="radio"><input type="radio" name="radio" checked=""><i></i>60 % and above</label>
+                            <label class="radio"><input type="radio" name="radio"><i></i>50 % and above</label>
+                            <label class="radio"><input type="radio" name="radio"><i></i>40 % and above</label>
+                        </div>
+                        <div class="col col-4">
+                            <label class="radio"><input type="radio" name="radio"><i></i>30 % and above</label>
+                            <label class="radio"><input type="radio" name="radio"><i></i>20 % and above</label>
+                            <label class="radio"><input type="radio" name="radio"><i></i>10 % and above</label>
+                        </div>
+                    </div>
+                </section>-->
+            </div>
+        </div>
+
+        <div class="col-md-9 w_content">
+            <div class="women">
+                <a href="#">
+                    <h4>{% if current %}Категория "{{ current.name }}"{% else %}Все категории{% endif %} -
+                        <span>{{ count }} товаров</span>
+                    </h4>
+                </a>
+                <!--<ul class="w_nav">
+                    <li>Sort : </li>
+                    <li><a class="active" href="#">popular</a></li> |
+                    <li><a href="#">new </a></li> |
+                    <li><a href="#">discount</a></li> |
+                    <li><a href="#">price: Low High </a></li>
+                    <div class="clear"></div>
+                </ul>-->
+                <div class="clearfix"></div>
+            </div>
+            <div class="grids_of_4">
+            {% for product in products %}
+                <div class="grid1_of_4">
+                    <div class="content_box">
+                        <a href="{{ product.get_absolute_url }}">
+                            {% thumbnail product.photo '600x450' crop='center' as image %}
+                                <img src="{{ image.url }}" class="img-responsive"/>
+                            {% endthumbnail %}
+                        </a>
+                        <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
+                        {% if product.brand %}
+                            <p>Бренд: {{ product.brand }}</p>
+                        {% endif %}
+                        <div class="grid_1">
+                            <div class="item_add"><span class="item_price"><h6>{{ product.price }} руб.</h6></span></div>
+                            <div class="item_add">
+                                <span class="item_price">
+                                    {% if product.pk in request.session.cart|default:'' %}
+                                        <a href="#">В корзине</a>
+                                    {% else %}
+                                        <a href="#">В корзину</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:4 %}
+                    <div class="clearfix"></div>
+                    </div>
+                    <div class="grids_of_4">
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+{% endblock %}

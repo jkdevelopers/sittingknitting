@@ -72,6 +72,10 @@ class Category(models.Model):
         all = Category.objects.all()
         return [i for i in all if i.level == level]
 
+    def all_children(self):
+        direct = list(self.children.all())
+        return direct + sum((i.all_children() for i in direct), [])
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -102,7 +106,7 @@ class Category(models.Model):
             component.uid = component.name = '%s %s' % (name, component.pk)
             component.attributes['category'] = self.pk
             component.attributes['title']['value'] = self.name
-            component.attributes['url']['value'] = '#'  # get_absolute_url
+            component.attributes['url']['value'] = reverse('products', kwargs={'pk': self.pk})
             component.save()
 
             items = parent.attributes[name + 's']['value']

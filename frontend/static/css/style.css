@@ -1576,7 +1576,7 @@ ul.grid_2 li {
     padding: 20px;
 }
 
-.w_nav1 h4 {
+.w_nav1 a.active {
     text-transform: uppercase;
     color: #ff6978;
     font-size: 1em;

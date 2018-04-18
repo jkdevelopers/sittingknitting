@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^register/$', register, name='register'),
     url(r'^subscribe/$', subscribe, name='subscribe'),
     url(r'^product/(?P<pk>\d+)/$', product, name='product'),
+    url(r'^products/(?:category/(?P<pk>\d+)/)?$', products, name='products'),
 ]

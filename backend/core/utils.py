@@ -223,6 +223,7 @@ def build_component(component, context=None):
 def build_attributes(component):
     attributes = []
     for id, data in component.attributes.items():
+        if type(data) != dict or 'type' not in data: continue
         name = data['name']
         value = data['value']
         attr_data = data['data']

@@ -1,4 +1,5 @@
 from django.contrib.auth import views as auth_views, login as auth_login
+from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
@@ -16,6 +17,7 @@ __all__ = [
     'register',
     'subscribe',
     'product',
+    'products',
 ]
 
 
@@ -141,6 +143,50 @@ class ProductView(EditableMixin, generic.DetailView):
         return super(ProductView, self).get_context_data(**kwargs)
 
 
+class ProductsView(EditableMixin, generic.ListView):
+    model = Product
+    template_name = 'pages/products.html'
+    context_object_name = 'products'
+
+    def get(self, *args, **kwargs):
+        pk = kwargs.get('pk')
+        self.category = None
+        if pk is not None:
+            category = get_object_or_404(Category, pk=pk)
+            self.category = category
+        return super(ProductsView, self).get(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = Product.objects.filter(active=True, quantity__gt=0)
+        if self.category is None: return qs
+        qs = qs.filter(category__isnull=False)
+        categories = [self.category] + self.category.all_children()
+        return list(filter(lambda x: x.category in categories, qs))
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super(ProductsView, self).get_context_data(**kwargs)
+        kwargs['current'] = self.category
+        kwargs['count'] = len(self.object_list)
+
+        GROUPS = [
+            ('root', 'root'),
+            ('category', 'categories'),
+            ('subcategory', 'subcategories'),
+        ]
+
+        for level, (name, plural) in enumerate(GROUPS):
+            kwargs[plural] = Category.get_level(level)
+            key = name + '_active'
+            kwargs[key] = None
+            if self.category is None: continue
+            if self.category.level == level: kwargs[key] = self.category
+            else:
+                temp = [i for i in kwargs[plural] if self.category in i.all_children()]
+                if temp: kwargs[key] = temp[0]
+
+        return kwargs
+
+
 home = HomeView.as_view()
 component_edit = ComponentEditView.as_view()
 component_action = ComponentActionView.as_view()
@@ -149,3 +195,4 @@ logout = LogoutView.as_view()
 register = RegisterView.as_view()
 subscribe = SubscribeView.as_view()
 product = ProductView.as_view()
+products = ProductsView.as_view()
