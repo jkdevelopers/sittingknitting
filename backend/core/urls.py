@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
-from django.conf.urls import url
+from django.urls import path
 from .views import *
 
 urlpatterns = [
-    url(r'^$', lambda r: redirect('home')),
-    url(r'^home/$', home, name='home'),
-    url(r'^edit/(?P<pk>\d+)/$', component_edit, name='edit'),
-    url(r'^action/$', component_action, name='action'),
-    url(r'^login/$', login, name='login'),
-    url(r'^logout/$', logout, name='logout'),
-    url(r'^register/$', register, name='register'),
-    url(r'^subscribe/$', subscribe, name='subscribe'),
-    url(r'^product/(?P<pk>\d+)/$', product, name='product'),
-    url(r'^products/(?:category/(?P<pk>\d+)/)?$', products, name='products'),
+    path('', lambda r: redirect('home')),
+    path('home/', home, name='home'),
+    path('edit/<int:pk>/', component_edit, name='edit'),
+    path('action/', component_action, name='action'),
+    path('login/', login, name='login'),
+    path('logout/', logout, name='logout'),
+    path('register/', register, name='register'),
+    path('subscribe/', subscribe, name='subscribe'),
+    path('products/category/<int:pk>', products, name='products'),
+    path('products/', products, name='all_products'),
+    path('product/<int:pk>/', product, name='product'),
+    path('cart/<action>/<int:pk>/', cart_action, name='cart_action'),
+    path('cart/', cart, name='cart'),
 ]

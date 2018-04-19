@@ -6,7 +6,7 @@
         <div class="header">
             <div class="head-t">
                 <div class="logo">
-                    <a href="#"><img src="{% static 'images/logo.png' %}" class="img-responsive" alt=""/></a>
+                    <a href="/"><img src="{% static 'images/logo.png' %}" class="img-responsive" alt=""/></a>
                 </div>
 
                 <div class="header_right">
@@ -16,7 +16,7 @@
 
                         {% if not request.user.is_staff %}
                             <div class="cart box_1">
-                                <a href="#" style="display: flex; align-items: center;">
+                                <a href="{% url 'cart' %}" style="display: flex; align-items: center;">
                                     <p>Корзина</p>
                                     <img src="{% static 'images/basket.png' %}" style="max-width: 30px;">
                                 </a>

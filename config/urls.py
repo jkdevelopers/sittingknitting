@@ -1,10 +1,10 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.conf import settings
 from django.contrib import admin
 
 urlpatterns = [
-    url(settings.ADMIN_URL, admin.site.urls),
-    url(r'^', include('backend.core.urls')),
+    path(settings.ADMIN_URL, admin.site.urls),
+    path('', include('backend.core.urls')),
 ]
 
 if settings.DEBUG:

@@ -18,6 +18,8 @@ __all__ = [
     'subscribe',
     'product',
     'products',
+    'cart_action',
+    'cart',
 ]
 
 
@@ -162,7 +164,7 @@ class ProductsView(EditableMixin, generic.ListView):
         qs = qs.filter(category__isnull=False)
         categories = [self.category] + self.category.all_children()
         return list(filter(lambda x: x.category in categories, qs))
-    
+
     def get_context_data(self, **kwargs):
         kwargs = super(ProductsView, self).get_context_data(**kwargs)
         kwargs['current'] = self.category
@@ -179,12 +181,48 @@ class ProductsView(EditableMixin, generic.ListView):
             key = name + '_active'
             kwargs[key] = None
             if self.category is None: continue
-            if self.category.level == level: kwargs[key] = self.category
+            if self.category.level == level:
+                kwargs[key] = self.category
             else:
                 temp = [i for i in kwargs[plural] if self.category in i.all_children()]
                 if temp: kwargs[key] = temp[0]
 
         return kwargs
+
+
+class CartActionView(generic.View):
+    def get(self, *args, **kwargs):
+        action = kwargs.get('action')
+        pk = kwargs.get('pk')
+        if pk is not None:
+            if action == 'add': self.add(pk)
+            elif action == 'remove': self.remove(pk)
+        url = self.request.META.get('HTTP_REFERER', '/')
+        print('Current cart:', self.request.session['cart'])
+        return redirect(url)
+
+    def add(self, pk):
+        product = get_object_or_404(Product, pk=pk)
+        if not product.active or product.quantity == 0: return
+        items = set(self.request.session.get('cart', []))
+        items.add(pk)
+        self.request.session['cart'] = list(items)
+
+    def remove(self, pk):
+        items = set(self.request.session.get('cart', []))
+        items.remove(pk)
+        self.request.session['cart'] = list(items)
+
+
+class CartView(generic.TemplateView):
+    template_name = 'pages/cart.html'
+
+    def get_context_data(self, **kwargs):
+        cart = self.request.session.get('cart', [])
+        products = Product.objects.filter(pk__in=cart, active=True, quantity__gt=0)
+        kwargs['products'] = products
+        kwargs['total'] = sum(i.price for i in products)
+        return super(CartView, self).get_context_data(**kwargs)
 
 
 home = HomeView.as_view()
@@ -196,3 +234,5 @@ register = RegisterView.as_view()
 subscribe = SubscribeView.as_view()
 product = ProductView.as_view()
 products = ProductsView.as_view()
+cart_action = CartActionView.as_view()
+cart = CartView.as_view()

@@ -11,7 +11,7 @@
                 <div class="w_nav1">
                     <ul>
                         <li>
-                            <a href="{% url 'products' %}" {% if not current %}class="active"{% endif %}>Все</a>
+                            <a href="{% url 'all_products' %}" {% if not current %}class="active"{% endif %}>Все</a>
                         </li>
                         {% for item in root %}
                             <li>
@@ -151,9 +151,9 @@
                             <div class="item_add">
                                 <span class="item_price">
                                     {% if product.pk in request.session.cart|default:'' %}
-                                        <a href="#">В корзине</a>
+                                        <a href="{% url 'cart_action' action='remove' pk=product.pk %}">В корзине</a>
                                     {% else %}
-                                        <a href="#">В корзину</a>
+                                        <a href="{% url 'cart_action' action='add' pk=product.pk %}">В корзину</a>
                                     {% endif %}
                                 </span>
                             </div>
