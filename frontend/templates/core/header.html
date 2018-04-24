@@ -28,8 +28,8 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="search">
-                        <form>
-                            <input type="text" value="" placeholder="Поиск...">
+                        <form method="GET" action="{% url 'all_products' %}">
+                            <input name="search" type="text" value="" placeholder="Поиск...">
                             <input type="submit" value="">
                         </form>
                     </div>

@@ -12,35 +12,62 @@
             <div class="price-details">
                 <h3>ИНФОРМАЦИЯ О ЗАКАЗЕ</h3>
                 <span>Сумма</span>
-                <span class="total1">{{ total }} руб.</span>
+                <span class="total1">{{ order.items_total }} руб.</span>
                 <span>Скидка</span>
-                <span class="total1">---</span>
+                <span class="total1">{{ order.discount }} руб.</span>
                 <span>Доставка</span>
-                <span class="total1">---</span>
+                <span class="total1">{{ order.delivery_price }} руб.</span>
                 <div class="clearfix"></div>
             </div>
             <ul class="total_price">
                 <li class="last_price">
                     <h4>ИТОГО</h4>
                 </li>
-                <li class="last_price"><span>{{ total }} руб.</span></li>
+                <li class="last_price"><span>{{ order.total }} руб.</span></li>
                 <div class="clearfix"></div>
             </ul>
             <div class="clearfix"></div>
-            <a class="order" href="#">Разместить заказ</a>
-            <div class="total-item">
-                <!--<h3>OPTIONS</h3>-->
+            <form id="order-form" method="POST" action="{% url 'cart_action' action='place-order' data='none' %}"
+                data-dcu="{% url 'cart_action' action='delivery' data='_' %}"
+                >
+                {% csrf_token %}
+                <input name="phone" type="phone" value="{{ request.user.phone }}" placeholder="Контактный телефон">
+                <select name="delivery">
+                    <option {% if not order.delivery_type %}selected=""{% endif %} disabled="">
+                        Выберите способ доставки
+                    </option>
+                    {% for pk, title in delivery_types %}
+                        <option value="{{ pk }}" {% if pk == order.delivery_type.pk %}selected=""{% endif %}>
+                            {{ title }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="wrapper">
+                    {% if not order.coupon %}
+                        <input name="coupon" type="text" value="" placeholder="Промокод">
+                        <a class="cpns" style="cursor: pointer;"
+                            data-ccu="{% url 'cart_action' action='add-coupon' data='_' %}">Добавить</a>
+                    {% else %}
+                        <input name="coupon" type="text" value="{{ order.coupon }}" readonly>
+                        <a class="cpns" style="cursor: pointer;"
+                            data-ccu="{% url 'cart_action' action='remove-coupon' data='none' %}">Удалить</a>
+                    {% endif %}
+                </div>
+                <input class="order" type="submit" value="Разместить заказ">
+            </form>
+            <!--<div class="total-item">
+                <h3>OPTIONS</h3>
                 <h4>Промокоды</h4>
                 <a class="cpns" href="#">Добавить</a>
-                <!--<p><a href="#">Log In</a> to use accounts - linked coupons</p>-->
-            </div>
+                <p><a href="#">Log In</a> to use accounts - linked coupons</p>
+            </div>-->
         </div>
         <div class="col-md-9 cart-items">
             <h1>Корзина ({{ products|length }})</h1>
 
             {% for product in products %}
                 <div class="cart-header">
-                    <a href="{% url 'cart_action' action='remove' pk=product.pk %}" class="cart-close"></a>
+                    <a href="{% url 'cart_action' action='remove' data=product.pk %}" class="cart-close"></a>
                     <div class="cart-sec">
                         <div class="cart-item">
                             {% thumbnail product.photo '500x500' crop='center' as image %}
@@ -69,25 +96,4 @@
         <div class="clearfix"></div>
     </div>
 </div>
-{% endblock %}
-
-{% block javascript %}
-    <script>
-        $(document).ready(function(c) {
-            $('.close1').on('click', function(c){
-                $('.cart-header').fadeOut('slow', function(c){
-                    $('.cart-header').remove();
-                });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function(c) {
-            $('.close2').on('click', function(c){
-                $('.cart-header2').fadeOut('slow', function(c){
-                    $('.cart-header2').remove();
-                });
-            });
-        });
-    </script>
 {% endblock %}

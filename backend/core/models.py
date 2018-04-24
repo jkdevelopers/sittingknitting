@@ -13,6 +13,8 @@ __all__ = [
     'Subscription',
     'OrderItem',
     'Order',
+    'Delivery',
+    'Coupon',
 ]
 
 PhoneField = lambda **kwargs: models.CharField('Телефон', max_length=18, validators=[
@@ -80,7 +82,8 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
     def save(self, **kwargs):
         if self.pk: return super(Category, self).save(**kwargs)
@@ -157,6 +160,7 @@ class OrderItem(models.Model):
     amount = models.PositiveIntegerField('Количество')
 
     def price(self): return self.product.price * self.amount
+
     price.short_description = 'Цена'
 
     class Meta:
@@ -164,6 +168,44 @@ class OrderItem(models.Model):
         verbose_name_plural = 'Элементы заказа'
 
     __str__ = lambda self: '%s x %s = %s руб.' % (self.product, self.amount, self.price())
+
+
+class Delivery(models.Model):
+    title = models.CharField('Название', max_length=100)
+    price = models.PositiveIntegerField('Цена')
+    free = models.PositiveIntegerField('Бесплатна при заказе от')
+
+    def get_price(self, value): return self.price if value < self.free else 0
+
+    class Meta:
+        verbose_name = 'Доставка'
+        verbose_name_plural = 'Доставки'
+
+    __str__ = lambda self: self.title
+
+
+class Coupon(models.Model):
+    TYPES = Choices(
+        ('PRICE', 'Сумма'),
+        ('PERCENT', 'Процент'),
+    )
+
+    type = models.CharField('Тип', max_length=1, choices=TYPES)
+    value = models.PositiveIntegerField('Значение (руб или %)')
+    code = models.CharField('Код', max_length=10)
+    active = models.BooleanField('Активен', default=True)
+
+    def get_discount(self, total):
+        if self.type == self.TYPES.PRICE:
+            return max(0, total - self.value)
+        elif self.type == self.TYPES.PERCENT:
+            return max(0, int(total - total / 100 * self.value))
+
+    class Meta:
+        verbose_name = 'Купон'
+        verbose_name_plural = 'Купоны'
+
+    __str__ = lambda self: 'Купон на %s%s' % (self.value, ' руб.' if self.type == self.TYPES.PRICE else '%')
 
 
 class Order(models.Model):
@@ -174,17 +216,33 @@ class Order(models.Model):
         ('CANCELLED', 'Отменен'),
     )
 
+    manager = models.ForeignKey(User, models.SET_NULL, verbose_name='Менеджер', blank=True, null=True)
     created = models.DateTimeField('Создан', auto_now_add=True)
     status = models.CharField('Статус', max_length=1, choices=STATUSES, default='0')
     items = models.ManyToManyField(OrderItem, verbose_name='Элементы', blank=True)
+    coupon = models.ForeignKey(Coupon, models.SET_NULL, verbose_name='Купон', blank=True, null=True)
 
     phone = PhoneField()
-    delivery_date = models.DateField('Дата доставки')
-    delivery_type = models.CharField('Способ доставки', max_length=100)
-    delivery_address = models.CharField('Адрес доставки', max_length=300)
+    delivery_date = models.DateField('Дата доставки', blank=True, null=True)
+    delivery_type = models.ForeignKey(Delivery, models.SET_NULL, verbose_name='Способ доставки', blank=True, null=True)
+    delivery_address = models.CharField('Адрес доставки', max_length=300, blank=True, default='')
+    correction = models.IntegerField('Корректировка суммы', default=0)
 
-    def total(self): return sum(i.price() for i in self.items.all())
-    total.short_description = 'Сумма'
+    def items_total(self): return sum(i.price() for i in self.items.all())
+    items_total.short_description = 'Стоимость товаров'
+
+    def discount(self):
+        if self.coupon is None: return 0
+        return self.coupon.get_discount(self.items_total())
+    discount.short_description = 'Скидка'
+
+    def delivery_price(self):
+        if self.delivery_type is None: return 0
+        return self.delivery_type.get_price(self.items_total())
+    delivery_price.short_description = 'Стоимость доставки'
+
+    def total(self): return self.items_total() + self.delivery_price() - self.discount() + self.correction
+    total.short_description = 'Итого'
 
     class Meta:
         verbose_name = 'Заказ'

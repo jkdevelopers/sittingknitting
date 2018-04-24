@@ -51,9 +51,12 @@ $(document).ready(function () {
     })
 });
 
-// Phone field
+// Phone field & messages close button
 $(document).ready(function () {
     $('input[name$=phone]').mask('+7 (999) 999-99-99');
+    $('a[data-dismiss=alert]').click(function () {
+        $(this).parent().remove();
+    });
 });
 
 // Subscribe form
@@ -69,5 +72,20 @@ $(document).ready(function () {
                 form.find('.thanks').show();
             }
         })
+    });
+});
+
+// Order form
+$(document).ready(function () {
+    $('#order-form select').change(function (e) {
+        var value = $('#order-form select').val().toString();
+        var url = $('#order-form').attr('data-dcu').replace('_', value);
+        window.location = url;
+    });
+    $('.cpns').click(function () {
+        var value = $('#order-form input[name=coupon]').val().toString();
+        var url = $('.cpns').attr('data-ccu').replace('_', value);
+        console.log(url);
+        window.location = url;
     });
 });

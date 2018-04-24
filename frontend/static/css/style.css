@@ -186,9 +186,10 @@ body a {
     position: relative;
 }
 
-a.order {
+input[type=submit].order {
     background: #00405d;
     padding: 10px 20px;
+    border: none;
 
     font-size: 1em;
     color: #fff;
@@ -199,8 +200,37 @@ a.order {
     margin: 3em 0;
 }
 
-a.order:hover {
+input[type=submit].order:hover {
     background: #615c85;
+}
+
+#order-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+#order-form > *:not([type=submit]) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#order-form select,
+#order-form input:not([type=submit]),
+.cpns {
+    height: 35px;
+}
+
+#order-form .wrapper {
+    display: flex;
+    align-content: center;
+    justify-content: start;
+    max-width: 100%;
+}
+
+#order-form input[name=coupon] {
+    max-width: 55%;
+    margin-right: 10px;
 }
 
 .total-item, .cart-items {

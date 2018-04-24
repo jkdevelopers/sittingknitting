@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.views import generic
+from django.db.models import Q
+from re import fullmatch
 from .models import *
 from .forms import *
 
@@ -88,7 +90,6 @@ class LoginView(auth_views.LoginView):
     success_url = reverse_lazy('home')
 
     def get(self, *args, **kwargs):
-        print()
         return redirect(reverse_lazy('register'))
 
     def form_valid(self, form):
@@ -156,10 +157,17 @@ class ProductsView(EditableMixin, generic.ListView):
         if pk is not None:
             category = get_object_or_404(Category, pk=pk)
             self.category = category
+        self.search = self.request.GET.get('search')
         return super(ProductsView, self).get(*args, **kwargs)
 
     def get_queryset(self):
         qs = Product.objects.filter(active=True, quantity__gt=0)
+        if self.search is not None:
+            return qs.filter(
+                Q(name__contains=self.search) |
+                Q(vendor__contains=self.search) |
+                Q(brand__contains=self.search)
+            )
         if self.category is None: return qs
         qs = qs.filter(category__isnull=False)
         categories = [self.category] + self.category.all_children()
@@ -168,6 +176,7 @@ class ProductsView(EditableMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         kwargs = super(ProductsView, self).get_context_data(**kwargs)
         kwargs['current'] = self.category
+        kwargs['search'] = self.search
         kwargs['count'] = len(self.object_list)
 
         GROUPS = [
@@ -191,27 +200,74 @@ class ProductsView(EditableMixin, generic.ListView):
 
 
 class CartActionView(generic.View):
-    def get(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         action = kwargs.get('action')
-        pk = kwargs.get('pk')
-        if pk is not None:
-            if action == 'add': self.add(pk)
-            elif action == 'remove': self.remove(pk)
+        data = kwargs.get('data')
+        if data is not None:
+            if action == 'add': self.add(data)
+            elif action == 'remove': self.remove(data)
+            elif action == 'delivery': self.delivery(data)
+            elif action == 'add-coupon': self.add_coupon(data)
+            elif action == 'remove-coupon': self.remove_coupon()
+            elif action == 'place-order': self.place_order()
         url = self.request.META.get('HTTP_REFERER', '/')
-        print('Current cart:', self.request.session['cart'])
         return redirect(url)
 
-    def add(self, pk):
-        product = get_object_or_404(Product, pk=pk)
+    def add(self, data):
+        if not data.isdigit(): return
+        data = int(data)
+        product = get_object_or_404(Product, pk=data)
         if not product.active or product.quantity == 0: return
         items = set(self.request.session.get('cart', []))
-        items.add(pk)
+        items.add(data)
         self.request.session['cart'] = list(items)
 
-    def remove(self, pk):
+    def remove(self, data):
+        if not data.isdigit(): return
+        data = int(data)
         items = set(self.request.session.get('cart', []))
-        items.remove(pk)
+        items.remove(data)
         self.request.session['cart'] = list(items)
+
+    def delivery(self, data):
+        if not data.isdigit(): return
+        data = int(data)
+        delivery = get_object_or_404(Delivery, pk=data)
+        self.request.session['delivery'] = delivery.pk
+
+    def add_coupon(self, data):
+        coupons = list(Coupon.objects.filter(code=data))
+        if not coupons:
+            messages.warning(self.request, 'Такого купона не существует')
+            return
+        self.request.session['coupon'] = coupons[0].pk
+
+    def remove_coupon(self): del self.request.session['coupon']
+
+    def place_order(self):
+        cart = self.request.session.get('cart', [])
+        products = list(Product.objects.filter(pk__in=cart, active=True, quantity__gt=0))
+        coupon = self.request.session.get('coupon', None)
+        delivery = self.request.session.get('delivery', None)
+        phone = self.request.POST.get('phone')
+
+        if not products: messages.warning(self.request, 'Ваша корзина пуста'); return
+        if not delivery: messages.warning(self.request, 'Пожалуйста, выберите способ доставки'); return
+        if not phone: messages.warning(self.request, 'Пожалуйста, ведите контактный телефон'); return
+        if not fullmatch('\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}', phone):
+            messages.warning(self.request, 'Пожалуйста, введите корректный номер телефона'); return
+
+        items = [OrderItem(product=i, amount=1) for i in products]
+        for i in items: i.save()
+        order = Order(
+            phone=phone,
+            coupon=coupon and get_object_or_404(Coupon, pk=coupon),
+            delivery_type=get_object_or_404(Delivery, pk=delivery),
+        )
+        order.save()
+        order.items.set(items)
+        order.save()
+        messages.success(self.request, 'Заказ успешно создан. Номер заказа: {:03}'.format(order.pk))
 
 
 class CartView(generic.TemplateView):
@@ -220,8 +276,16 @@ class CartView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         cart = self.request.session.get('cart', [])
         products = Product.objects.filter(pk__in=cart, active=True, quantity__gt=0)
+        coupon = self.request.session.get('coupon', None)
+        delivery = self.request.session.get('delivery', None)
+        order = Order(
+            coupon=coupon and get_object_or_404(Coupon, pk=coupon),
+            delivery_type=delivery and get_object_or_404(Delivery, pk=delivery),
+        )
+        order.items_total = lambda: sum(i.price for i in products)
+        kwargs['order'] = order
         kwargs['products'] = products
-        kwargs['total'] = sum(i.price for i in products)
+        kwargs['delivery_types'] = [(i.pk, i.title) for i in Delivery.objects.all()]
         return super(CartView, self).get_context_data(**kwargs)
 
 

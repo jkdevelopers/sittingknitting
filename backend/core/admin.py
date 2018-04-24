@@ -51,10 +51,29 @@ class OrderItemAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
-    list_display = ['id', 'status', 'created', 'phone', 'total']
-    readonly_fields = ['id', 'total', 'created']
+    list_display = ['id', 'status', 'created', 'phone', 'delivery_type', 'total']
+    readonly_fields = ['id', 'created', 'items_total', 'discount', 'delivery_price', 'total']
     exclude = ['items']
     ordering = ['-created']
+
+    fieldsets = [
+        ['Основное', {'fields': ['id', 'created', 'status', 'manager']}],
+        ['Контакты и доставка', {'fields': ['phone', 'delivery_type', 'delivery_date', 'delivery_address']}],
+        ['Детализация', {'fields': ['items_total', 'coupon', 'discount', 'delivery_price', 'correction', 'total']}],
+    ]
+
+    def get_queryset(self, request):
+        qs = super(OrderAdmin, self).get_queryset(request)
+        if request.user.is_superuser: return qs
+        return qs.filter(manager=request.user)
+
+
+class DeliveryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'price', 'free']
+
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ['type', 'value', 'active']
 
 
 admin.site.register(User, UserAdmin)
@@ -64,3 +83,5 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Delivery, DeliveryAdmin)
+admin.site.register(Coupon, CouponAdmin)

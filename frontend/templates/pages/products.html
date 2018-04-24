@@ -119,8 +119,15 @@
         <div class="col-md-9 w_content">
             <div class="women">
                 <a href="#">
-                    <h4>{% if current %}Категория "{{ current.name }}"{% else %}Все категории{% endif %} -
-                        <span>{{ count }} товаров</span>
+                    <h4>
+                        {% if search %}
+                            Поиск "{{ search }}"
+                        {% elif current %}
+                            Категория "{{ current.name }}"
+                        {% else %}
+                            Все категории
+                        {% endif %}
+                        <span> - {{ count }} товаров</span>
                     </h4>
                 </a>
                 <!--<ul class="w_nav">
@@ -151,9 +158,9 @@
                             <div class="item_add">
                                 <span class="item_price">
                                     {% if product.pk in request.session.cart|default:'' %}
-                                        <a href="{% url 'cart_action' action='remove' pk=product.pk %}">В корзине</a>
+                                        <a href="{% url 'cart_action' action='remove' data=product.pk %}">В корзине</a>
                                     {% else %}
-                                        <a href="{% url 'cart_action' action='add' pk=product.pk %}">В корзину</a>
+                                        <a href="{% url 'cart_action' action='add' data=product.pk %}">В корзину</a>
                                     {% endif %}
                                 </span>
                             </div>

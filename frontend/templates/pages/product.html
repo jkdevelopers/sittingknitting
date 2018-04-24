@@ -57,9 +57,9 @@
                             <a href="#">Оформить предзаказ</a>
                         {% else %}
                             {% if product.pk in request.session.cart|default:'' %}
-                                <a href="{% url 'cart_action' action='remove' pk=product.pk %}">Убрать из корзины</a>
+                                <a href="{% url 'cart_action' action='remove' data=product.pk %}">Убрать из корзины</a>
                             {% else %}
-                                <a href="{% url 'cart_action' action='add' pk=product.pk %}">Добавить в корзину</a>
+                                <a href="{% url 'cart_action' action='add' data=product.pk %}">Добавить в корзину</a>
                             {% endif %}
                         {% endif %}
                     </div>
