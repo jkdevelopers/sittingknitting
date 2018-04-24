@@ -164,9 +164,9 @@ class ProductsView(EditableMixin, generic.ListView):
         qs = Product.objects.filter(active=True, quantity__gt=0)
         if self.search is not None:
             return qs.filter(
-                Q(name__contains=self.search) |
-                Q(vendor__contains=self.search) |
-                Q(brand__contains=self.search)
+                Q(name__icontains=self.search) |
+                Q(vendor__icontains=self.search) |
+                Q(brand__icontains=self.search)
             )
         if self.category is None: return qs
         qs = qs.filter(category__isnull=False)
