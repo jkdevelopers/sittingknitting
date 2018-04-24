@@ -199,7 +199,7 @@ class Coupon(models.Model):
         if self.type == self.TYPES.PRICE:
             return max(0, total - self.value)
         elif self.type == self.TYPES.PERCENT:
-            return max(0, int(total - total / 100 * self.value))
+            return max(0, int(total / 100 * self.value))
 
     class Meta:
         verbose_name = 'Купон'
