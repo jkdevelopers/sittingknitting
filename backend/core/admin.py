@@ -1,4 +1,5 @@
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
+from .utils import get_object_safe
 from django.contrib import admin
 from .models import *
 
@@ -32,10 +33,18 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ['vendor']
 
 
+def send_mail(modeladmin, request, queryset):
+    email = get_object_safe(Email, code='subscription')
+    if email is None: return
+    for item in queryset: email.send(item.email)
+send_mail.short_description = 'Отправить письмо'
+
+
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ['email', 'activated']
     readonly_fields = ['activated']
     ordering = ['-activated']
+    actions = [send_mail]
 
 
 class OrderItemInline(admin.TabularInline):
@@ -85,3 +94,4 @@ admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Delivery, DeliveryAdmin)
 admin.site.register(Coupon, CouponAdmin)
+admin.site.register(Email)

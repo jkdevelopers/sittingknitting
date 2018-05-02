@@ -1,9 +1,12 @@
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.template.loader import render_to_string
+from django.template import Template, Context
 from django.shortcuts import reverse
 from django.db import models
 from jsonfield import JSONField
-from .utils import build_component, Choices
+from .utils import get_object_safe, build_component, Choices
 
 __all__ = [
     'User',
@@ -15,6 +18,7 @@ __all__ = [
     'Order',
     'Delivery',
     'Coupon',
+    'Email',
 ]
 
 PhoneField = lambda **kwargs: models.CharField('Телефон', max_length=18, validators=[
@@ -51,6 +55,11 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def send_mail(self, code, **context):
+        email = get_object_safe(Email, code=code)
+        if email is None: return
+        email.send(self.email, **context)
 
 
 class Category(models.Model):
@@ -244,8 +253,44 @@ class Order(models.Model):
     def total(self): return self.items_total() + self.delivery_price() - self.discount() + self.correction
     total.short_description = 'Итого'
 
+    def update(self):
+        for item in self.items.all():
+            product = item.product
+            product.quantity = min(0, product.quantity - item.amount)
+            product.save()
+
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
     __str__ = lambda self: 'Заказ #%s' % self.pk
+
+
+class Email(models.Model):
+    code = models.CharField('Код', max_length=100)
+    title = models.CharField('Заголовок', max_length=100)
+    text = models.TextField('Текст')
+    button = models.CharField('Кнопка', max_length=100, blank=True)
+    link = models.URLField('Ссылка', blank=True)
+
+    def send(self, target, **context):
+        text = Template(self.text).render(Context(context))
+        context.update({
+            'title': self.title,
+            'button': self.button,
+            'link': self.link,
+            'text': text,
+        })
+        plain = render_to_string('emails/plain.html', context)
+        html = render_to_string('emails/pretty.html', context)
+        subject = '[SittingKnitting] ' + self.title
+        email = EmailMultiAlternatives(subject, to=[target])
+        email.attach_alternative(plain, 'text/plain')
+        email.attach_alternative(html, 'text/html')
+        email.send()
+
+    class Meta:
+        verbose_name = 'Письмо'
+        verbose_name_plural = 'Письма'
+
+    __str__ = lambda self: 'Письмо "%s"' % self.code

@@ -20,7 +20,8 @@ p {
 html, body {
     font-family: 'Roboto', sans-serif;
     font-size: 100%;
-    background: #ffffff;
+    /*background: #ffffff;*/
+    background: #fce1ed;
 }
 
 body a {
@@ -382,7 +383,8 @@ ul.qty li p {
 
 /*-- header_top --*/
 .top_bg {
-    background: #252525;
+    /*background: #252525;*/
+    background: #5c1e39;
 }
 
 .header_top {
@@ -1008,7 +1010,8 @@ ul.icon1 {
 }
 
 ul.megamenu.skyblue {
-    background: #f3f4f5;
+    /*background: #f3f4f5;*/
+    background: #ba8da1;
 }
 
 .rgt-bottom {

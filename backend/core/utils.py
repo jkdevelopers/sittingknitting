@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.core.files.storage import default_storage
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
+from django.core.exceptions import ObjectDoesNotExist
 from os.path import relpath
 from django.conf import settings
 from django.forms import fields
@@ -214,7 +215,6 @@ def build_component(component, context=None):
     template = get_template(path)
     context = context or {}
     context['__collected'] = {}
-    print(context)
     template.render(context)
     attributes = context['__collected']
     component.attributes = attributes
@@ -235,3 +235,12 @@ def build_attributes(component):
             **attr_data
         ))
     return attributes
+
+
+def get_object_safe(klass, *args, default=None, error=None, **kwargs):
+    try:
+        object = klass.objects.get(*args, **kwargs)
+        return object
+    except ObjectDoesNotExist:
+        if error is not None: raise error
+        return default

@@ -267,6 +267,7 @@ class CartActionView(generic.View):
         order.save()
         order.items.set(items)
         order.save()
+        order.update()
         messages.success(self.request, 'Заказ успешно создан. Номер заказа: {:03}'.format(order.pk))
 
 
