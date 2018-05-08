@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from os.path import relpath
 from django.conf import settings
 from django.forms import fields
+from django.forms import widgets
 
 COMPONENTS_PREFIX = relpath(
     str(settings.COMPONENTS_DIR),
@@ -55,11 +56,12 @@ class Attribute:
 
     def render(self): return str(self.value)
 
-    def field(self):
+    def field(self, **extra):
         return self.field_type(
             label=self.name,
             initial=self.value,
-            required=False
+            required=False,
+            **extra,
         )
 
     def parse(self, form):
@@ -199,6 +201,16 @@ class List(Attribute):
         self.value = [int(i.split(':')[0]) for i in value.split(';') if i]
 
 
+class Color(Text):
+    attr_type = 'color'
+    value_default = '#f00'
+
+    def field(self):
+        widget = type('_', (widgets.TextInput,), {'input_type': 'color'})
+        field = super(Color, self).field(widget=widget)
+        return field
+
+
 ATTRIBUTES = {attr.attr_type: attr for attr in [
     Attribute,
     Text,
@@ -206,6 +218,7 @@ ATTRIBUTES = {attr.attr_type: attr for attr in [
     Boolean,
     Number,
     List,
+    Color,
 ]}
 
 
