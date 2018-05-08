@@ -21,7 +21,7 @@ html, body {
     font-family: 'Roboto', sans-serif;
     font-size: 100%;
     /*background: #ffffff;*/
-    background: #fce1ed;
+    background: #fce1ed11;
 }
 
 body a {
@@ -725,12 +725,15 @@ input:focus {
 /*search*/
 .search {
     position: relative;
-    background: #f3f4f5;
+    background: #ba8da121;
     border: 1px solid #D8D8D8;
+    border-radius: 10px;
 }
 
 .search form {
     width: 100%;
+    background: #ba8da121;
+    border-radius: 10px;
 }
 
 .search input[type="text"] {
@@ -1011,7 +1014,7 @@ ul.icon1 {
 
 ul.megamenu.skyblue {
     /*background: #f3f4f5;*/
-    background: #ba8da1;
+    background: #ba8da121;
 }
 
 .rgt-bottom {
@@ -1513,7 +1516,7 @@ i.mail {
 }
 
 .special h3:before {
-    height: 8px;
+    height: 0px;
     width: 371px;
     content: '';
     background: url(../images/line.png) no-repeat;
@@ -1524,7 +1527,7 @@ i.mail {
 }
 
 .special h3:after {
-    height: 8px;
+    height: 0px;
     width: 371px;
     content: '';
     background: url(../images/line.png) no-repeat;
@@ -1537,7 +1540,6 @@ i.mail {
 .special h3 {
     font-family: 'Playfair Display', serif;
     font-size: 1.5em;
-    border: 1px solid #e5e4e2;
     text-align: center;
     padding: 0.5em;
     margin: 0 auto;
