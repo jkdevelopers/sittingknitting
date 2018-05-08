@@ -1,5 +1,7 @@
 {% load core.tags %}
 
 <div style="position: relative; display: unset;">
-    {% attribute 'Text' type='text' id='text' default='Sample Text' %}
+    {% with multiline=multiline|default:False %}
+        {% attribute 'Text' type='text' id='text' default='Sample Text' multiline=multiline %}
+    {% endwith %}
 </div>

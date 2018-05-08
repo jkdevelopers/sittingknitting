@@ -84,7 +84,19 @@ class Text(Attribute):
     field_type = fields.CharField
     value_scheme = Schema(str)
     value_default = ''
-    data_scheme = Schema({})
+    data_scheme = Schema({Optional('multiline'): bool})
+
+    def field(self, **extra):
+        if self.data.get('multiline', False): extra['widget'] = widgets.Textarea
+        field = super(Text, self).field(**extra)
+        return field
+
+    def render(self):
+        ret = super(Text, self).render()
+        if self.data.get('multiline', False):
+            ret = ret.replace('\n', '</p><p>')
+            ret = mark_safe('<p>' + ret + '</p>')
+        return ret
 
 
 class Image(Attribute):
@@ -108,8 +120,8 @@ class Image(Attribute):
             image = get_thumbnail(self.value, size, crop='center')
             return image.url
 
-    def field(self):
-        field = super(Image, self).field()
+    def field(self, **extra):
+        field = super(Image, self).field(**extra)
         field.upload_to = 'images'
         if self.value:
             url = default_storage.url(self.value)
@@ -154,8 +166,8 @@ class Number(Attribute):
     value_default = 0
     data_scheme = Schema({Optional('min'): int, Optional('max'): int})
 
-    def field(self):
-        field = super(Number, self).field()
+    def field(self, **extra):
+        field = super(Number, self).field(**extra)
         if 'min' in self.data: field.min_value = self.data['min']
         if 'max' in self.data: field.max_value = self.data['max']
         return field
@@ -183,7 +195,7 @@ class List(Attribute):
             comp.uid
         ) for comp in self.components))
 
-    def field(self):
+    def field(self, **extra):
         return self.field_type(
             label=self.name,
             initial=';'.join('%s:%s' % (comp.pk, comp.name) for comp in self.components),
@@ -192,6 +204,7 @@ class List(Attribute):
                 'data-template': self.data['component'],
             }),
             required=False,
+            **extra,
         )
 
     def parse(self, form):
@@ -205,9 +218,9 @@ class Color(Text):
     attr_type = 'color'
     value_default = '#f00'
 
-    def field(self):
+    def field(self, **extra):
         widget = type('_', (widgets.TextInput,), {'input_type': 'color'})
-        field = super(Color, self).field(widget=widget)
+        field = super(Color, self).field(widget=widget, **extra)
         return field
 
 
