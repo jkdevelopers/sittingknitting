@@ -1121,7 +1121,7 @@ ul.megamenu.skyblue {
     font-weight: 500;
     color: #f9f9f9;
     margin: 0 0 0.5em;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .arriv p {
@@ -1151,6 +1151,7 @@ ul.megamenu.skyblue {
     -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    display: none;
 }
 
 .crt-btn a:hover {
@@ -1200,7 +1201,7 @@ i.ars {
     color: #3f3d3d;
     font-size: 1.1em;
     font-weight: 400;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
     text-align: center;
     margin: 0;
 }
@@ -1335,6 +1336,7 @@ i.goog:hover {
     font-weight: 300;
     border: 1px solid #e5e4e2;
     -webkit-appearance: none;
+    border-radius: 10px;
 }
 
 .stay form input[type="submit"] {
@@ -1348,6 +1350,7 @@ i.goog:hover {
     border: none;
     /*width: 100%;*/
     text-transform: uppercase;
+    border-radius: 10px;
 }
 
 .stay form input[type="submit"]:hover {
@@ -1368,7 +1371,7 @@ i.goog:hover {
 
 .footer h4 {
     color: #3f3d3d;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     margin: 0 0 1em;
 }
@@ -1538,7 +1541,7 @@ i.mail {
 }
 
 .special h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.5em;
     text-align: center;
     padding: 0.5em;
