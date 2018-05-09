@@ -131,7 +131,7 @@ class Category(models.Model):
 class Product(models.Model):
     vendor = models.CharField('Артикул', max_length=100, unique=True)
     name = models.CharField('Название', max_length=512, default='')
-    brand = models.CharField('Бренд', max_length=100, blank=True, default='')
+    brand = models.CharField('Производитель', max_length=100, blank=True, default='')
     photo = models.ImageField('Фотография', upload_to='products/', blank=True, null=True)
     category = models.ForeignKey(
         Category, verbose_name='Категория / подкатегория', related_name='products',
