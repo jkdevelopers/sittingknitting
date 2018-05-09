@@ -238,7 +238,7 @@ class CartActionView(generic.View):
     def add_coupon(self, data):
         coupons = list(Coupon.objects.filter(code=data))
         if not coupons:
-            messages.warning(self.request, 'Такого купона не существует')
+            messages.error(self.request, 'Такого купона не существует')
             return
         self.request.session['coupon'] = coupons[0].pk
 
@@ -251,11 +251,11 @@ class CartActionView(generic.View):
         delivery = self.request.session.get('delivery', None)
         phone = self.request.POST.get('phone')
 
-        if not products: messages.warning(self.request, 'Ваша корзина пуста'); return
-        if not delivery: messages.warning(self.request, 'Пожалуйста, выберите способ доставки'); return
-        if not phone: messages.warning(self.request, 'Пожалуйста, ведите контактный телефон'); return
+        if not products: messages.error(self.request, 'Ваша корзина пуста'); return
+        if not delivery: messages.error(self.request, 'Пожалуйста, выберите способ доставки'); return
+        if not phone: messages.error(self.request, 'Пожалуйста, ведите контактный телефон'); return
         if not fullmatch('\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}', phone):
-            messages.warning(self.request, 'Пожалуйста, введите корректный номер телефона'); return
+            messages.error(self.request, 'Пожалуйста, введите корректный номер телефона'); return
 
         items = [OrderItem(product=i, amount=1) for i in products]
         for i in items: i.save()

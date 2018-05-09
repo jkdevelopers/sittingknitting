@@ -83,14 +83,14 @@ $(document).ready(function () {
 // Order form
 $(document).ready(function () {
     $('#order-form select').change(function (e) {
-        var value = $('#order-form select').val().toString();
+        var value = $('#order-form select').val();
         var url = $('#order-form').attr('data-dcu').replace('_', value);
         window.location = url;
     });
     $('.cpns').click(function () {
-        var value = $('#order-form input[name=coupon]').val().toString();
+        var value = $('#order-form input[name=coupon]').val().replace(/\s+/g, '');
+        if (value.length == 0) return;
         var url = $('.cpns').attr('data-ccu').replace('_', value);
-        console.log(url);
         window.location = url;
     });
 });
