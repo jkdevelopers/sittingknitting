@@ -557,7 +557,6 @@ select.item_Size {
 #loginContainer a span {
     display: block;
     padding: 2px 14px;
-    border: 1px solid #555;
     border-radius: 6px;
     font-weight: 300;
 }
@@ -725,14 +724,12 @@ input:focus {
 /*search*/
 .search {
     position: relative;
-    background: #ba8da121;
     border: 1px solid #D8D8D8;
     border-radius: 10px;
 }
 
 .search form {
     width: 100%;
-    background: #ba8da121;
     border-radius: 10px;
 }
 
@@ -812,7 +809,6 @@ input:focus {
 
 .reg a {
     vertical-align: middle;
-    font-size: 0.85em;
     font-weight: 300;
     text-decoration: none;
     /*padding: 0 10px;*/
@@ -2529,9 +2525,10 @@ p.product_descr {
 }
 
 .button1 {
+	border-radius: 10px;
     font-family: 'Open Sans', sans-serif;
     border: none;
-    background: #ff6978;
+    background: #5c1e39;
     padding: 7px 15px;
     color: #FFF;
     font-size: 13px;
@@ -2616,6 +2613,7 @@ p.product_descr {
 }
 
 .btn_form a {
+	border-radius: 10px;
     font-family: 'Open Sans', sans-serif;
     cursor: pointer;
     border: none;
@@ -2623,7 +2621,7 @@ p.product_descr {
     display: inline-block;
     font-size: 1em;
     padding: 10px 34px;
-    background: #ff6978;
+    background: #5c1e39;
     color: #fff;
     text-transform: uppercase;
     -webkit-transition: all 0.3s ease-in-out;
