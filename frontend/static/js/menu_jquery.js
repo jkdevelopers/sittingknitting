@@ -94,3 +94,10 @@ $(document).ready(function () {
         window.location = url;
     });
 });
+
+// Home page cards
+$(document).ready(function () {
+    $('.crt-btn a').filter(function(i, x) {
+        return !x.text.trim().length
+    }).remove();
+});
