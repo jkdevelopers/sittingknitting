@@ -17,8 +17,8 @@
                         {% if not request.user.is_staff %}
                             <div class="cart box_1">
                                 <a href="{% url 'cart' %}" style="display: flex; align-items: center;">
-                                    <p>Итого: {{ request.session.total|default:0 }} руб.</p>
-                                    <img src="{% static 'images/basket.png' %}" style="max-width: 30px;">
+                                    <p>{{ request.session.total|default:0 }} руб</p>
+                                    <img src="{% static 'images/bag2.png' %}" style="max-width: 30px;">
                                 </a>
                                 <div class="clearfix"></div>
                             </div>

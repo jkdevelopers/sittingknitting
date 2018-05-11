@@ -95,9 +95,11 @@ $(document).ready(function () {
     });
 });
 
-// Home page cards
+// Scroll to anchor
 $(document).ready(function () {
-    $('.crt-btn a').filter(function(i, x) {
-        return !x.text.trim().length
-    }).remove();
+    $('[data-scroll-to]').click(function (e) {
+        e.preventDefault();
+        var target = $($(this).attr('data-scroll-to'));
+        $('html, body').animate({scrollTop: target.offset().top}, 'slow');
+    });
 });

@@ -32,6 +32,18 @@ body a {
     -ms-transition: 0.5s all;
 }
 
+#scroll2top {
+    background: #5c1e39 url('../images/up_arrow.png') center center no-repeat;
+    color: #fff;
+    cursor: pointer;
+    position: fixed;
+    z-index: 100;
+    right: 20px;
+    bottom: 20px;
+    padding: 20px;
+    border-radius: 100%;
+}
+
 /*----*/
 .itemContainer {
     width: 100%;
@@ -524,9 +536,10 @@ span.item_price {
 
 .box_1 p {
     color: #000;
-    font-size: 0.85em;
+    /*font-size: 0.85em;*/
+    font-size: 1em;
     float: left;
-    margin: 0 0.4em 0;
+    margin: 0 0.6em 0;
     text-align: left;
 }
 
