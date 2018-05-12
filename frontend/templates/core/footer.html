@@ -1,3 +1,5 @@
+{% load core.tags %}
+
 <div class="foot-top">
     <div class="container">
         <div class="col-md-6 s-c">
@@ -39,9 +41,19 @@
 </div>
 <div class="footer">
     <div class="container">
+        {% component 'footer_column.html' id='footer-column-a' class="col-md-3 cust" %}
+        {% component 'footer_column.html' id='footer-column-b' class="col-md-3 myac" %}
+		<div class="col-md-6 our-st">
+			<div class="our-left"><h4>{% component 'text.html' id='footer-last-title' %}</h4></div>
+			<div class="clearfix"></div>
+            <li>{% component 'text.html' id='footer-last-text-a' %}</li>
+            <li><i class="add"></i> {% component 'text.html' id='footer-last-text-b' %}</li>
+            <li><i class="phone"></i> {% component 'text.html' id='phone' %}</li>
+            <li><i class="mail"></i> {% component 'text.html' id='footer-last-link-d' %}</li>
+		</div>
         <div class="clearfix"></div>
-        <p>
-            Магазин <a href="https://sittingknitting.ru">SittingKnitting</a> © 2018
+        <p class="text-center">
+            Магазин <a href="https://sittingknitting.ru" data-scroll-to=".top_bg">SittingKnitting</a> © 2018
             <span>|</span>
             Разработано <a href="http://jkdev.ru">JK Developers</a>
             <span>|</span>

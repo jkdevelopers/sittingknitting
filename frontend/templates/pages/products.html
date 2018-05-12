@@ -151,16 +151,20 @@
                         </a>
                         <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
                         {% if product.brand %}
-                            <p>Бренд: {{ product.brand }}</p>
+                            <p>Производитель: {{ product.brand }}</p>
                         {% endif %}
                         <div class="grid_1">
                             <div class="item_add"><span class="item_price"><h6>{{ product.price }} руб.</h6></span></div>
                             <div class="item_add">
                                 <span class="item_price">
-                                    {% if product.pk in request.session.cart|default:'' %}
-                                        <a href="{% url 'cart_action' action='remove' data=product.pk %}">В корзине</a>
+                                    {% if product.quantity == 0 %}
+                                        <a href="#">Предзаказ</a>
                                     {% else %}
-                                        <a href="{% url 'cart_action' action='add' data=product.pk %}">В корзину</a>
+                                        {% if product.pk in request.session.products|default:'' %}
+                                            <a href="{% url 'cart_action' action='remove' data=product.pk %}">В корзине</a>
+                                        {% else %}
+                                            <a href="{% url 'cart_action' action='add' data=product.pk %}">В корзину</a>
+                                        {% endif %}
                                     {% endif %}
                                 </span>
                             </div>

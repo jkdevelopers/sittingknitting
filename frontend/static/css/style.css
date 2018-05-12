@@ -188,10 +188,10 @@ body a {
 }
 
 input[type=submit].order {
-    background: #5c1e39;
+    background: #00405d;
     padding: 10px 20px;
     border: none;
-    border-radius: 10px;
+
     font-size: 1em;
     color: #fff;
     text-decoration: none;
@@ -254,7 +254,7 @@ input[type=submit].order:hover {
 }
 
 a.cpns {
-    background: #5c1e39;
+    background: #ff6978;
     color: #fff;
     border-radius: 10px;
     padding: 10px;
@@ -2525,10 +2525,9 @@ p.product_descr {
 }
 
 .button1 {
-	border-radius: 10px;
     font-family: 'Open Sans', sans-serif;
     border: none;
-    background: #5c1e39;
+    background: #ff6978;
     padding: 7px 15px;
     color: #FFF;
     font-size: 13px;
@@ -2613,7 +2612,6 @@ p.product_descr {
 }
 
 .btn_form a {
-	border-radius: 10px;
     font-family: 'Open Sans', sans-serif;
     cursor: pointer;
     border: none;
@@ -2621,7 +2619,7 @@ p.product_descr {
     display: inline-block;
     font-size: 1em;
     padding: 10px 34px;
-    background: #5c1e39;
+    background: #ff6978;
     color: #fff;
     text-transform: uppercase;
     -webkit-transition: all 0.3s ease-in-out;

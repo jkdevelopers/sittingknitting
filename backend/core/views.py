@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views import generic
 from django.db.models import Q
 from re import fullmatch
+from .utils import get_object_safe
 from .models import *
 from .forms import *
 
@@ -25,6 +26,11 @@ __all__ = [
 ]
 
 
+# ---------------------------------------- #
+#               CMS SECTION                #
+# ---------------------------------------- #
+
+
 class EditableMixin:
     def dispatch(self, *args, **kwargs):
         staff = self.request.user.is_staff
@@ -39,10 +45,6 @@ class EditableMixin:
         edit = self.request.session.get('edit_mode')
         if staff and edit: kwargs['edit_mode'] = True
         return super(EditableMixin, self).get_context_data(**kwargs)
-
-
-class HomeView(EditableMixin, generic.TemplateView):
-    template_name = 'pages/home.html'
 
 
 class ComponentEditView(generic.UpdateView):
@@ -86,6 +88,11 @@ class ComponentActionView(generic.View):
         raise Http404
 
 
+# ---------------------------------------- #
+#               AUTH SECTION               #
+# ---------------------------------------- #
+
+
 class LoginView(auth_views.LoginView):
     success_url = reverse_lazy('home')
 
@@ -95,17 +102,19 @@ class LoginView(auth_views.LoginView):
     def form_valid(self, form):
         ret = super(LoginView, self).form_valid(form)
         user = form.get_user()
-        # messages.success(self.request, 'Logged in as "%s"' % user.username)
+        messages.success(self.request, 'Выполнен вход в аккаунт "%s"' % user.username)
         return ret
 
-    def form_invalid(self, form): return redirect(self.get_success_url())
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка входа в аккаунт')
+        return redirect(self.get_success_url())
 
 
 class LogoutView(auth_views.LogoutView):
     success_url = reverse_lazy('home')
 
     def dispatch(self, *args, **kwargs):
-        # messages.success(self.request, 'Logged out')
+        messages.success(self.request, 'Вы вышли из аккаунта')
         return super(LogoutView, self).dispatch(*args, **kwargs)
 
 
@@ -120,7 +129,14 @@ class RegisterView(EditableMixin, generic.FormView):
         user.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth_login(self.request, user)
+        messages.success(self.request, 'Регистрация успешно завершена')
+        messages.success(self.request, 'Выполнен вход в аккаунт "%s"' % user.username)
         return super(RegisterView, self).form_valid(form)
+
+
+# ---------------------------------------- #
+#               MISC SECTION               #
+# ---------------------------------------- #
 
 
 class SubscribeView(generic.CreateView):
@@ -133,6 +149,15 @@ class SubscribeView(generic.CreateView):
     def form_valid(self, form):
         super(SubscribeView, self).form_valid(form)
         return HttpResponse('OK')
+
+
+# ---------------------------------------- #
+#              PLAIN SECTION               #
+# ---------------------------------------- #
+
+
+class HomeView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/home.html'
 
 
 class ProductView(EditableMixin, generic.DetailView):
@@ -161,7 +186,7 @@ class ProductsView(EditableMixin, generic.ListView):
         return super(ProductsView, self).get(*args, **kwargs)
 
     def get_queryset(self):
-        qs = Product.objects.filter(active=True, quantity__gt=0)
+        qs = Product.objects.filter(active=True)
         if self.search is not None:
             return qs.filter(
                 Q(name__icontains=self.search) |
@@ -199,95 +224,141 @@ class ProductsView(EditableMixin, generic.ListView):
         return kwargs
 
 
+# ---------------------------------------- #
+#               CART SECTION               #
+# ---------------------------------------- #
+
+
+class Cart:
+    def __init__(self, session):
+        self.session = session
+        self.products = session.get('products', [])
+        self.coupon = session.get('coupon')
+        self.delivery = session.get('delivery')
+        self.clean()
+        if session.get('total') is None: self.recalc()
+
+    def clean(self):
+        if self.products:
+            products = []
+            for pk in self.products:
+                product = get_object_safe(Product, pk=pk, quantity__gt=0)
+                if product is not None: products.append(product)
+            if len(products) != len(self.products):
+                self.session['products'] = [i.pk for i in products]
+            self.products = products
+
+        if self.coupon is not None:
+            self.coupon = get_object_safe(Coupon, pk=self.coupon)
+            if self.coupon is None: del self.session['coupon']
+
+        if self.delivery is not None:
+            self.delivery = get_object_safe(Delivery, pk=self.delivery)
+            if self.delivery is None: del self.session['delivery']
+
+    def recalc(self):
+        order = Order(coupon=self.coupon, delivery_type=self.delivery)
+        order.items_total = lambda: sum(i.price for i in self.products)
+        self.session['total'] = order.total()
+
+    def add_product(self, pk):
+        product = get_object_safe(Product, pk=pk, quantity__gt=0)
+        if product is None: return False
+        products = [i.pk for i in self.products]
+        if pk in products: return False
+        self.products.append(product)
+        self.session['products'] = [i.pk for i in self.products]
+        self.recalc()
+        return True
+
+    def remove_product(self, pk):
+        products = [i.pk for i in self.products]
+        if pk not in products: return False
+        index = products.index(pk)
+        del self.products[index]
+        self.session['products'] = [i.pk for i in self.products]
+        self.recalc()
+        return True
+
+    def add_coupon(self, code):
+        if self.coupon is not None: return True
+        coupon = get_object_safe(Coupon, code=code)
+        if coupon is None: return False
+        self.coupon = coupon
+        self.session['coupon'] = self.coupon.pk
+        self.recalc()
+        return True
+
+    def remove_coupon(self):
+        if self.coupon is None: return False
+        self.coupon = None
+        del self.session['coupon']
+        self.recalc()
+        return True
+
+    def change_delivery(self, pk):
+        delivery = get_object_safe(Delivery, pk=pk)
+        if delivery is None: return False
+        if self.delivery is not None and pk == self.delivery.pk: return False
+        self.delivery = delivery
+        self.session['delivery'] = self.delivery.pk
+        self.recalc()
+        return True
+
+
 class CartActionView(generic.View):
     def dispatch(self, *args, **kwargs):
         action = kwargs.get('action')
-        data = kwargs.get('data')
-        if data is not None:
-            if action == 'add': self.add(data)
-            elif action == 'remove': self.remove(data)
-            elif action == 'delivery': self.delivery(data)
-            elif action == 'add-coupon': self.add_coupon(data)
-            elif action == 'remove-coupon': self.remove_coupon()
+        self.data = kwargs.get('data')
+        if self.data is not None:
+            self.cart = Cart(self.request.session)
+            if action == 'add-coupon':
+                if not self.cart.add_coupon(self.data):
+                    messages.error(self.request, 'Такого купона не существует')
+            elif action == 'remove-coupon': self.cart.remove_coupon()
             elif action == 'place-order': self.place_order()
+            if self.data.isdigit():
+                if action == 'add': self.cart.add_product(int(self.data))
+                elif action == 'remove': self.cart.remove_product(int(self.data))
+                elif action == 'delivery': self.cart.change_delivery(int(self.data))
         url = self.request.META.get('HTTP_REFERER', '/')
         return redirect(url)
 
-    def add(self, data):
-        if not data.isdigit(): return
-        data = int(data)
-        product = get_object_or_404(Product, pk=data)
-        if not product.active or product.quantity == 0: return
-        items = set(self.request.session.get('cart', []))
-        items.add(data)
-        self.request.session['cart'] = list(items)
-
-    def remove(self, data):
-        if not data.isdigit(): return
-        data = int(data)
-        items = set(self.request.session.get('cart', []))
-        items.remove(data)
-        self.request.session['cart'] = list(items)
-
-    def delivery(self, data):
-        if not data.isdigit(): return
-        data = int(data)
-        delivery = get_object_or_404(Delivery, pk=data)
-        self.request.session['delivery'] = delivery.pk
-
-    def add_coupon(self, data):
-        coupons = list(Coupon.objects.filter(code=data))
-        if not coupons:
-            messages.error(self.request, 'Такого купона не существует')
-            return
-        self.request.session['coupon'] = coupons[0].pk
-
-    def remove_coupon(self): del self.request.session['coupon']
-
     def place_order(self):
-        cart = self.request.session.get('cart', [])
-        products = list(Product.objects.filter(pk__in=cart, active=True, quantity__gt=0))
-        coupon = self.request.session.get('coupon', None)
-        delivery = self.request.session.get('delivery', None)
         phone = self.request.POST.get('phone')
-
-        if not products: messages.error(self.request, 'Ваша корзина пуста'); return
-        if not delivery: messages.error(self.request, 'Пожалуйста, выберите способ доставки'); return
-        if not phone: messages.error(self.request, 'Пожалуйста, ведите контактный телефон'); return
-        if not fullmatch('\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}', phone):
-            messages.error(self.request, 'Пожалуйста, введите корректный номер телефона'); return
-
-        items = [OrderItem(product=i, amount=1) for i in products]
-        for i in items: i.save()
-        order = Order(
-            phone=phone,
-            coupon=coupon and get_object_or_404(Coupon, pk=coupon),
-            delivery_type=get_object_or_404(Delivery, pk=delivery),
-        )
-        order.save()
-        order.items.set(items)
-        order.save()
-        order.update()
-        messages.success(self.request, 'Заказ успешно создан. Номер заказа: {:03}'.format(order.pk))
+        if not self.cart.products: messages.error(self.request, 'Ваша корзина пуста')
+        elif not self.cart.delivery: messages.error(self.request, 'Пожалуйста, выберите способ доставки')
+        elif not phone: messages.error(self.request, 'Пожалуйста, введите контактный телефон')
+        elif not fullmatch('\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}', phone):
+            messages.error(self.request, 'Пожалуйста, введите корректный номер телефона')
+        else:
+            items = [OrderItem(product=i, amount=1) for i in self.cart.products]
+            for i in items: i.save()
+            order = Order(phone=phone, coupon=self.cart.coupon, delivery_type=self.cart.delivery)
+            order.save()
+            order.items.set(items)
+            order.save()
+            order.update()
+            self.cart.recalc()
+            messages.success(self.request, 'Заказ успешно создан. Номер заказа: {:03}'.format(order.pk))
 
 
 class CartView(generic.TemplateView):
     template_name = 'pages/cart.html'
 
     def get_context_data(self, **kwargs):
-        cart = self.request.session.get('cart', [])
-        products = Product.objects.filter(pk__in=cart, active=True, quantity__gt=0)
-        coupon = self.request.session.get('coupon', None)
-        delivery = self.request.session.get('delivery', None)
-        order = Order(
-            coupon=coupon and get_object_or_404(Coupon, pk=coupon),
-            delivery_type=delivery and get_object_or_404(Delivery, pk=delivery),
-        )
-        order.items_total = lambda: sum(i.price for i in products)
+        cart = Cart(self.request.session)
+        order = Order(coupon=cart.coupon, delivery_type=cart.delivery)
+        order.items_total = lambda: sum(i.price for i in cart.products)
         kwargs['order'] = order
-        kwargs['products'] = products
+        kwargs['products'] = cart.products
         kwargs['delivery_types'] = [(i.pk, i.title) for i in Delivery.objects.all()]
         return super(CartView, self).get_context_data(**kwargs)
+
+
+# ---------------------------------------- #
+#             BINDINGS SECTION             #
+# ---------------------------------------- #
 
 
 home = HomeView.as_view()

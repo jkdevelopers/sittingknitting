@@ -94,3 +94,12 @@ $(document).ready(function () {
         window.location = url;
     });
 });
+
+// Scroll to anchor
+$(document).ready(function () {
+    $('[data-scroll-to]').click(function (e) {
+        e.preventDefault();
+        var target = $($(this).attr('data-scroll-to'));
+        $('html, body').animate({scrollTop: target.offset().top}, 'slow');
+    });
+});
