@@ -1,7 +1,7 @@
 {% load core.tags %}
 
-<div style="position: relative; display: unset;" class="text-wrapper">
-    {% with multiline|default:False as multiline %}
+<div style="position: relative; display: unset;">
+    {% with multiline=multiline|default:False %}
         {% attribute 'Text' type='text' id='text' default='Sample Text' multiline=multiline %}
     {% endwith %}
 </div>

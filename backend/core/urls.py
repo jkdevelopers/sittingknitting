@@ -5,6 +5,7 @@ from .views import *
 urlpatterns = [
     path('', lambda r: redirect('home')),
     path('home/', home, name='home'),
+    path('info/', info, name='info'),
     path('edit/<int:pk>/', component_edit, name='edit'),
     path('action/', component_action, name='action'),
     path('login/', login, name='login'),

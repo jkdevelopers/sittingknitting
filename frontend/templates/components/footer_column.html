@@ -1,6 +1,6 @@
 {% load core.tags %}
 
-<div class="{{ class }}">
+<div class="{{ class }} text-wrapper">
     <h4>{% attribute 'Title' type='text' id='title' default='Sample text' %}</h4>
     {% attribute 'Links' type='list' id='links' component='footer_link.html' %}
 </div>

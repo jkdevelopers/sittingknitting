@@ -1,14 +1,17 @@
 {% load core.tags %}
 {% load mathfilters %}
 
-<div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=width %} arriv-{{ outer_class }}">
+{% attribute 'Visible' type='boolean' id='visible' default=True %}
+
+<div class="col-md-{% attribute 'Width' type='number' id='width' min=1 max=12 default=width %} arriv-{{ outer_class }}"
+    {% if not visible and not edit_mode %}style="display: none;"{% endif %}>
     {% with img_width=width|mul:95|sub:offset %}
         <img src="{% attribute 'Image' type='image' id='image' width=img_width height=height %}" class="img-responsive img-rounded">
     {% endwith %}
     <div class="arriv-info{{ inner_class }}">
         <a><h3>
-                {% attribute 'Title' type='text' id='class' default='TITLE' %}
-                <i class="ars"></i>
+            {% attribute 'Title' type='text' id='class' default='TITLE' %}
+            <i class="ars"></i>
         </h3></a>
     </div>
     <a href="{% attribute 'URL' type='text' id='url' default='#' %}" class="link-fill"></a>

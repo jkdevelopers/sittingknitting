@@ -103,3 +103,8 @@ $(document).ready(function () {
         $('html, body').animate({scrollTop: target.offset().top}, 'slow');
     });
 });
+
+// Misc
+$(document).ready(function () {
+    $('.email-link').attr('href', 'mailto:' + $('.email-link').text().trim());
+});

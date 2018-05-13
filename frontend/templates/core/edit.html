@@ -2,6 +2,12 @@
 
 {% if edit_mode %}
     <script type="text/javascript"> window.edit_mode = true; </script>
+    <style>
+        .text-wrapper, .text-wrapper * {
+            display: inherit;
+            color: #fff !important;
+        }
+    </style>
 {% endif %}
 
 {% if request.user.is_staff %}

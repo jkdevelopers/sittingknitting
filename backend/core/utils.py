@@ -183,7 +183,8 @@ class List(Attribute):
     def __init__(self, **data):
         from .models import Component
         super(List, self).__init__(**data)
-        self.components = [Component.objects.get(pk=pk) for pk in self.value]
+        self.components = [get_object_safe(Component, pk=pk) for pk in self.value]
+        self.components = [i for i in self.components if i is not None]
         self.context['list_%s_empty' % self.id] = not bool(self.components)
 
     def render(self):

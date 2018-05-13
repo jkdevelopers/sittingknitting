@@ -2,7 +2,7 @@
 
 <div class="foot-top">
     <div class="container">
-        <div class="col-md-6 s-c">
+        <div class="col-md-5 s-c">
             <li>
                 <div class="fooll">
                     <h5>Подпишись:</h5>
@@ -11,18 +11,18 @@
             <li>
                 <div class="social-ic">
                     <ul>
-                        <!--<li><a href="#"><i class="facebok"> </i></a></li>
-                        <li><a href="#"><i class="twiter"> </i></a></li>
-                        <li><a href="#"><i class="goog"> </i></a></li>-->
-                        <li><a href="#"><i class="be"> </i></a></li>
-                        <!--<li><a href="#"><i class="pp"> </i></a></li>-->
+                        <li><a href="https://www.facebook.com/SittingKnittingstore"><i class="facebok"></i></a></li>
+                        <li><a href="https://www.instagram.com/sittingknitting_store/"><i class="be"> </i></a></li>
+{#                        <li><a href="#"><i class="twiter"> </i></a></li>#}
+{#                        <li><a href="#"><i class="goog"> </i></a></li>#}
+{#                        <li><a href="#"><i class="pp"> </i></a></li>#}
                         <div class="clearfix"></div>
                     </ul>
                 </div>
             </li>
             <div class="clearfix"></div>
         </div>
-        <div class="col-md-6 s-c">
+        <div class="col-md-7 s-c">
             <div class="stay">
                 <form action="{% url 'subscribe' %}" method="POST" id="subscribe">
                     {% csrf_token %}
@@ -46,10 +46,10 @@
 		<div class="col-md-6 our-st">
 			<div class="our-left"><h4>{% component 'text.html' id='footer-last-title' %}</h4></div>
 			<div class="clearfix"></div>
-            <li>{% component 'text.html' id='footer-last-text-a' %}</li>
-            <li><i class="add"></i> {% component 'text.html' id='footer-last-text-b' %}</li>
+            <li><i class="clock"></i> {% component 'text.html' id='footer-schedule-link' %}</li>
+            <li><i class="add"></i> {% component 'text.html' id='footer-address-link' %}</li>
             <li><i class="phone"></i> {% component 'text.html' id='phone' %}</li>
-            <li><i class="mail"></i> {% component 'text.html' id='footer-last-link-d' %}</li>
+            <li><i class="mail"></i> <a class="email-link">{% component 'text.html' id='footer-email-link' %}</a></li>
 		</div>
         <div class="clearfix"></div>
         <p class="text-center">

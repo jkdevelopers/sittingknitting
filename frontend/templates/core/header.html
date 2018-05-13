@@ -1,6 +1,24 @@
 {% load staticfiles %}
 {% load core.tags %}
 
+<div class="top_bg">
+    <div class="container">
+        <div class="header_top">
+            <div class="top_right">
+                <ul>
+                    <li><a href="{% url 'info' %}#contacts">Контакты</a></li>|
+                    <li><a href="{% url 'info' %}#delivery">Доставка и оплата</a></li>|
+                    <li><a href="" data-scroll-to=".footer">Время работы</a></li>
+                </ul>
+            </div>
+            <div class="top_left">
+                <h2><span></span>{% component 'text.html' id='phone' %}</h2>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
 <div class="header_bg">
     <div class="container">
         <div class="header">
@@ -17,7 +35,9 @@
                         {% if not request.user.is_staff %}
                             <div class="cart box_1">
                                 <a href="{% url 'cart' %}" style="display: flex; align-items: center;">
-                                    <p>{{ request.session.total|default:0 }} руб</p>
+                                    {% with request.session.total|default:0 as total %}
+                                        {% if total %}<p>{{ total }} руб</p>{% endif %}
+                                    {% endwith %}
                                     <img src="{% static 'images/bag2.png' %}" style="max-width: 30px;">
                                 </a>
                                 <div class="clearfix"></div>

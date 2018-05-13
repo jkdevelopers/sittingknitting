@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load core.tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="main">
+            <div class="contact">
+                <div class="contact_info">
+                    <h2 id="address">КАК НАС НАЙТИ</h2>
+                    {% component 'text.html' id='info-text-address' multiline=True %}
+                    <div class="map">
+                        <iframe src="https://www.google.com/maps/embed"
+                                width="100%" height="250" frameborder="0" style="border: 0"></iframe>
+                    </div>
+                    <h2 id="delivery">ИНФОРМАЦИЯ О ДОСТАВКЕ</h2>
+                    {% component 'text.html' id='info-text-delivery' multiline=True %}
+                    <h2 id="contacts">КОНТАКТЫ</h2>
+                    {% component 'text.html' id='info-text-contacts' multiline=True %}
+                </div>
+                <div class="contact-form">
+                    <h2 id="feedback">ФОРМА ОБРАТНОЙ СВЯЗИ</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            <div>
+                                <span><label>{{ field.label }}</label></span>
+                                <span>{{ field }}</span>
+                                {{ field.errors }}
+                            </div>
+                        {% endfor %}
+                        <div>
+                            <span>
+                                <input type="submit" value="Отправить">
+                                {% if form.success %}
+                                    <span class="success">СООБЩЕНИЕ УСПЕШНО ОТПРАВЛЕНО</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

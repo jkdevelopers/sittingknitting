@@ -23,6 +23,7 @@ __all__ = [
     'products',
     'cart_action',
     'cart',
+    'info',
 ]
 
 
@@ -158,6 +159,17 @@ class SubscribeView(generic.CreateView):
 
 class HomeView(EditableMixin, generic.TemplateView):
     template_name = 'pages/home.html'
+
+
+class InfoView(EditableMixin, generic.FormView):
+    template_name = 'pages/info.html'
+    form_class = FeedbackForm
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        context['form'] = self.form_class()
+        context['form'].success = True
+        return self.render_to_response(context)
 
 
 class ProductView(EditableMixin, generic.DetailView):
@@ -372,3 +384,4 @@ product = ProductView.as_view()
 products = ProductsView.as_view()
 cart_action = CartActionView.as_view()
 cart = CartView.as_view()
+info = InfoView.as_view()

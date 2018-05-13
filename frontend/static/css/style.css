@@ -21,7 +21,7 @@ html, body {
     font-family: 'Roboto', sans-serif;
     font-size: 100%;
     /*background: #ffffff;*/
-    background: #fce1ed11;
+    background: #fefbfc;
 }
 
 body a {
@@ -738,14 +738,13 @@ input:focus {
 /*search*/
 .search {
     position: relative;
-    background: #ba8da121;
+    background: #f5edf0;
     border: 1px solid #D8D8D8;
     border-radius: 10px;
 }
 
 .search form {
     width: 100%;
-    background: #ba8da121;
     border-radius: 10px;
 }
 
@@ -1029,7 +1028,7 @@ ul.icon1 {
 
 ul.megamenu.skyblue {
     /*background: #f3f4f5;*/
-    background: #ba8da121;
+    background: #f5edf0;
 }
 
 .rgt-bottom {
@@ -1397,6 +1396,15 @@ i.goog:hover {
 
 .footer span {
     padding: 0 10px;
+}
+
+i.clock {
+    width: 17px;
+    height: 20px;
+    display: inline-block;
+    background: url(../images/img-sprite.png) no-repeat -262px -13px;
+    vertical-align: middle;
+    margin-right: 0.5em;
 }
 
 i.phone {
@@ -2783,8 +2791,8 @@ label {
     font-weight: normal;
 }
 
-.registration_form input[required] {
-    border-color: #ff6978;
+input[required], textarea[required] {
+    border-color: #ff6978 !important;
 }
 
 .errorlist {
@@ -3099,6 +3107,7 @@ p.cart a {
     color: #00405d;
     text-shadow: 0 1px 0 #ffffff;
     text-transform: capitalize;
+    margin-top: 0.5em;
 }
 
 .map {
@@ -3127,7 +3136,7 @@ p.cart a {
     font-weight: normal;
 }
 
-.contact-form input[type="text"], .contact-form textarea {
+.contact-form input:not([type="submit"]), .contact-form textarea {
     font-family: 'Open Sans', sans-serif;
     background: #FFFFFF;
     border: 1px solid #E7E7E7;
@@ -3137,7 +3146,6 @@ p.cart a {
     width: 96.3333%;
     outline: none;
     -webkit-appearance: none;
-    text-transform: capitalize;
 }
 
 .contact-form textarea {
@@ -3167,6 +3175,12 @@ p.cart a {
 .contact-form input[type="submit"]:hover {
     background: #00405d;
     color: #ffffff;
+}
+
+.contact-form .success {
+    color: #ff6978;
+    margin-left: 1em;
+    font-weight: bold;
 }
 
 /*--media queries--*/

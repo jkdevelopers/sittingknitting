@@ -2,7 +2,7 @@
     <div class="login">
         <div id="loginContainer">
             {% if not request.user.is_authenticated %}
-                <a href="#" id="loginButton"><span>Войти</span></a>
+                <a href="#" id="loginButton"><span>Вход</span></a>
                 <div id="loginBox">
                     <form id="loginForm" action="{% url 'login' %}?next={{ request.path }}" method="post">
                         {% csrf_token %}
@@ -17,7 +17,7 @@
                             </fieldset>
                             <input type="submit" id="login" value="Войти">
                         </fieldset>
-                        <span><a href="#">Забыли пароль?</a></span>
+{#                        <span><a href="#">Забыли пароль?</a></span>#}
                     </form>
                 </div>
             {% else %}

@@ -1,7 +1,7 @@
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django import forms
 from .utils import build_attributes
 from .models import *
 
@@ -9,10 +9,11 @@ __all__ = [
     'ComponentForm',
     'RegisterForm',
     'SubscriptionForm',
+    'FeedbackForm',
 ]
 
 
-class ComponentForm(ModelForm):
+class ComponentForm(forms.ModelForm):
     class Meta:
         model = Component
         fields = ['name']
@@ -44,7 +45,26 @@ class RegisterForm(UserCreationForm):
             field.widget.attrs['placeholder'] = field.label
 
 
-class SubscriptionForm(ModelForm):
+class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = Subscription
         fields = ['email']
+
+
+class FeedbackForm(forms.Form):
+    name = forms.CharField(label='Имя', max_length=200)
+    phone = forms.RegexField(
+        '\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}',
+        label='Телефон',
+        error_messages={'invalid': 'Введите корректный номер телефона'},
+        required=False
+    )
+    email = forms.EmailField(label='Email', required=False)
+    message = forms.CharField(label='Сообщение', widget=forms.Textarea)
+
+    def clean(self):
+        data = super(FeedbackForm, self).clean()
+        if not self.is_valid(): return data
+        if not data['phone'] and not data['email']:
+            raise forms.ValidationError('Укажите телефон или email для обратной связи')
+        return data
