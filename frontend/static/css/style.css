@@ -32,6 +32,18 @@ body a {
     -ms-transition: 0.5s all;
 }
 
+#scroll2top {
+    background: #5c1e39 url('../images/up_arrow.png') center center no-repeat;
+    color: #fff;
+    cursor: pointer;
+    position: fixed;
+    z-index: 100;
+    right: 20px;
+    bottom: 20px;
+    padding: 20px;
+    border-radius: 100%;
+}
+
 /*----*/
 .itemContainer {
     width: 100%;
@@ -256,7 +268,7 @@ input[type=submit].order:hover {
 a.cpns {
     background: #ff6978;
     color: #fff;
-    border-radius: 10px;
+
     padding: 10px;
     font-size: 0.8em;
     font-weight: 600;
@@ -524,9 +536,10 @@ span.item_price {
 
 .box_1 p {
     color: #000;
-    font-size: 0.85em;
+    /*font-size: 0.85em;*/
+    font-size: 1em;
     float: left;
-    margin: 0 0.4em 0;
+    margin: 0 0.6em 0;
     text-align: left;
 }
 
@@ -557,6 +570,7 @@ select.item_Size {
 #loginContainer a span {
     display: block;
     padding: 2px 14px;
+    border: 1px solid #555;
     border-radius: 6px;
     font-weight: 300;
 }
@@ -724,12 +738,14 @@ input:focus {
 /*search*/
 .search {
     position: relative;
+    background: #ba8da121;
     border: 1px solid #D8D8D8;
     border-radius: 10px;
 }
 
 .search form {
     width: 100%;
+    background: #ba8da121;
     border-radius: 10px;
 }
 
@@ -741,6 +757,7 @@ input:focus {
     color: #5a5a5a;
     background: none;
     border: none;
+    border-radius: 10px;
     width: 85.33333%;
     line-height: 1.5em;
     position: relative;
@@ -809,6 +826,8 @@ input:focus {
 
 .reg a {
     vertical-align: middle;
+    /*font-size: 0.85em;*/
+    font-size: 1em;
     font-weight: 300;
     text-decoration: none;
     /*padding: 0 10px;*/
@@ -1373,7 +1392,6 @@ i.goog:hover {
 }
 
 .footer {
-    text-align: center;
     padding: 3em 0;
 }
 
@@ -3618,7 +3636,8 @@ p.cart a {
     }
 
     .reg a {
-        font-size: 0.75em;
+        /*font-size: 0.75em;*/
+        font-size: 0.8em;
     }
 
     .reg {
