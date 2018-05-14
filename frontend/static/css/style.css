@@ -266,7 +266,7 @@ input[type=submit].order:hover {
 }
 
 a.cpns {
-    background: #ff6978;
+    background: #5c1e39;
     color: #fff;
 
     padding: 10px;
@@ -458,7 +458,7 @@ ul.qty li p {
 }
 
 .top_right ul li a:hover {
-    color: #ff6978;
+    color: #5c1e39;
     text-decoration: none;
 }
 
@@ -570,7 +570,6 @@ select.item_Size {
 #loginContainer a span {
     display: block;
     padding: 2px 14px;
-    border: 1px solid #555;
     border-radius: 6px;
     font-weight: 300;
 }
@@ -671,7 +670,7 @@ fieldset#body {
     font-family: 'Open Sans', sans-serif;
     width: auto;
     float: left;
-    background: #ff6978;
+    background: #5c1e39;
     color: #fff;
     font-size: 0.8725em;
     padding: 8px 20px;
@@ -682,6 +681,7 @@ fieldset#body {
     -webkit-transition: all .5s;
     -moz-transition: all .5s;
     -o-transition: all .5s;
+    border-radius: 10px;
 }
 
 #loginForm #login:hover {
@@ -738,7 +738,6 @@ input:focus {
 /*search*/
 .search {
     position: relative;
-    background: #f5edf0;
     border: 1px solid #D8D8D8;
     border-radius: 10px;
 }
@@ -1169,8 +1168,8 @@ ul.megamenu.skyblue {
 }
 
 .crt-btn a:hover {
-    background: #ff6978;
-    border: 1px solid #ff6978;
+    background: #5c1e39;
+    border: 1px solid #5c1e39;
 }
 
 .arriv-info1 {
@@ -1354,7 +1353,7 @@ i.goog:hover {
 }
 
 .stay form input[type="submit"] {
-    background: #0f0f0f;
+    background: #5c1e39;
     padding: 0.5em;
     color: #fff;
     font-size: 1em;
@@ -1598,11 +1597,11 @@ ul.grid_2 li {
 
 ul.grid_2 li:hover {
     background: #e9e9e9;
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 ul.grid_2 li h5:hover {
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 ul.grid_2 li {
@@ -1616,7 +1615,7 @@ ul.grid_2 li {
 }
 
 .arriv-info2 a h3:hover {
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 /* start women */
@@ -1635,7 +1634,7 @@ ul.grid_2 li {
 
 .w_nav1 a.active {
     text-transform: uppercase;
-    color: #ff6978;
+    color: #5c1e39;
     font-size: 1em;
     margin-bottom: 5px;
 }
@@ -1989,7 +1988,7 @@ ul.grid_2 li {
 
 /* checked state */
 .sky-form .radio input + i:after {
-    background-color: #ff6978;
+    background-color: #5c1e39;
 }
 
 .sky-form .checkbox input + i:after {
@@ -1999,7 +1998,7 @@ ul.grid_2 li {
 .sky-form .radio input:checked + i,
 .sky-form .checkbox input:checked + i,
 .sky-form .toggle input:checked + i {
-    border-color: #ff6978;
+    border-color: #5c1e39;
 }
 
 /* error state */
@@ -2205,7 +2204,7 @@ ul.grid_2 li {
 }
 
 .grid1_of_4 h4 a:hover {
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 .grid1_of_4 p {
@@ -2322,7 +2321,7 @@ span.text {
 }
 
 span.price-new {
-    color: #ff6978;
+    color: #5c1e39;
     margin-right: 15px;
     font-weight: 500;
     font-size: 1.3em;
@@ -2553,7 +2552,8 @@ p.product_descr {
 .button1 {
     font-family: 'Open Sans', sans-serif;
     border: none;
-    background: #ff6978;
+    border-radius: 10px;
+    background: #5c1e39;
     padding: 7px 15px;
     color: #FFF;
     font-size: 13px;
@@ -2645,7 +2645,8 @@ p.product_descr {
     display: inline-block;
     font-size: 1em;
     padding: 10px 34px;
-    background: #ff6978;
+    background: #5c1e39;
+    border-radius: 10px;
     color: #fff;
     text-transform: uppercase;
     -webkit-transition: all 0.3s ease-in-out;
@@ -2792,13 +2793,13 @@ label {
 }
 
 input[required], textarea[required] {
-    border-color: #ff6978 !important;
+    border-color: #5c1e39 !important;
 }
 
 .errorlist {
     list-style-position: inside;
     padding-left: 10px;
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 .errorlist li {
@@ -2811,7 +2812,7 @@ input[required], textarea[required] {
     color: #ffffff;
     text-transform: capitalize;
     display: inline-block;
-    background: #ff6978;
+    background: #5c1e39;
     padding: 10px 20px;
     transition: 0.5s ease;
     -moz-transition: 0.5s ease;
@@ -2819,6 +2820,7 @@ input[required], textarea[required] {
     -webkit-transition: 0.5s ease;
     cursor: pointer;
     border: none;
+    border-radius: 10px;
     outline: none;
     font-size: 1em;
     margin-bottom: 5px;
@@ -2870,7 +2872,7 @@ input[required], textarea[required] {
 }
 
 .shoping_bag h4 span {
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 .s_art {
@@ -3055,7 +3057,7 @@ ul.s_icons {
     padding: 10px 20px;
     font-size: 1.2em;
     color: #ffffff;
-    background: #ff6978;
+    background: #5c1e39;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
@@ -3072,7 +3074,7 @@ ul.s_icons {
 }
 
 h4.title {
-    color: #ff6978;
+    color: #5c1e39;
     margin-bottom: 0.5em;
     font-size: 1.6em;
     line-height: 1.2em;
@@ -3089,7 +3091,7 @@ p.cart {
 
 p.cart a {
     text-decoration: underline;
-    color: #ff6978;
+    color: #5c1e39;
 }
 
 .check-out {
@@ -3163,7 +3165,7 @@ p.cart a {
     display: inline-block;
     font-size: 1em;
     padding: 12px 25px;
-    background: #ff6978;
+    background: #5c1e39;
     color: #fff;
     text-transform: uppercase;
     -webkit-transition: all 0.3s ease-in-out;
