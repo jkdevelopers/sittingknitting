@@ -197,7 +197,7 @@ class ProductsView(EditableMixin, generic.ListView):
             category = get_object_or_404(Category, pk=pk)
             self.category = category
         self.search = self.request.GET.get('search')
-        parse = lambda s: set(int(i) for i in s.split(',') if s.isdigit())
+        parse = lambda s: set(int(i) for i in s.split(',') if i.isdigit())
         subs = parse(self.request.GET.get('subs', ''))
         brands = self.request.GET.get('brands', '').split(',')
         self.subs = Category.objects.filter(pk__in=subs)
@@ -213,10 +213,10 @@ class ProductsView(EditableMixin, generic.ListView):
                 Q(brand__icontains=self.search)
             )
         if self.category is None: return qs
-        subs = self.category.all_children() + [self.category]
+        subs = self.category.recursive()
         qs = qs.filter(category__in=subs)
         if self.subs:
-            subs = set.union(*(set(i.pk for i in j.all_children()) for j in self.subs))
+            subs = set.union(*(set(i.pk for i in j.recursive()) for j in self.subs))
             qs = qs.filter(category__pk__in=subs)
         if self.brands: qs = qs.filter(brand__in=self.brands)
         return qs
@@ -232,10 +232,10 @@ class ProductsView(EditableMixin, generic.ListView):
 
         if self.category is None: return kwargs
 
-        categories = list(self.category.all_children()) + [self.category]
+        categories = self.category.recursive()
 
         kwargs['all_subs'] = Category.objects.filter(parent=self.category)
-        kwargs['all_brands'] = Product.objects.filter(category__in=categories).values_list('brand', flat=True)
+        kwargs['all_brands'] = set(Product.objects.filter(category__in=categories).values_list('brand', flat=True))
         # kwargs['all_mods'] = ...
 
         return kwargs

@@ -84,9 +84,9 @@ class Category(models.Model):
         all = Category.objects.all()
         return [i for i in all if i.level == level]
 
-    def all_children(self):
+    def recursive(self):
         direct = list(self.children.all())
-        return direct + sum((i.all_children() for i in direct), [])
+        return [self] + sum((i.recursive() for i in direct), [])
 
     class Meta:
         verbose_name = 'Категория'
