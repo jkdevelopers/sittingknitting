@@ -26,9 +26,17 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ['name']
 
 
+class ModificationInline(admin.TabularInline):
+    verbose_name = 'Модификация товара'
+    verbose_name_plural = 'Модификации товара'
+    model = Product.modifications.through
+
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['vendor', 'name', 'price', 'quantity', 'active']
-    list_filter = ['category', 'active']
+    inlines = [ModificationInline]
+    exclude = ['modifications']
+    list_display = ['vendor', 'name', 'price', 'quantity', 'active', 'show']
+    list_filter = ['category', 'active', 'show']
     search_fields = ['name', 'brand', 'vendor']
     ordering = ['vendor']
 
@@ -85,6 +93,10 @@ class CouponAdmin(admin.ModelAdmin):
     list_display = ['type', 'value', 'active']
 
 
+class ModificationAdmin(admin.ModelAdmin):
+    get_model_perms = lambda self, req: {}
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Component)
 admin.site.register(Category, CategoryAdmin)
@@ -95,3 +107,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Delivery, DeliveryAdmin)
 admin.site.register(Coupon, CouponAdmin)
 admin.site.register(Email)
+admin.site.register(Modification)

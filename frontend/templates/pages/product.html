@@ -53,15 +53,15 @@
                     {% endcomment %}
                     <p>{{ product.description }}</p>
                     <div class="btn_form">
-                        {% if product.quantity == 0 %}
-                            <a href="#">Оформить предзаказ</a>
-                        {% else %}
-                            {% if product.pk in request.session.products|default:'' %}
-                                <a href="{% url 'cart_action' action='remove' data=product.pk %}">Убрать из корзины</a>
-                            {% else %}
-                                <a href="{% url 'cart_action' action='add' data=product.pk %}">Добавить в корзину</a>
-                            {% endif %}
+                        {% if product.modifications.all %}
+                            <select name="modification">
+                                <option disabled="" selected="">Выберите модификацию</option>
+                                {% for mod in product.modifications.all %}
+                                    <option value="{{ mod.pk }}">{{ mod.type|title }}: {{ mod.value|title }}</option>
+                                {% endfor %}
+                            </select>
                         {% endif %}
+                        {% include 'core/cart_button.html' %}
                     </div>
                     {#<a href="#"><span>login to save in wishlist </span></a>#}
 			   	</div>
@@ -81,6 +81,31 @@
                 </p>
             </div>
             {% endcomment %}
+            {% if product.modifications.all %}
+                <div class="single-bottom1">
+                    <h6>Варианты товара</h6>
+                    {% for mod in product.modifications.all %}
+                        <div class="product" data-mod="{{ mod.pk }}">
+                            <div class="product-desc">
+                                <div class="product-img">
+                                    <img src="{% thumbnail mod.product.photo '400x400' crop='center' %}" class="img-responsive" />
+                                </div>
+                                <div class="prod1-desc">
+                                    <h3><a>{{ mod.type|title }}: {{ mod.value|title }}</a></h3>
+                                    <span class="code">Артикул: {{ mod.product.vendor }}</span>
+                                    <p class="product_descr">{{ mod.product.description }}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="product_price">
+                                <span class="price-access">{{ mod.product.price }} руб.</span>
+                                {% with product=mod.product %}{% include 'core/cart_button.html' %}{% endwith %}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% if related %}
                 <div class="single-bottom1">
                     <h6>Похожие товары</h6>

@@ -19,6 +19,7 @@ __all__ = [
     'Delivery',
     'Coupon',
     'Email',
+    'Modification',
 ]
 
 PhoneField = lambda **kwargs: models.CharField('Телефон', max_length=18, validators=[
@@ -137,13 +138,18 @@ class Product(models.Model):
         Category, verbose_name='Категория / подкатегория', related_name='products',
         on_delete=models.CASCADE, blank=True, null=True
     )
-    active = models.BooleanField('Показывать на сайте', default=True)
+    active = models.BooleanField('Разрешить покупку', default=True)
+    show = models.BooleanField('Показывать на сайте', default=True)
     description = models.TextField('Описание', blank=True, default='')
 
     quantity = models.PositiveIntegerField('Количество', default=0)
     price = models.PositiveIntegerField('Цена', default=0)
     old_price = models.PositiveIntegerField('Старая цена', blank=True, null=True)
     discount = models.BooleanField('Пометка "акция"', default=False)
+
+    modifications = models.ManyToManyField(
+        'modification', verbose_name='Модификации', blank=True, related_name='products'
+    )
 
     class Meta:
         verbose_name = 'Товар'
@@ -294,3 +300,15 @@ class Email(models.Model):
         verbose_name_plural = 'Письма'
 
     __str__ = lambda self: 'Письмо "%s"' % self.code
+
+
+class Modification(models.Model):
+    type = models.CharField('Тип', max_length=200)
+    value = models.CharField('Значение', max_length=200)
+    product = models.ForeignKey('core.product', verbose_name='Товар', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Модификация'
+        verbose_name_plural = 'Модификации'
+
+    __str__ = lambda self: '%s: %s' % (self.type, self.value)

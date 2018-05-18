@@ -2549,7 +2549,7 @@ p.product_descr {
     font-size: 1em;
 }
 
-.button1 {
+.product_price > a {
     font-family: 'Open Sans', sans-serif;
     border: none;
     border-radius: 10px;
@@ -2557,6 +2557,7 @@ p.product_descr {
     padding: 7px 15px;
     color: #FFF;
     font-size: 13px;
+    text-align: center;
     cursor: pointer;
     outline: none;
     margin-top: 9%;
@@ -2566,7 +2567,7 @@ p.product_descr {
     transition: all 0.3s ease-in-out;
 }
 
-.button1:hover {
+.product_price > a:hover {
     background: #00405d;
     color: #fff;
 }
@@ -2658,6 +2659,11 @@ p.product_descr {
 .btn_form a:hover {
     background: #00405d;
     text-decoration: none;
+}
+
+.btn_form select {
+    height: 2.5em;
+    border-radius: 10px;
 }
 
 .desc1 a span {
@@ -3217,7 +3223,7 @@ p.cart a {
         width: 52.5%;
     }
 
-    .button1 {
+    .product_price > a {
         padding: 7px 10px;
     }
 
@@ -4258,7 +4264,7 @@ p.cart a {
         padding: 6px;
     }
 
-    .button1 {
+    .product_price > a {
         padding: 6px 10px;
         font-size: 13px;
     }

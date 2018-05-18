@@ -107,4 +107,38 @@ $(document).ready(function () {
 // Misc
 $(document).ready(function () {
     $('.email-link').attr('href', 'mailto:' + $('.email-link').text().trim());
+    if ($(window).width() < 700) $('.stay form input[type="email"]').attr('placeholder', 'Введите email');
+
+    $('.btn_form select').change(function(e) {
+        var selector = '[data-mod=' + $(this).val() + '] .product_price a';
+        var button = $(selector).clone();
+        $('.btn_form a').replaceWith(button);
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var subs = (params.get('subs') || '').split(',').filter(x => x.length);
+    var brands = (params.get('brands') || '').split(',').filter(x => x.length);
+
+    function update() {
+        params.set('subs', subs.join(','));
+        params.set('brands', brands.join(','));
+        var url = window.location.pathname + '?' + params.toString();
+        console.log(url);
+        window.location = url;
+    }
+
+    $('[data-brand]').click(function() {
+        var state = !!$(this).find('input').attr('checked');
+        var value = $(this).attr('data-brand');
+        if (!state) brands.push(value);
+        else brands = brands.filter(x => x != value);
+        update();
+    });
+    $('[data-sub]').click(function() {
+        var state = !!$(this).find('input').attr('checked');
+        var value = $(this).attr('data-sub');
+        if (!state) subs.push(value);
+        else subs = subs.filter(x => x != value);
+        update();
+    });
 });

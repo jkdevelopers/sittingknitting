@@ -177,8 +177,10 @@ class ProductView(EditableMixin, generic.DetailView):
     template_name = 'pages/product.html'
     context_object_name = 'product'
 
+    def get_queryset(self): return Product.objects.filter(active=True, show=True)
+
     def get_context_data(self, **kwargs):
-        related = Product.objects.filter(category=self.object.category).exclude(pk=self.object.pk)
+        related = self.get_queryset().filter(category=self.object.category).exclude(pk=self.object.pk)
         kwargs['related'] = related
         return super(ProductView, self).get_context_data(**kwargs)
 
@@ -195,10 +197,15 @@ class ProductsView(EditableMixin, generic.ListView):
             category = get_object_or_404(Category, pk=pk)
             self.category = category
         self.search = self.request.GET.get('search')
+        parse = lambda s: set(int(i) for i in s.split(',') if s.isdigit())
+        subs = parse(self.request.GET.get('subs', ''))
+        brands = self.request.GET.get('brands', '').split(',')
+        self.subs = Category.objects.filter(pk__in=subs)
+        self.brands = [i for i in brands if Product.objects.filter(brand=i).count()]
         return super(ProductsView, self).get(*args, **kwargs)
 
     def get_queryset(self):
-        qs = Product.objects.filter(active=True)
+        qs = Product.objects.filter(active=True, show=True)
         if self.search is not None:
             return qs.filter(
                 Q(name__icontains=self.search) |
@@ -206,32 +213,28 @@ class ProductsView(EditableMixin, generic.ListView):
                 Q(brand__icontains=self.search)
             )
         if self.category is None: return qs
-        qs = qs.filter(category__isnull=False)
-        categories = [self.category] + self.category.all_children()
-        return list(filter(lambda x: x.category in categories, qs))
+        if self.subs:
+            subs = set.union(*(set(i.pk for i in j.all_children()) for j in self.subs))
+            qs = qs.filter(category__pk__in=subs)
+        if self.brands: qs = qs.filter(brand__in=self.brands)
+        return qs
 
     def get_context_data(self, **kwargs):
         kwargs = super(ProductsView, self).get_context_data(**kwargs)
+        kwargs['root'] = Category.objects.filter(type=Category.TYPES.MAIN)
         kwargs['current'] = self.category
         kwargs['search'] = self.search
         kwargs['count'] = len(self.object_list)
+        kwargs['subs'] = self.subs
+        kwargs['brands'] = self.brands
 
-        GROUPS = [
-            ('root', 'root'),
-            ('category', 'categories'),
-            ('subcategory', 'subcategories'),
-        ]
+        if self.category is None: return kwargs
 
-        for level, (name, plural) in enumerate(GROUPS):
-            kwargs[plural] = Category.get_level(level)
-            key = name + '_active'
-            kwargs[key] = None
-            if self.category is None: continue
-            if self.category.level == level:
-                kwargs[key] = self.category
-            else:
-                temp = [i for i in kwargs[plural] if self.category in i.all_children()]
-                if temp: kwargs[key] = temp[0]
+        categories = list(self.category.all_children()) + [self.category]
+
+        kwargs['all_subs'] = Category.objects.filter(parent=self.category)
+        kwargs['all_brands'] = Product.objects.filter(category__in=categories).values_list('brand', flat=True)
+        # kwargs['all_mods'] = ...
 
         return kwargs
 
