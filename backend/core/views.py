@@ -213,6 +213,8 @@ class ProductsView(EditableMixin, generic.ListView):
                 Q(brand__icontains=self.search)
             )
         if self.category is None: return qs
+        subs = self.category.all_children() + [self.category]
+        qs = qs.filter(category__in=subs)
         if self.subs:
             subs = set.union(*(set(i.pk for i in j.all_children()) for j in self.subs))
             qs = qs.filter(category__pk__in=subs)
