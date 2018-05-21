@@ -45,8 +45,8 @@ $(function () {
 $(document).ready(function () {
     $('.megamenu [data-color]').hover(function (e) {
         $(this).css(
-            'background-color',
-            e.type === 'mouseenter' ? $(this).attr('data-color') : 'initial'
+            'background',
+            e.type === 'mouseenter' ? $(this).attr('data-color') : 'inherit'
         );
     });
     $('.megamenu li.grid > a').click(function (e) {

@@ -24,6 +24,8 @@ __all__ = [
     'cart_action',
     'cart',
     'info',
+    'policy',
+    'agreement',
 ]
 
 
@@ -170,6 +172,12 @@ class InfoView(EditableMixin, generic.FormView):
         context['form'] = self.form_class()
         context['form'].success = True
         return self.render_to_response(context)
+
+
+class PolicyView(EditableMixin, generic.TemplateView): template_name = 'pages/policy.html'
+
+
+class AgreementView(EditableMixin, generic.TemplateView): template_name = 'pages/agreement.html'
 
 
 class ProductView(EditableMixin, generic.DetailView):
@@ -390,3 +398,5 @@ products = ProductsView.as_view()
 cart_action = CartActionView.as_view()
 cart = CartView.as_view()
 info = InfoView.as_view()
+policy = PolicyView.as_view()
+agreement = AgreementView.as_view()

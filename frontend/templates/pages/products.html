@@ -8,19 +8,19 @@
     <div class="women_main">
         <div class="col-md-3 s-d">
             <div class="w_sidebar">
-                <div class="w_nav1">
-                    <ul>
-                        <li>
-                            <a href="{% url 'all_products' %}" {% if not current %}class="active"{% endif %}>Все</a>
-                        </li>
-                        {% for item in root %}
-                            <li>
-                                <a href="{% url 'products' pk=item.pk %}"
-                                {% if item.pk == current.pk %}class="active"{% endif %}>{{ item.name }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+{#                <div class="w_nav1">#}
+{#                    <ul>#}
+{#                        <li>#}
+{#                            <a href="{% url 'all_products' %}" {% if not current %}class="active"{% endif %}>Все</a>#}
+{#                        </li>#}
+{#                        {% for item in root %}#}
+{#                            <li>#}
+{#                                <a href="{% url 'products' pk=item.pk %}"#}
+{#                                {% if item.pk == current.pk %}class="active"{% endif %}>{{ item.name }}</a>#}
+{#                            </li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{#                </div>#}
 
                 {% if all_subs %}
                     <section  class="sky-form">

@@ -1,6 +1,8 @@
 {% extends 'core/base.html' %}
 {% load core.tags %}
 
+{% block title %}Информация{% endblock title %}
+
 {% block content %}
     <div class="container">
         <div class="main">
@@ -8,10 +10,7 @@
                 <div class="contact_info">
                     <h2 id="address">КАК НАС НАЙТИ</h2>
                     {% component 'text.html' id='info-text-address' multiline=True %}
-                    <div class="map">
-                        <iframe src="https://www.google.com/maps/embed"
-                                width="100%" height="250" frameborder="0" style="border: 0"></iframe>
-                    </div>
+                    <div class="map">{% component 'map.html' id='info-map' %}</div>
                     <h2 id="delivery">ИНФОРМАЦИЯ О ДОСТАВКЕ</h2>
                     {% component 'text.html' id='info-text-delivery' multiline=True %}
                     <h2 id="contacts">КОНТАКТЫ</h2>

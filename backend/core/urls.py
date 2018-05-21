@@ -17,4 +17,6 @@ urlpatterns = [
     path('product/<int:pk>/', product, name='product'),
     path('cart/<action>/<slug:data>/', cart_action, name='cart_action'),
     path('cart/', cart, name='cart'),
+    path('policy/', policy, name='policy'),
+    path('agreement/', agreement, name='agreement'),
 ]

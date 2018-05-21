@@ -1,0 +1,8 @@
+{% extends 'core/plain.html' %}
+{% load core.tags %}
+
+{% block title %}Политика конфиденциальности{% endblock %}
+
+{% block content %}
+    <p>{% component 'text.html' id='policy-text' multiline=True %}</p>
+{% endblock %}

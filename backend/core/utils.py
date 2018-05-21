@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.core.files.storage import default_storage
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
+from django.utils.http import urlquote
 from django.core.exceptions import ObjectDoesNotExist
 from os.path import relpath
 from django.conf import settings
@@ -84,7 +85,10 @@ class Text(Attribute):
     field_type = fields.CharField
     value_scheme = Schema(str)
     value_default = ''
-    data_scheme = Schema({Optional('multiline'): bool})
+    data_scheme = Schema({
+        Optional('multiline'): bool,
+        Optional('encode'): bool,
+    })
 
     def field(self, **extra):
         if self.data.get('multiline', False): extra['widget'] = widgets.Textarea
@@ -96,6 +100,8 @@ class Text(Attribute):
         if self.data.get('multiline', False):
             ret = ret.replace('\n', '</p><p>')
             ret = mark_safe('<p>' + ret + '</p>')
+        elif self.data.get('encode', False):
+            ret = urlquote(ret)
         return ret
 
 

@@ -1,0 +1,9 @@
+{% load core.tags %}
+
+{% if edit_mode %}<div style="position: relative; border: 20px solid #eee;">{% endif %}
+    <iframe src="https://www.google.com/maps/embed/v1/place?
+q={% attribute 'Search query' type='text' id='search' default='' encode=True %}
+&key={% attribute 'Maps API key' type='text' id='key' default='' %}"
+            width="100%" height="400" frameborder="0" style="border: 0">
+    </iframe>
+{% if edit_mode %}</div>{% endif %}
