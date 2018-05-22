@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.views import generic
 from django.db.models import Q
+from functools import reduce
 from re import fullmatch
 from .utils import get_object_safe
 from .models import *
@@ -174,10 +175,12 @@ class InfoView(EditableMixin, generic.FormView):
         return self.render_to_response(context)
 
 
-class PolicyView(EditableMixin, generic.TemplateView): template_name = 'pages/policy.html'
+class PolicyView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/policy.html'
 
 
-class AgreementView(EditableMixin, generic.TemplateView): template_name = 'pages/agreement.html'
+class AgreementView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/agreement.html'
 
 
 class ProductView(EditableMixin, generic.DetailView):
@@ -190,6 +193,7 @@ class ProductView(EditableMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         related = self.get_queryset().filter(category=self.object.category).exclude(pk=self.object.pk)
         kwargs['related'] = related
+        kwargs['type_name'] = self.object.category.get_root().filter
         return super(ProductView, self).get_context_data(**kwargs)
 
 
@@ -208,8 +212,10 @@ class ProductsView(EditableMixin, generic.ListView):
         parse = lambda s: set(int(i) for i in s.split(',') if i.isdigit())
         subs = parse(self.request.GET.get('subs', ''))
         brands = self.request.GET.get('brands', '').split(',')
+        types = self.request.GET.get('types', '').split(',')
         self.subs = Category.objects.filter(pk__in=subs)
-        self.brands = [i for i in brands if Product.objects.filter(brand=i).count()]
+        self.brands = set(i for i in brands if Product.objects.filter(brand=i).count())
+        self.types = set(filter(None, types))
         return super(ProductsView, self).get(*args, **kwargs)
 
     def get_queryset(self):
@@ -227,6 +233,9 @@ class ProductsView(EditableMixin, generic.ListView):
             subs = set.union(*(set(i.pk for i in j.recursive()) for j in self.subs))
             qs = qs.filter(category__pk__in=subs)
         if self.brands: qs = qs.filter(brand__in=self.brands)
+        if self.types:
+            test = lambda x: next((i for i in x.modifications.all() if i.value in self.types), False)
+            qs = list(filter(test, qs))
         return qs
 
     def get_context_data(self, **kwargs):
@@ -237,14 +246,15 @@ class ProductsView(EditableMixin, generic.ListView):
         kwargs['count'] = len(self.object_list)
         kwargs['subs'] = self.subs
         kwargs['brands'] = self.brands
+        kwargs['types'] = self.types
 
         if self.category is None: return kwargs
 
         categories = self.category.recursive()
-
         kwargs['all_subs'] = Category.objects.filter(parent=self.category)
         kwargs['all_brands'] = set(Product.objects.filter(category__in=categories).values_list('brand', flat=True))
-        # kwargs['all_mods'] = ...
+        kwargs['type_name'] = self.category.get_root().filter
+        if kwargs['type_name']: kwargs['all_types'] = Modification.get_values(categories)
 
         return kwargs
 

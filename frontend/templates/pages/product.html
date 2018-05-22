@@ -55,9 +55,9 @@
                     <div class="btn_form">
                         {% if product.modifications.all %}
                             <select name="modification">
-                                <option disabled="" selected="">Выберите модификацию</option>
+                                <option disabled="" selected="">Выберите {{ type_name|lower }}</option>
                                 {% for mod in product.modifications.all %}
-                                    <option value="{{ mod.pk }}">{{ mod.type|title }}: {{ mod.value|title }}</option>
+                                    <option value="{{ mod.pk }}">{{ type_name|title }}: {{ mod.value|title }}</option>
                                 {% endfor %}
                             </select>
                         {% endif %}
@@ -91,7 +91,7 @@
                                     <img src="{% thumbnail mod.product.photo '400x400' crop='center' %}" class="img-responsive" />
                                 </div>
                                 <div class="prod1-desc">
-                                    <h3><a>{{ mod.type|title }}: {{ mod.value|title }}</a></h3>
+                                    <h3><a>{{ type_name|title }}: {{ mod.value|title }}</a></h3>
                                     <span class="code">Артикул: {{ mod.product.vendor }}</span>
                                     <p class="product_descr">{{ mod.product.description }}</p>
                                 </div>

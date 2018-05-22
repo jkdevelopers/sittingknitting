@@ -118,10 +118,12 @@ $(document).ready(function () {
     var params = new URLSearchParams(window.location.search);
     var subs = (params.get('subs') || '').split(',').filter(x => x.length);
     var brands = (params.get('brands') || '').split(',').filter(x => x.length);
+    var types = (params.get('types') || '').split(',').filter(x => x.length);
 
     function update() {
         params.set('subs', subs.join(','));
         params.set('brands', brands.join(','));
+        params.set('types', types.join(','));
         var url = window.location.pathname + '?' + params.toString();
         console.log(url);
         window.location = url;
@@ -139,6 +141,13 @@ $(document).ready(function () {
         var value = $(this).attr('data-sub');
         if (!state) subs.push(value);
         else subs = subs.filter(x => x != value);
+        update();
+    });
+    $('[data-type]').click(function() {
+        var state = !!$(this).find('input').attr('checked');
+        var value = $(this).attr('data-type');
+        if (!state) types.push(value);
+        else types = types.filter(x => x != value);
         update();
     });
 });

@@ -69,8 +69,19 @@ class Category(models.Model):
     type = models.CharField('Тип', max_length=1, choices=TYPES)
     name = models.CharField('Название', max_length=512)
     parent = models.ForeignKey(
-        'self', verbose_name='Родительская категория', related_name='children',
-        on_delete=models.CASCADE, blank=True, null=True
+        'self',
+        verbose_name='Родительская категория',
+        related_name='children',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    filter = models.CharField(
+        verbose_name='Параметр модификаций',
+        help_text='Цвет, размер, модель и т.п.',
+        max_length=50,
+        blank=True,
+        default='',
     )
 
     @property
@@ -84,6 +95,11 @@ class Category(models.Model):
         all = Category.objects.all()
         return [i for i in all if i.level == level]
 
+    def get_root(self):
+        if self.type == self.TYPES.MAIN: return self
+        if not self.parent: return None
+        return self.parent.get_root()
+
     def recursive(self):
         direct = list(self.children.all())
         return [self] + sum((i.recursive() for i in direct), [])
@@ -95,12 +111,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, **kwargs):
-        if self.pk: return super(Category, self).save(**kwargs)
-        ret = super(Category, self).save(**kwargs)
+    def update_menu(self):
         all_components = Component.objects.all()
         check = lambda pk: [i for i in all_components if i.attributes.get('category') == pk]
-        if check(self.pk): return ret
+        if check(self.pk): return
 
         level = self.level
         if self.level in (0, 1, 2):
@@ -109,7 +123,7 @@ class Category(models.Model):
 
             if level != 0:
                 parent = check(self.parent.pk)
-                if not parent: return ret
+                if not parent: return
                 parent = parent[0]
             else:
                 parent = Component.objects.get(uid='menu')
@@ -126,6 +140,12 @@ class Category(models.Model):
             if component not in items:
                 parent.attributes[name + 's']['value'] = items + [component.pk]
                 parent.save()
+
+    def save(self, **kwargs):
+        if self.filter: self.filter = self.filter.title()
+        ret = super(Category, self).save(**kwargs)
+        if self.pk: return ret
+        self.update_menu()
         return ret
 
 
@@ -303,12 +323,22 @@ class Email(models.Model):
 
 
 class Modification(models.Model):
-    type = models.CharField('Тип', max_length=200)
     value = models.CharField('Значение', max_length=200)
     product = models.ForeignKey('core.product', verbose_name='Товар', on_delete=models.CASCADE)
+
+    def save(self, **kwargs):
+        if self.value: self.value = self.value.title()
+        return super(Modification, self).save(**kwargs)
+
+    @classmethod
+    def get_values(cls, categories):
+        products = Product.objects.filter(category__in=categories)
+        modifications = set.union(*(set(i.modifications.all()) for i in products))
+        values = set(i.value for i in modifications)
+        return list(sorted(values))
 
     class Meta:
         verbose_name = 'Модификация'
         verbose_name_plural = 'Модификации'
 
-    __str__ = lambda self: '%s: %s' % (self.type, self.value)
+    __str__ = lambda self: 'Параметр: %s' % self.value

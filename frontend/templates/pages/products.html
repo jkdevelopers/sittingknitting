@@ -53,6 +53,22 @@
                     </div>
                 </section>
                 {% endif %}
+
+                {% if all_types %}
+                <section  class="sky-form">
+                    <h4>{{ type_name }}</h4>
+                    <div class="row1 scroll-pane">
+                        <div class="col col-4">
+                            {% for item in all_types %}
+                                <a class="checkbox" data-type="{{ item }}">
+                                    <input type="checkbox" name="checkbox" {% if item in types %}checked{% endif %}>
+                                    <i></i>{{ item }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                {% endif %}
             </div>
         </div>
 
