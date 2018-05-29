@@ -30,14 +30,7 @@
 }
 
 .megamenu > li > a > span {
-    color: transparent;
-    background: inherit;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: invert(1) grayscale(1) contrast(10);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    color: #3f3d3d;
 }
 
 .megamenu > li.active > a {

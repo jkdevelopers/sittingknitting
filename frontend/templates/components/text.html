@@ -1,7 +1,11 @@
 {% load core.tags %}
 
-<div style="position: relative; display: unset;" class="text-wrapper">
+{% if edit_mode %}
+<div style="position: relative; display: unset; color: inherit;" class="text-wrapper">
+{% endif %}
     {% with multiline|default:False as multiline %}
         {% attribute 'Text' type='text' id='text' default='Sample Text' multiline=multiline %}
     {% endwith %}
+{% if edit_mode %}
 </div>
+{% endif %}

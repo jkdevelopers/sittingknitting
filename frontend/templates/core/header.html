@@ -38,7 +38,7 @@
                                     {% with request.session.total|default:0 as total %}
                                         {% if total %}<p>{{ total }} руб</p>{% endif %}
                                     {% endwith %}
-                                    <img src="{% static 'images/bag2.png' %}" style="max-width: 30px;">
+                                    <img src="{% static 'images/bag2.png' %}" class="cart-icon">
                                 </a>
                                 <div class="clearfix"></div>
                             </div>
