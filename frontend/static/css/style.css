@@ -4083,6 +4083,13 @@ p.cart a {
     }
 }
 
+@media (max-width: 435px) {
+	    .top_left {
+        float: none;
+        text-align: center;
+    }
+}
+
 @media (max-width: 320px) {
     ul.icon1 {
         display: none;
