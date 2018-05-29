@@ -200,7 +200,7 @@ body a {
 }
 
 input[type=submit].order {
-    background: #00405d;
+    background: #aeafc5;
     padding: 10px 20px;
     border: none;
 
@@ -214,7 +214,7 @@ input[type=submit].order {
 }
 
 input[type=submit].order:hover {
-    background: #615c85;
+    background: #8385b2;
 }
 
 #order-form {
@@ -231,6 +231,7 @@ input[type=submit].order:hover {
 #order-form select,
 #order-form input:not([type=submit]),
 .cpns {
+	border-radius: 10px;
     height: 35px;
 }
 
@@ -268,14 +269,14 @@ input[type=submit].order:hover {
 a.cpns {
     background: #aeafc5;
     color: #fff;
-
+    border-radius: 10px;
     padding: 10px;
     font-size: 0.8em;
     font-weight: 600;
 }
 
 a.cpns:hover {
-    background: #615c85;
+    background: #8385b2;
 }
 
 .total-item p {
@@ -291,7 +292,7 @@ a.cpns:hover {
 }
 
 a.continue {
-    background: #00405d;
+    background: #8385b2;
     padding: 10px 20px;
 
     font-size: 1em;
@@ -558,7 +559,7 @@ select.item_Size {
 }
 
 .item_add a {
-    background: rgb(9, 209, 182);
+    background: #aeafc5;
     border: none;
     border-radius: 6px;
     color: #fff;
@@ -690,7 +691,7 @@ fieldset#body {
 }
 
 #loginForm #login:hover {
-    background: #00405d;
+    background: #8385b2;
 }
 
 /* Forgot your password */
@@ -819,7 +820,7 @@ input:focus {
 }
 
 .create_btn a:hover {
-    background: #00405d;
+    background: #8385b2;
     color: #ffffff;
     text-decoration: none;
 }
@@ -1007,7 +1008,7 @@ ul.icon1 {
 .sub-icon1 ul li h3 {
     text-align: center;
     font-size: 1em;
-    color: #00405d;
+    color: #8385b2;
     text-transform: uppercase;
     margin-bottom: 4%;
 }
@@ -1024,7 +1025,7 @@ ul.icon1 {
 }
 
 .sub-icon1 ul li p a {
-    color: #00405d;
+    color: #8385b2;
 }
 
 .sub-icon1 ul li p a:hover {
@@ -1077,7 +1078,7 @@ ul.megamenu.skyblue {
 }
 
 .h_nav ul li a:hover {
-    color: #00405d;
+    color: #8385b2;
     text-decoration: underline;
 }
 
@@ -1369,12 +1370,11 @@ i.goog:hover {
     outline: none;
     border: none;
     /*width: 100%;*/
-    text-transform: uppercase;
     border-radius: 10px;
 }
 
 .stay form input[type="submit"]:hover {
-    background: rgba(15, 15, 15, 0.72);
+    background: #8385b2;
 }
 
 .stay-left {
@@ -1658,7 +1658,7 @@ ul.grid_2 li {
 }
 
 .w_nav1 ul li a:hover {
-    color: #00405d;
+    color: #8385b2;
 }
 
 .w_nav2 {
@@ -2179,7 +2179,7 @@ ul.grid_2 li {
 }
 
 .w_nav li a:hover {
-    color: #00405d;
+    color: #8385b2;
 }
 
 .grids_of_4 {
@@ -2575,7 +2575,7 @@ p.product_descr {
 }
 
 .product_price > a:hover {
-    background: #00405d;
+    background: #8385b2;
     color: #fff;
 }
 
@@ -2603,7 +2603,7 @@ p.product_descr {
 }
 
 .desc1 p a:hover {
-    color: #00405d;
+    color: #8385b2;
 }
 
 .det_nav {
@@ -2664,7 +2664,7 @@ p.product_descr {
 }
 
 .btn_form a:hover {
-    background: #00405d;
+    background: #8385b2;
     text-decoration: none;
 }
 
@@ -2681,7 +2681,7 @@ p.product_descr {
 }
 
 .desc1 a span:hover {
-    color: #00405d;
+    color: #8385b2;
     text-decoration: none;
 }
 
@@ -2709,7 +2709,7 @@ p.product_descr {
 
 .registration h2 {
     font-size: 1.5em;
-    color: #00405d;
+    color: #8385b2;
     /*text-transform: capitalize;*/
     margin-bottom: 4%;
 }
@@ -2792,6 +2792,7 @@ label {
 
 .registration_form input[type="text"], .registration_form input[type="email"], .registration_form input[type="tel"], .registration_form input[type="password"] {
     padding: 8px;
+    border-radius: 10px;
     display: block;
     width: 100%;
     outline: none;
@@ -2841,13 +2842,13 @@ input[required], textarea[required] {
 
 .registration_form input[type="submit"]:hover {
     color: #ffffff;
-    background: #00405d;
+    background: #8385b2;
 }
 
 .terms {
     text-decoration: underline;
     /*text-transform: capitalize;*/
-    color: #00405d;
+    color: #8385b2;
 }
 
 .terms:hover {
@@ -2934,7 +2935,7 @@ input[required], textarea[required] {
 
 .shoping_left h4 a {
     text-transform: uppercase;
-    color: #00405d;
+    color: #8385b2;
     font-size: 1em;
     text-decoration: underline;
     -webkit-transition: all 0.3s ease-in-out;
@@ -2996,7 +2997,7 @@ ul.s_icons {
 }
 
 .s_icons li a:hover {
-    background: #00405d;
+    background: #8385b2;
 }
 
 .s_icons li a img {
@@ -3021,7 +3022,7 @@ ul.s_icons {
 }
 
 .shoping_right p a {
-    color: #00405d;
+    color: #8385b2;
 }
 
 .shoping_bag {
@@ -3038,7 +3039,7 @@ ul.s_icons {
 
 .shoping_bag1 h2 a {
     -webkit-text-stroke: 0.4px;
-    color: #00405d;
+    color: #8385b2;
     font-size: 0.8725em;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -3078,12 +3079,12 @@ ul.s_icons {
 }
 
 .shoping_left a.btn1:hover {
-    background: #00405d;
+    background: #8385b2;
     text-decoration: none;
 }
 
 .shoping_right p span.color {
-    color: #00405d;
+    color: #8385b2;
 }
 
 h4.title {
@@ -3119,7 +3120,7 @@ p.cart a {
 
 .contact h2 {
     font-size: 1.5em;
-    color: #00405d;
+    color: #8385b2;
     text-shadow: 0 1px 0 #ffffff;
     text-transform: capitalize;
     margin-top: 0.5em;
@@ -3172,6 +3173,7 @@ p.cart a {
     margin-top: 10px;
     -webkit-appearance: none;
     border: none;
+    border-radius: 10px;
     outline: none;
     font-family: 'Open Sans', sans-serif;
     cursor: pointer;
@@ -3188,7 +3190,7 @@ p.cart a {
 }
 
 .contact-form input[type="submit"]:hover {
-    background: #00405d;
+    background: #8385b2;
     color: #ffffff;
 }
 
