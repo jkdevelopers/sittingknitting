@@ -33,7 +33,7 @@ body a {
 }
 
 #scroll2top {
-    background: #5c1e39 url('../images/up_arrow.png') center center no-repeat;
+    background: #aeafc5 url('../images/up_arrow.png') center center no-repeat;
     color: #fff;
     cursor: pointer;
     position: fixed;
@@ -267,7 +267,7 @@ input[type=submit].order:hover {
 }
 
 a.cpns {
-    background: #5c1e39;
+    background: #aeafc5;
     color: #fff;
     border-radius: 10px;
     padding: 10px;
@@ -397,7 +397,7 @@ ul.qty li p {
 /*-- header_top --*/
 .top_bg {
     /*background: #252525;*/
-    background: #5c1e39;
+    background: #aeafc5;
 }
 
 .header_top {
@@ -464,6 +464,7 @@ ul.qty li p {
 }
 
 .top_right ul li a:hover {
+    color: #444565;
     text-decoration: none;
 }
 
