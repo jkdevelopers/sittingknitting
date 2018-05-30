@@ -42,6 +42,9 @@
                         </option>
                     {% endfor %}
                 </select>
+                {% if order.delivery_type and order.delivery_type.price != 0 %}
+                    <input name="address" type="text" value="{{ request.user.address }}" placeholder="Адрес доставки">
+                {% endif %}
                 <div class="wrapper">
                     {% if not order.coupon %}
                         <input name="coupon" type="text" value="" placeholder="Промокод">

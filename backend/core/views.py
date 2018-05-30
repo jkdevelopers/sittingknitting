@@ -360,16 +360,24 @@ class CartActionView(generic.View):
         return redirect(url)
 
     def place_order(self):
-        phone = self.request.POST.get('phone')
+        phone = self.request.POST.get('phone', '').strip()
+        address = self.request.POST.get('address', '').strip()
         if not self.cart.products: messages.error(self.request, 'Ваша корзина пуста')
         elif not self.cart.delivery: messages.error(self.request, 'Пожалуйста, выберите способ доставки')
         elif not phone: messages.error(self.request, 'Пожалуйста, введите контактный телефон')
+        elif self.cart.delivery.price != 0 and not address:
+            messages.error(self.request, 'Пожалуйста, введите адрес доставки')
         elif not fullmatch('\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}', phone):
             messages.error(self.request, 'Пожалуйста, введите корректный номер телефона')
         else:
             items = [OrderItem(product=i, amount=1) for i in self.cart.products]
             for i in items: i.save()
-            order = Order(phone=phone, coupon=self.cart.coupon, delivery_type=self.cart.delivery)
+            order = Order(
+                phone=phone,
+                coupon=self.cart.coupon,
+                delivery_type=self.cart.delivery,
+                delivery_address=address,
+            )
             order.save()
             order.items.set(items)
             order.save()
