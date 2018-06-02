@@ -109,6 +109,12 @@ $(document).ready(function () {
     $('.email-link').attr('href', 'mailto:' + $('.email-link').text().trim());
     if ($(window).width() < 700) $('.stay form input[type="email"]').attr('placeholder', 'Введите email');
 
+    $('input[name=accept]').change(function () {
+        console.log($(this)[0].checked);
+        if ($(this)[0].checked) $('#register-submit').show();
+        else $('#register-submit').hide();
+    });
+
     $('.btn_form select').change(function(e) {
         var selector = '[data-mod=' + $(this).val() + '] .product_price a';
         var button = $(selector).clone();

@@ -41,8 +41,11 @@
                             </div>
                             <div class="sky-form">
                                 <label class="checkbox">
-                                    <input type="checkbox" name="checkbox"><i></i>
-                                    Принимаю <a class="terms" href="#">правила использования</a> сервиса
+                                    <input type="checkbox" name="accept" checked="checked"><i></i>
+                                    Принимаю
+                                    <a class="terms" href="{% url 'policy' %}" target="_blank">политику конфиденциальности</a>
+                                    и
+                                    <a class="terms" href="{% url 'agreement' %}" target="_blank">пользовательское соглашение</a>
                                 </label>
                             </div>
                         </form>

@@ -1,7 +1,9 @@
 {% load core.tags %}
 
+{% attribute 'Открыть в новой вкладке' type='boolean' id='newtab' default=True %}
+
 <li class="text-wrapper">
-    <a href="{% attribute 'URL' type='text' id='url' default='#' %}">
+    <a href="{% attribute 'URL' type='text' id='url' default='#' %}" {% if newtab %}target="_blank"{% endif %}>
         {% attribute 'Text' type='text' id='text' default='Sample text' %}
     </a>
 </li>

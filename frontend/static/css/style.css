@@ -573,6 +573,10 @@ select.item_Size {
     position: relative;
 }
 
+#loginContainer a {
+    text-decoration: none;
+}
+
 #loginContainer a span {
     display: block;
     padding: 2px 14px;
@@ -1443,7 +1447,7 @@ i.mail {
     color: #3f3d3d;
     display: block;
     font-size: 1em;
-    font-weight: 300;
+    /*font-weight: 300;*/
     line-height: 2em;
 }
 
@@ -3127,7 +3131,7 @@ p.cart a {
 }
 
 .map {
-    margin: 2% 2% 2% 0;
+    margin: 2% 0 2% 0;
 }
 
 .col {
