@@ -24,6 +24,7 @@ __all__ = [
     'products',
     'cart_action',
     'cart',
+    'contacts',
     'info',
     'policy',
     'agreement',
@@ -164,8 +165,8 @@ class HomeView(EditableMixin, generic.TemplateView):
     template_name = 'pages/home.html'
 
 
-class InfoView(EditableMixin, generic.FormView):
-    template_name = 'pages/info.html'
+class ContactsView(EditableMixin, generic.FormView):
+    template_name = 'pages/contacts.html'
     form_class = FeedbackForm
 
     def form_valid(self, form):
@@ -173,6 +174,10 @@ class InfoView(EditableMixin, generic.FormView):
         context['form'] = self.form_class()
         context['form'].success = True
         return self.render_to_response(context)
+
+
+class InfoView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/info.html'
 
 
 class PolicyView(EditableMixin, generic.TemplateView):
@@ -356,6 +361,7 @@ class CartActionView(generic.View):
                 if action == 'add': self.cart.add_product(int(self.data))
                 elif action == 'remove': self.cart.remove_product(int(self.data))
                 elif action == 'delivery': self.cart.change_delivery(int(self.data))
+                elif action == 'preorder': self.preorder(int(self.data))
         url = self.request.META.get('HTTP_REFERER', '/')
         return redirect(url)
 
@@ -384,6 +390,17 @@ class CartActionView(generic.View):
             order.update()
             self.cart.recalc()
             messages.success(self.request, 'Заказ успешно создан. Номер заказа: {:03}'.format(order.pk))
+
+    def preorder(self, pk):
+        if not self.request.user.is_authenticated:
+            messages.error(self.request, 'Пожалуйста, авторизуйтесь, чтобы оформить предзаказ')
+            return
+        product = get_object_safe(Product, pk=pk)
+        if product is None or not product.active or product.quantity: raise Http404
+        messages.success(self.request, 'Заявка на предзаказ успешно создана')
+        link = self.request.build_absolute_uri(product.get_absolute_url())
+        for admin in User.objects.filter(is_superuser=True):
+            admin.send_mail('preorder', product=product, user=self.request.user, link=link)
 
 
 class CartView(generic.TemplateView):
@@ -415,6 +432,7 @@ product = ProductView.as_view()
 products = ProductsView.as_view()
 cart_action = CartActionView.as_view()
 cart = CartView.as_view()
+contacts = ContactsView.as_view()
 info = InfoView.as_view()
 policy = PolicyView.as_view()
 agreement = AgreementView.as_view()

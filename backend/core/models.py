@@ -304,9 +304,9 @@ class Email(models.Model):
         context.update({
             'title': self.title,
             'button': self.button,
-            'link': self.link,
             'text': text,
         })
+        if self.link and 'link' not in context: context['link'] = self.link
         plain = render_to_string('emails/plain.html', context)
         html = render_to_string('emails/pretty.html', context)
         subject = '[SittingKnitting] ' + self.title

@@ -1,5 +1,5 @@
 {% if product.quantity == 0 %}
-    <a href="#">Оформить предзаказ</a>
+    <a href="{% url 'cart_action' action='preorder' data=product.pk %}">Оформить предзаказ</a>
 {% else %}
     {% if product.pk in request.session.products|default:'' %}
         <a href="{% url 'cart_action' action='remove' data=product.pk %}">Убрать из корзины</a>
