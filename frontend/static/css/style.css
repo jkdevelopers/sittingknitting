@@ -4524,3 +4524,8 @@ p.cart a {
     }
 }
 
+@media (width: 768px) {
+    .our-st {
+        margin-top: 0 !important;
+    }
+}
