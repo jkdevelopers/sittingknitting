@@ -3,6 +3,6 @@
 
 {% block title %}Пользовательское соглашение{% endblock %}
 
-{% block content %}
-    <p>{% component 'text.html' id='agreement-text' multiline=True %}</p>
+{% block text %}
+    {% component 'text.html' id='agreement-text' multiline=True %}
 {% endblock %}

@@ -15,9 +15,12 @@ urlpatterns = [
     path('subscribe/', subscribe, name='subscribe'),
     path('products/category/<int:pk>/', products, name='products'),
     path('products/', products, name='all_products'),
+    path('products/discount/', discount_products, name='discount_products'),
     path('product/<int:pk>/', product, name='product'),
     path('cart/<action>/<slug:data>/', cart_action, name='cart_action'),
     path('cart/', cart, name='cart'),
     path('policy/', policy, name='policy'),
     path('agreement/', agreement, name='agreement'),
+    path('discounts/', discounts, name='discounts'),
+    path('finished/', finished, name='finished'),
 ]

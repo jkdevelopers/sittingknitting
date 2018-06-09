@@ -11,14 +11,14 @@ register = Library()
 @register.simple_tag(takes_context=True)
 def component(context, template, id=None, **kwargs):
     if id is None: raise RuntimeError('Component ID is currently required')
+    context = Context(context.flatten())  # Копия внешнего контекста
+    context.update(kwargs)                # С дополнительными параметрами из kwargs
     try:
         component = Component.objects.get(template=template, uid=id)
     except ObjectDoesNotExist:
         component = Component(template=template, uid=id)
         component.save(context=context.flatten())
     template = get_template(COMPONENTS_PREFIX + '/' + component.template)
-    context = Context(context.flatten())
-    context.update(kwargs)
     context['__attributes'] = component.attributes
     rendered = template.render(context.flatten())
     if context.get('edit_mode') is None: return rendered

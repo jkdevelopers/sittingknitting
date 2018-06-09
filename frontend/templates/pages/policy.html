@@ -3,6 +3,6 @@
 
 {% block title %}Политика конфиденциальности{% endblock %}
 
-{% block content %}
-    <p>{% component 'text.html' id='policy-text' multiline=True %}</p>
+{% block text %}
+    {% component 'text.html' id='policy-text' multiline=True %}
 {% endblock %}

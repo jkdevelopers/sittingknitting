@@ -22,12 +22,15 @@ __all__ = [
     'subscribe',
     'product',
     'products',
+    'discount_products',
     'cart_action',
     'cart',
     'contacts',
     'info',
     'policy',
     'agreement',
+    'discounts',
+    'finished',
 ]
 
 
@@ -188,6 +191,14 @@ class AgreementView(EditableMixin, generic.TemplateView):
     template_name = 'pages/agreement.html'
 
 
+class DiscountsView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/discounts.html'
+
+
+class FinishedView(EditableMixin, generic.TemplateView):
+    template_name = 'pages/finished.html'
+
+
 class ProductView(EditableMixin, generic.DetailView):
     model = Product
     template_name = 'pages/product.html'
@@ -200,6 +211,33 @@ class ProductView(EditableMixin, generic.DetailView):
         kwargs['related'] = related
         kwargs['type_name'] = self.object.category.get_root().filter
         return super(ProductView, self).get_context_data(**kwargs)
+
+
+class DiscountProductsView(EditableMixin, generic.ListView):
+    model = Product
+    template_name = 'pages/products.html'
+    context_object_name = 'products'
+
+    def get(self, *args, **kwargs):
+        self.search = self.request.GET.get('search')
+        return super(DiscountProductsView, self).get(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = Product.objects.filter(active=True, show=True, discount=True)
+        if self.search is not None:
+            return qs.filter(
+                Q(name__icontains=self.search) |
+                Q(vendor__icontains=self.search) |
+                Q(brand__icontains=self.search)
+            )
+        return qs
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(DiscountProductsView, self).get_context_data(**kwargs)
+        kwargs['current'] = type('_', (), {'name': 'Акции'})
+        kwargs['search'] = self.search
+        kwargs['count'] = len(self.object_list)
+        return kwargs
 
 
 class ProductsView(EditableMixin, generic.ListView):
@@ -430,9 +468,12 @@ register = RegisterView.as_view()
 subscribe = SubscribeView.as_view()
 product = ProductView.as_view()
 products = ProductsView.as_view()
+discount_products = DiscountProductsView.as_view()
 cart_action = CartActionView.as_view()
 cart = CartView.as_view()
 contacts = ContactsView.as_view()
 info = InfoView.as_view()
 policy = PolicyView.as_view()
 agreement = AgreementView.as_view()
+discounts = DiscountsView.as_view()
+finished = FinishedView.as_view()
