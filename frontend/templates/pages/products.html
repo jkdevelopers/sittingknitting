@@ -8,67 +8,38 @@
     <div class="women_main">
         <div class="col-md-3 s-d">
             <div class="w_sidebar">
-{#                <div class="w_nav1">#}
-{#                    <ul>#}
-{#                        <li>#}
-{#                            <a href="{% url 'all_products' %}" {% if not current %}class="active"{% endif %}>Все</a>#}
-{#                        </li>#}
-{#                        {% for item in root %}#}
-{#                            <li>#}
-{#                                <a href="{% url 'products' pk=item.pk %}"#}
-{#                                {% if item.pk == current.pk %}class="active"{% endif %}>{{ item.name }}</a>#}
-{#                            </li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-{#                </div>#}
 
-                {% if all_subs %}
-                    <section  class="sky-form">
-                        <h4>Категория</h4>
+                {% comment %}
+                <div class="w_nav1">
+                    <ul>
+                        <li>
+                            <a href="{% url 'all_products' %}" {% if not current %}class="active"{% endif %}>Все</a>
+                        </li>
+                        {% for item in root %}
+                            <li>
+                                <a href="{% url 'products' pk=item.pk %}"
+                                {% if item.pk == current.pk %}class="active"{% endif %}>{{ item.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endcomment %}
+
+                {% for title, items, _ in filters %}
+                    <section class="sky-form">
+                        <h4>{{ title }}</h4>
                         <div class="row1 scroll-pane">
-                            <div class="col col-4">
-                                {% for item in all_subs %}
-                                    <a class="checkbox" data-sub="{{ item.pk }}">
-                                        <input type="checkbox" name="checkbox" {% if item in subs %}checked{% endif %}>
-                                        <i></i>{{ item.name }}
+                            <div class="col col-4 filter-group" data-value="{{ forloop.counter0 }}">
+                                {% for item in items %}
+                                    <a class="checkbox" data-value="{{ forloop.counter0 }}">
+                                        <input type="checkbox" name="checkbox" {% if item.1 %}checked{% endif %}>
+                                        <i></i>{{ item.0 }}
                                     </a>
                                 {% endfor %}
                             </div>
                         </div>
                     </section>
-                {% endif %}
-
-                {% if all_brands %}
-                <section  class="sky-form">
-                    <h4>Производитель</h4>
-                    <div class="row1 scroll-pane">
-                        <div class="col col-4">
-                            {% for item in all_brands %}
-                                <a class="checkbox" data-brand="{{ item }}">
-                                    <input type="checkbox" name="checkbox" {% if item in brands %}checked{% endif %}>
-                                    <i></i>{{ item }}
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </section>
-                {% endif %}
-
-                {% if all_types %}
-                <section  class="sky-form">
-                    <h4>{{ type_name }}</h4>
-                    <div class="row1 scroll-pane">
-                        <div class="col col-4">
-                            {% for item in all_types %}
-                                <a class="checkbox" data-type="{{ item }}">
-                                    <input type="checkbox" name="checkbox" {% if item in types %}checked{% endif %}>
-                                    <i></i>{{ item }}
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </section>
-                {% endif %}
+                {% endfor %}
             </div>
         </div>
 

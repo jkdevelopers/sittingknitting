@@ -53,15 +53,17 @@
                     {% endcomment %}
                     <p>{{ product.description }}</p>
                     <div class="btn_form">
-                        {% if product.modifications.all %}
+                        {% if mod_items %}
                             <select name="modification">
-                                <option disabled="" selected="">Выберите {{ type_name|lower }}</option>
-                                {% for mod in product.modifications.all %}
-                                    <option value="{{ mod.pk }}">{{ type_name|title }}: {{ mod.value|title }}</option>
+                                <option disabled="" selected="">Выберите {{ mod_name|lower }}</option>
+                                {% for item, value in mod_items %}
+                                    <option value="{{ item.pk }}">{{ mod_name|title }}: {{ value|title }}</option>
                                 {% endfor %}
                             </select>
+                            <a style="display: none;"></a>
+                        {% else %}
+                            {% include 'core/cart_button.html' %}
                         {% endif %}
-                        {% include 'core/cart_button.html' %}
                     </div>
                     {#<a href="#"><span>login to save in wishlist </span></a>#}
 			   	</div>
@@ -81,25 +83,25 @@
                 </p>
             </div>
             {% endcomment %}
-            {% if product.modifications.all %}
+            {% if mod_items %}
                 <div class="single-bottom1">
                     <h6>Варианты товара</h6>
-                    {% for mod in product.modifications.all %}
-                        <div class="product" data-mod="{{ mod.pk }}">
+                    {% for item, value in mod_items %}
+                        <div class="product" data-mod="{{ item.pk }}">
                             <div class="product-desc">
                                 <div class="product-img">
-                                    <img src="{% thumbnail mod.product.photo '400x400' crop='center' %}" class="img-responsive" />
+                                    <img src="{% thumbnail item.photo '400x400' crop='center' %}" class="img-responsive" />
                                 </div>
                                 <div class="prod1-desc">
-                                    <h3><a>{{ type_name|title }}: {{ mod.value|title }}</a></h3>
-                                    <span class="code">Артикул: {{ mod.product.vendor }}</span>
-                                    <p class="product_descr">{{ mod.product.description }}</p>
+                                    <h3><a>{{ mod_name|title }}: {{ value|title }}</a></h3>
+                                    <span class="code">Артикул: {{ item.vendor }}</span>
+                                    <p class="product_descr">{{ item.description }}</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="product_price">
-                                <span class="price-access">{{ mod.product.price }} руб.</span>
-                                {% with product=mod.product %}{% include 'core/cart_button.html' %}{% endwith %}
+                                <span class="price-access">{{ item.price }} руб.</span>
+                                {% with product=item %}{% include 'core/cart_button.html' %}{% endwith %}
                             </div>
                             <div class="clearfix"></div>
                         </div>

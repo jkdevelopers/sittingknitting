@@ -21,19 +21,28 @@ class UserAdmin(AuthUserAdmin):
     ]
 
 
+class PropertyHandlerInline(admin.StackedInline):
+    model = PropertyHandler
+    fields = ['name', 'default', 'filters', 'modifications']
+    extra = 0
+
+
 class CategoryAdmin(admin.ModelAdmin):
+    inlines = [PropertyHandlerInline]
     list_display = ['name', 'type']
     ordering = ['name']
 
 
-class ModificationInline(admin.TabularInline):
-    verbose_name = 'Модификация товара'
-    verbose_name_plural = 'Модификации товара'
-    model = Product.modifications.through
+class PropertyInline(admin.StackedInline):
+    model = Property
+    fields = ['value']
+    extra = 0
+    can_delete = False
+    has_add_permission = lambda *args: False
 
 
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ModificationInline]
+    inlines = [PropertyInline]
     exclude = ['modifications']
     list_display = ['vendor', 'name', 'price', 'quantity', 'active', 'show']
     list_filter = ['category', 'active', 'show']
@@ -55,10 +64,10 @@ class SubscriptionAdmin(admin.ModelAdmin):
     actions = [send_mail]
 
 
-class OrderItemInline(admin.TabularInline):
-    verbose_name = 'Элемент заказа'
-    verbose_name_plural = 'Элементы заказа'
-    model = Order.items.through
+class OrderItemInline(admin.StackedInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ['price']
 
 
 class OrderItemAdmin(admin.ModelAdmin):
@@ -93,10 +102,6 @@ class CouponAdmin(admin.ModelAdmin):
     list_display = ['type', 'value', 'active']
 
 
-class ModificationAdmin(admin.ModelAdmin):
-    get_model_perms = lambda self, req: {}
-
-
 admin.site.register(User, UserAdmin)
 admin.site.register(Component)
 admin.site.register(Category, CategoryAdmin)
@@ -107,4 +112,3 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Delivery, DeliveryAdmin)
 admin.site.register(Coupon, CouponAdmin)
 admin.site.register(Email)
-admin.site.register(Modification)

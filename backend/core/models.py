@@ -19,7 +19,8 @@ __all__ = [
     'Delivery',
     'Coupon',
     'Email',
-    'Modification',
+    'PropertyHandler',
+    'Property',
 ]
 
 PhoneField = lambda **kwargs: models.CharField('Телефон', max_length=18, validators=[
@@ -76,13 +77,6 @@ class Category(models.Model):
         blank=True,
         null=True
     )
-    filter = models.CharField(
-        verbose_name='Параметр модификаций',
-        help_text='Цвет, размер, модель и т.п.',
-        max_length=50,
-        blank=True,
-        default='',
-    )
 
     @property
     def level(self):
@@ -97,7 +91,7 @@ class Category(models.Model):
 
     def get_root(self):
         if self.type == self.TYPES.MAIN: return self
-        if not self.parent: return None
+        if not self.parent: return self  # ???
         return self.parent.get_root()
 
     def recursive(self):
@@ -142,7 +136,6 @@ class Category(models.Model):
                 parent.save()
 
     def save(self, **kwargs):
-        if self.filter: self.filter = self.filter.title()
         ret = super(Category, self).save(**kwargs)
         if self.pk: return ret
         self.update_menu()
@@ -161,21 +154,21 @@ class Product(models.Model):
     active = models.BooleanField('Разрешить покупку', default=True)
     show = models.BooleanField('Показывать на сайте', default=True)
     description = models.TextField('Описание', blank=True, default='')
+    main = models.ForeignKey(
+        'self', related_name='modifications', on_delete=models.CASCADE, blank=True, null=True,
+        verbose_name='Корневой товар модификаций',
+    )
 
     quantity = models.PositiveIntegerField('Количество', default=0)
     price = models.PositiveIntegerField('Цена', default=0)
     old_price = models.PositiveIntegerField('Старая цена', blank=True, null=True)
     discount = models.BooleanField('Пометка "акция"', default=False)
 
-    modifications = models.ManyToManyField(
-        'modification', verbose_name='Модификации', blank=True, related_name='products'
-    )
-
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
-    __str__ = lambda self: self.name
+    __str__ = lambda self: '[%s] %s' % (self.vendor, self.name)
     get_absolute_url = lambda self: reverse('product', kwargs={'pk': self.pk})
 
 
@@ -192,6 +185,7 @@ class Subscription(models.Model):
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.CASCADE)
+    order = models.ForeignKey('order', verbose_name='Заказ', related_name='items', on_delete=models.CASCADE)
     amount = models.PositiveIntegerField('Количество')
 
     def price(self): return self.product.price * self.amount
@@ -199,8 +193,8 @@ class OrderItem(models.Model):
     price.short_description = 'Цена'
 
     class Meta:
-        verbose_name = 'Элемент заказа'
-        verbose_name_plural = 'Элементы заказа'
+        verbose_name = 'Элемент'
+        verbose_name_plural = 'Элементы'
 
     __str__ = lambda self: '%s x %s = %s руб.' % (self.product, self.amount, self.price())
 
@@ -254,7 +248,6 @@ class Order(models.Model):
     manager = models.ForeignKey(User, models.SET_NULL, verbose_name='Менеджер', blank=True, null=True)
     created = models.DateTimeField('Создан', auto_now_add=True)
     status = models.CharField('Статус', max_length=1, choices=STATUSES, default='0')
-    items = models.ManyToManyField(OrderItem, verbose_name='Элементы', blank=True)
     coupon = models.ForeignKey(Coupon, models.SET_NULL, verbose_name='Купон', blank=True, null=True)
 
     phone = PhoneField()
@@ -322,23 +315,44 @@ class Email(models.Model):
     __str__ = lambda self: 'Письмо "%s"' % self.code
 
 
-class Modification(models.Model):
-    value = models.CharField('Значение', max_length=200)
-    product = models.ForeignKey('core.product', verbose_name='Товар', on_delete=models.CASCADE)
+class PropertyHandler(models.Model):
+    name = models.CharField('Название', max_length=200)
+    default = models.CharField('Значение по умолчанию', max_length=200, blank=True)
+    filters = models.BooleanField('Использовать для фильтров', default=True)
+    modifications = models.BooleanField('Использовать для модификаций', default=False)
+    category = models.ForeignKey(
+        Category, verbose_name='Категория', related_name='properties', on_delete=models.CASCADE
+    )
 
     def save(self, **kwargs):
-        if self.value: self.value = self.value.title()
-        return super(Modification, self).save(**kwargs)
-
-    @classmethod
-    def get_values(cls, categories):
-        products = Product.objects.filter(category__in=categories)
-        modifications = set.union(*(set(i.modifications.all()) for i in products))
-        values = set(i.value for i in modifications)
-        return list(sorted(values))
+        new = self.pk is None
+        ret = super(PropertyHandler, self).save(**kwargs)
+        if new:
+            subs = self.category.recursive()
+            qs = Product.objects.filter(category__in=subs)
+            for product in qs:
+                prop = Property(value=self.default, handler=self, product=product)
+                prop.save()
+        return ret
 
     class Meta:
-        verbose_name = 'Модификация'
-        verbose_name_plural = 'Модификации'
+        verbose_name = 'Параметр'
+        verbose_name_plural = 'Параметры'
 
-    __str__ = lambda self: 'Параметр: %s' % self.value
+    __str__ = lambda self: self.name
+
+
+class Property(models.Model):
+    value = models.CharField('Значение', max_length=200, blank=True)
+    handler = models.ForeignKey(
+        PropertyHandler, related_name='properties', on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(
+        Product, verbose_name='Товар', related_name='properties', on_delete=models.CASCADE
+    )
+
+    class Meta:
+        verbose_name = 'Параметр'
+        verbose_name_plural = 'Параметры'
+
+    __str__ = lambda self: self.handler.name

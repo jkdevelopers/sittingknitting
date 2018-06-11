@@ -1,12 +1,10 @@
 from django.contrib.auth import views as auth_views, login as auth_login
-from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.views import generic
 from django.db.models import Q
-from functools import reduce
 from re import fullmatch
 from .utils import get_object_safe
 from .models import *
@@ -209,7 +207,15 @@ class ProductView(EditableMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         related = self.get_queryset().filter(category=self.object.category).exclude(pk=self.object.pk)
         kwargs['related'] = related
-        kwargs['type_name'] = self.object.category.get_root().filter
+        root = self.object.category.get_root()
+        mod_property = root.properties.filter(modifications=True).first()  # Можно больше
+        if mod_property is not None:
+            kwargs['mod_name'] = mod_property.name
+            mods = self.object.modifications.all()
+            kwargs['mod_items'] = []
+            for mod in mods:
+                value = mod.properties.filter(handler=mod_property).first().value
+                kwargs['mod_items'].append((mod, value))
         return super(ProductView, self).get_context_data(**kwargs)
 
 
@@ -246,20 +252,35 @@ class ProductsView(EditableMixin, generic.ListView):
     context_object_name = 'products'
 
     def get(self, *args, **kwargs):
-        pk = kwargs.get('pk')
-        self.category = None
-        if pk is not None:
-            category = get_object_or_404(Category, pk=pk)
-            self.category = category
+        self.category = get_object_safe(Category, pk=kwargs.get('pk'), error=Http404)
         self.search = self.request.GET.get('search')
-        parse = lambda s: set(int(i) for i in s.split(',') if i.isdigit())
-        subs = parse(self.request.GET.get('subs', ''))
-        brands = self.request.GET.get('brands', '').split(',')
-        types = self.request.GET.get('types', '').split(',')
-        self.subs = Category.objects.filter(pk__in=subs)
-        self.brands = set(i for i in brands if Product.objects.filter(brand=i).count())
-        self.types = set(filter(None, types))
+        self.get_filters()
+        self.clean_filters()
         return super(ProductsView, self).get(*args, **kwargs)
+
+    def get_filters(self):
+        self.all_filters = []
+        root = self.category.get_root()
+        props = root.properties.filter(filters=True)
+        for prop in props:
+            pprops = list(prop.properties.filter(product__active=True).exclude(value=''))
+            values = [[i, False] for i in sorted(set(i.value for i in pprops))]
+            self.all_filters.append((prop.name, values, pprops))
+
+    def clean_filters(self):
+        raw = self.request.GET.get('filter', '')
+        filters = [i.split(',') for i in raw.split('|')]
+        filters = filters[:len(self.all_filters)]
+        zipped = zip(filters, self.all_filters[:len(filters)])
+        self.filters = []
+        for group, (_, values, pprops) in zipped:
+            items = []
+            for i in group:
+                if not i.isdigit(): continue
+                if int(i) >= len(pprops): continue
+                values[int(i)][1] = True
+                items.append(pprops[int(i)])
+            self.filters.append(items)
 
     def get_queryset(self):
         qs = Product.objects.filter(active=True, show=True)
@@ -272,32 +293,18 @@ class ProductsView(EditableMixin, generic.ListView):
         if self.category is None: return qs
         subs = self.category.recursive()
         qs = qs.filter(category__in=subs)
-        if self.subs:
-            subs = set.union(*(set(i.pk for i in j.recursive()) for j in self.subs))
-            qs = qs.filter(category__pk__in=subs)
-        if self.brands: qs = qs.filter(brand__in=self.brands)
-        if self.types:
-            test = lambda x: next((i for i in x.modifications.all() if i.value in self.types), False)
-            qs = list(filter(test, qs))
+        for group in self.filters:
+            products = set(i.product.pk for i in group)
+            if not products: continue
+            qs = qs.filter(pk__in=products)
         return qs
 
     def get_context_data(self, **kwargs):
         kwargs = super(ProductsView, self).get_context_data(**kwargs)
-        kwargs['root'] = Category.objects.filter(type=Category.TYPES.MAIN)
+        kwargs['filters'] = self.all_filters
         kwargs['current'] = self.category
         kwargs['search'] = self.search
         kwargs['count'] = len(self.object_list)
-        kwargs['subs'] = self.subs
-        kwargs['brands'] = self.brands
-        kwargs['types'] = self.types
-
-        if self.category is None: return kwargs
-
-        categories = self.category.recursive()
-        kwargs['all_subs'] = Category.objects.filter(parent=self.category)
-        kwargs['all_brands'] = set(Product.objects.filter(category__in=categories).values_list('brand', flat=True))
-        kwargs['type_name'] = self.category.get_root().filter
-        if kwargs['type_name']: kwargs['all_types'] = Modification.get_values(categories)
 
         return kwargs
 

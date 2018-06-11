@@ -109,51 +109,43 @@ $(document).ready(function () {
     $('.email-link').attr('href', 'mailto:' + $('.email-link').text().trim());
     if ($(window).width() < 700) $('.stay form input[type="email"]').attr('placeholder', 'Введите email');
 
+
+    // Галочка в регистрации
     $('input[name=accept]').change(function () {
         console.log($(this)[0].checked);
         if ($(this)[0].checked) $('#register-submit').show();
         else $('#register-submit').hide();
     });
 
+    // Выбор модификаций
     $('.btn_form select').change(function(e) {
         var selector = '[data-mod=' + $(this).val() + '] .product_price a';
         var button = $(selector).clone();
         $('.btn_form a').replaceWith(button);
     });
 
+    // Фильтры
+
     var params = new URLSearchParams(window.location.search);
-    var subs = (params.get('subs') || '').split(',').filter(x => x.length);
-    var brands = (params.get('brands') || '').split(',').filter(x => x.length);
-    var types = (params.get('types') || '').split(',').filter(x => x.length);
+    var raw = (params.get('filter') || '');
+    var groups = raw.split('|').map(x => x.split(','));
+    var filter = groups.map(x => x.filter(y => y.length).map(y => +y));
 
     function update() {
-        params.set('subs', subs.join(','));
-        params.set('brands', brands.join(','));
-        params.set('types', types.join(','));
+        var raw = filter.map(x => x.join(',')).join('|');
+        params.set('filter', raw);
         var url = window.location.pathname + '?' + params.toString();
-        console.log(url);
         window.location = url;
     }
 
-    $('[data-brand]').click(function() {
+    $('.filter-group a[data-value]').click(function () {
         var state = !!$(this).find('input').attr('checked');
-        var value = $(this).attr('data-brand');
-        if (!state) brands.push(value);
-        else brands = brands.filter(x => x != value);
-        update();
-    });
-    $('[data-sub]').click(function() {
-        var state = !!$(this).find('input').attr('checked');
-        var value = $(this).attr('data-sub');
-        if (!state) subs.push(value);
-        else subs = subs.filter(x => x != value);
-        update();
-    });
-    $('[data-type]').click(function() {
-        var state = !!$(this).find('input').attr('checked');
-        var value = $(this).attr('data-type');
-        if (!state) types.push(value);
-        else types = types.filter(x => x != value);
+        var value = +$(this).attr('data-value');
+        var group = +$(this).parent().attr('data-value');
+        var delta = group - filter.length + 1;
+        if (delta > 0) for (var i = 0; i < delta; i++) filter.push([]);
+        if (state) filter[group] = filter[group].filter(x => x != value)
+        else filter[group].push(value);
         update();
     });
 });
