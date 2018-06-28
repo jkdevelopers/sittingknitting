@@ -144,8 +144,16 @@ $(document).ready(function () {
         var group = +$(this).parent().attr('data-value');
         var delta = group - filter.length + 1;
         if (delta > 0) for (var i = 0; i < delta; i++) filter.push([]);
-        if (state) filter[group] = filter[group].filter(x => x != value)
+        if (state) filter[group] = filter[group].filter(x => x != value);
         else filter[group].push(value);
+        update();
+    });
+
+    // Сортировки
+
+    $('.sortings a').click(function () {
+        if ($(this).hasClass('active')) return;
+        params.set('sorting', $(this).attr('data-value'));
         update();
     });
 });

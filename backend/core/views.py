@@ -226,6 +226,8 @@ class DiscountProductsView(EditableMixin, generic.ListView):
 
     def get(self, *args, **kwargs):
         self.search = self.request.GET.get('search')
+        self.sorting = self.request.GET.get('sorting')
+        if self.sorting not in ProductsView.SORTINGS: self.sorting = 'new'
         return super(DiscountProductsView, self).get(*args, **kwargs)
 
     def get_queryset(self):
@@ -236,13 +238,16 @@ class DiscountProductsView(EditableMixin, generic.ListView):
                 Q(vendor__icontains=self.search) |
                 Q(brand__icontains=self.search)
             )
-        return qs
+        _, fields = ProductsView.SORTINGS.get(self.sorting)
+        return qs.order_by(*fields)
 
     def get_context_data(self, **kwargs):
         kwargs = super(DiscountProductsView, self).get_context_data(**kwargs)
         kwargs['current'] = type('_', (), {'name': 'Акции'})
         kwargs['search'] = self.search
         kwargs['count'] = len(self.object_list)
+        kwargs['sortings'] = ProductsView.SORTINGS
+        kwargs['sorting'] = self.sorting
         return kwargs
 
 
@@ -251,9 +256,18 @@ class ProductsView(EditableMixin, generic.ListView):
     template_name = 'pages/products.html'
     context_object_name = 'products'
 
+    SORTINGS = {
+        'new': ['Сначала новые', ['-pk']],
+        'price-incr': ['Сначала дешевле', ['price']],
+        'price-decr': ['Сначала дороже', ['-price']],
+        'name': ['По названию', ['name']],
+    }
+
     def get(self, *args, **kwargs):
         self.category = get_object_safe(Category, pk=kwargs.get('pk'), error=Http404)
         self.search = self.request.GET.get('search')
+        self.sorting = self.request.GET.get('sorting')
+        if self.sorting not in self.SORTINGS: self.sorting = 'new'
         self.get_filters()
         self.clean_filters()
         return super(ProductsView, self).get(*args, **kwargs)
@@ -297,7 +311,8 @@ class ProductsView(EditableMixin, generic.ListView):
             products = set(i.product.pk for i in group)
             if not products: continue
             qs = qs.filter(pk__in=products)
-        return qs
+        _, fields = self.SORTINGS.get(self.sorting)
+        return qs.order_by(*fields)
 
     def get_context_data(self, **kwargs):
         kwargs = super(ProductsView, self).get_context_data(**kwargs)
@@ -305,6 +320,8 @@ class ProductsView(EditableMixin, generic.ListView):
         kwargs['current'] = self.category
         kwargs['search'] = self.search
         kwargs['count'] = len(self.object_list)
+        kwargs['sortings'] = self.SORTINGS
+        kwargs['sorting'] = self.sorting
 
         return kwargs
 

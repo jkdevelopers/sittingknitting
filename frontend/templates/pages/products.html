@@ -25,6 +25,16 @@
                 </div>
                 {% endcomment %}
 
+                <div class="w_nav1">
+                    <ul>
+                        {% for key, value in sortings.items %}
+                            <li class="sortings">
+                                <a {% if key == sorting %}class="active"{% endif %} data-value="{{ key }}">{{ value.0 }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                 {% for title, items, _ in filters %}
                     <section class="sky-form">
                         <h4>{{ title }}</h4>

@@ -1,6 +1,7 @@
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from .utils import get_object_safe
+from django.contrib import messages
 from django.contrib import admin
+from .utils import get_object_safe
 from .models import *
 
 
@@ -52,7 +53,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 def send_mail(modeladmin, request, queryset):
     email = get_object_safe(Email, code='subscription')
-    if email is None: return
+    if email is None:
+        messages.error(request, 'Создайте письмо с кодом subscription')
+        return
     for item in queryset: email.send(item.email)
 send_mail.short_description = 'Отправить письмо'
 
